@@ -1,0 +1,62 @@
+<script type="text/javascript">
+/////////////// initialize  //////////
+/////  validation
+var js_allow_name = '';
+var js_allow_number='';
+var js_number_limit5='';
+var js_number_limit1='';
+var js_allow_date='';
+var js_allow_email='';
+var js_allow_alr_email='';
+var js_allow_maxage='';
+var js_allow_maxpreg='';
+var js_statelabel='';
+var js_disrictlabel='';
+var js_talukalabel='';
+var js_empty_date='';
+var js_password_limit='';
+var js_password_compar='';
+var js_newpassword_compar='';
+var js_email_exist='';
+var js_excelvalid='';
+var js_validadrress='';
+var js_conv_message='';
+var js_max_milit60="";
+var js_number_limit10='';
+var js_birthlimit='';
+var js_languagevalid='';
+var js_allow_user='';
+var js_validzip="";
+var js_validfilesiz='';
+var js_validfile='';
+/////////// end initialize //////////////
+/////  validation
+js_allow_name = "<?php  echo trans('routes.allow_name'); ?>";
+js_allow_number='<?php  echo trans('routes.allow_number'); ?>';
+js_number_limit5='<?php  echo trans('routes.number_limit5'); ?>';
+js_number_limit1='<?php  echo trans('routes.number_limit1'); ?>';
+js_allow_date='<?php  echo trans('routes.allow_date'); ?>';
+js_allow_email='<?php  echo trans('routes.allow_email'); ?>';
+js_allow_alr_email='<?php  echo trans('routes.allow_alr_email'); ?>';
+js_allow_maxage='<?php  echo trans('routes.allow_maxage'); ?>';
+js_allow_maxpreg='<?php  echo trans('routes.allow_maxpreg'); ?>';
+js_statelabel='<?php  echo trans('routes.statelabel'); ?>';
+js_disrictlabel='<?php  echo trans('routes.disrictlabel'); ?>';
+js_talukalabel='<?php  echo trans('routes.talukalabel'); ?>';
+js_empty_date='<?php  echo trans('routes.empty_date'); ?>';
+js_password_limit='<?php  echo trans('routes.password_limit'); ?>';
+js_password_compar='<?php  echo trans('routes.password_compar'); ?>';
+js_newpassword_compar='<?php  echo trans('routes.newpassword_compar'); ?>';
+js_email_exist='<?php  echo trans('routes.email_exist'); ?>';
+js_excelvalid='<?php  echo trans('routes.excelvalid'); ?>';
+js_validadrress='<?php  echo trans('routes.validadrress'); ?>';
+js_conv_message='<?php  echo trans('routes.conv_message'); ?>';
+js_max_milit60="<?php  echo trans('routes.max_milit60'); ?>";
+js_number_limit10='<?php  echo trans('routes.number_limit10'); ?>';
+js_birthlimit='<?php  echo trans('routes.birthlimit'); ?>';
+js_languagevalid='<?php  echo trans('routes.languagevalid'); ?>';
+js_allow_user='<?php  echo trans('routes.allow_user'); ?>';
+js_validzip='<?php  echo trans('routes.validzip'); ?>';
+js_validfilesiz='<?php  echo trans('routes.validfilesize'); ?>';
+js_validfile='<?php  echo trans('routes.validfile'); ?>';
+</script>

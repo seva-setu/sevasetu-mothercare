@@ -1,0 +1,12 @@
+SELECT *
+FROM mct_beneficiary
+WHERE (
+(
+DATEDIFF( dt_due_date, '2015-01-11' ) >79 && DATEDIFF( dt_due_date, '2015-01-11' ) <89
+) || ( DATEDIFF( dt_due_date, '2015-01-19' ) >79 && DATEDIFF( dt_due_date, '2015-01-19' ) <89 )
+) || ( (
+DATEDIFF( dt_due_date, '2015-01-11' ) >110 && DATEDIFF( dt_due_date, '2015-01-11' ) <118 ) || ( DATEDIFF( dt_due_date, '2015-01-19' ) >110 && DATEDIFF( dt_due_date, '2015-01-19' ) <118 )
+) || ( (
+DATEDIFF( dt_due_date, '2015-01-11' ) >121 && DATEDIFF( dt_due_date, '2015-01-11' ) <130 ) || ( DATEDIFF( dt_due_date, '2015-01-19' ) >121 && DATEDIFF( dt_due_date, '2015-01-19' ) <130 )
+) 
+

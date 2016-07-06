@@ -1,0 +1,15 @@
+=================FTP=============
+host : websoptimization.com
+username : mothercare@websoptimization.com
+pwd : +7G%53vsFV[R
+
+
+
+=================Database=============
+host : localhost
+db name : websopti_mothercare
+usernmae : websopti_motherc
+pwd : %Vt7f5T2F;GL
+
+
+

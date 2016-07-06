@@ -1,0 +1,28 @@
+[11-Sep-2015 06:33:49 Etc/GMT] PHP Fatal error:  Uncaught exception 'ReflectionException' with message 'Class App\Http\Kernel does not exist' in /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php:779
+Stack trace:
+#0 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php(779): ReflectionClass->__construct('App\\Http\\Kernel')
+#1 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php(659): Illuminate\Container\Container->build('App\\Http\\Kernel', Array)
+#2 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(644): Illuminate\Container\Container->make('App\\Http\\Kernel', Array)
+#3 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php(229): Illuminate\Foundation\Application->make('App\\Http\\Kernel', Array)
+#4 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illumin in /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 779
+[11-Sep-2015 06:33:51 Etc/GMT] PHP Fatal error:  Uncaught exception 'ReflectionException' with message 'Class App\Http\Kernel does not exist' in /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php:779
+Stack trace:
+#0 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php(779): ReflectionClass->__construct('App\\Http\\Kernel')
+#1 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php(659): Illuminate\Container\Container->build('App\\Http\\Kernel', Array)
+#2 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(644): Illuminate\Container\Container->make('App\\Http\\Kernel', Array)
+#3 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php(229): Illuminate\Foundation\Application->make('App\\Http\\Kernel', Array)
+#4 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illumin in /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 779
+[11-Sep-2015 06:33:51 Etc/GMT] PHP Fatal error:  Uncaught exception 'ReflectionException' with message 'Class App\Http\Kernel does not exist' in /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php:779
+Stack trace:
+#0 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php(779): ReflectionClass->__construct('App\\Http\\Kernel')
+#1 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php(659): Illuminate\Container\Container->build('App\\Http\\Kernel', Array)
+#2 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(644): Illuminate\Container\Container->make('App\\Http\\Kernel', Array)
+#3 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php(229): Illuminate\Foundation\Application->make('App\\Http\\Kernel', Array)
+#4 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illumin in /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 779
+[11-Sep-2015 06:33:52 Etc/GMT] PHP Fatal error:  Uncaught exception 'ReflectionException' with message 'Class App\Http\Kernel does not exist' in /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php:779
+Stack trace:
+#0 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php(779): ReflectionClass->__construct('App\\Http\\Kernel')
+#1 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php(659): Illuminate\Container\Container->build('App\\Http\\Kernel', Array)
+#2 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(644): Illuminate\Container\Container->make('App\\Http\\Kernel', Array)
+#3 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php(229): Illuminate\Foundation\Application->make('App\\Http\\Kernel', Array)
+#4 /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illumin in /home/websopti/public_html/demo/mother_care/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 779
