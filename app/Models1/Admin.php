@@ -8,11 +8,24 @@ class Admin extends Eloquent {
 	protected $table = 'mct_admin';
 	protected $primaryKey = 'bi_id';
 	
-	public function addUser($data){
-		
-	}
-	
 	public function updateProfileTable($inputData){
+		/*$admin 					= 	$admin->find($userid);
+		$admin->v_name 			=	Input::get('txtUsername');
+		$admin->v_phone_number	=	Input::get('txtPhoneNumber');
+		$admin->v_language		=	Input::get('txtLanguage');
+		$admin->v_email			=	Input::get('txtEmail');
+		$admin->dt_birthdate	=	$bdate;
+		$admin->v_address		=	Input::get('txtAddress');
+		$admin->i_address_id	=	Input::get('hdnZipcode');
+		if($filename!="")
+			$admin->v_profile_pic=$filename;
+		$admin->v_language=$language;
+		$admin->v_profession=Input::get('txtProfession');
+		$admin->dt_modify_date=$datetime;
+		//$admin->v_ip=$_SERVER['REMOTE_ADDR'];
+		$admin->v_ip = $request->ip;
+		return $admin->save();*/
+		
 		$admin	= 	Admin::find($inputData['userid']);
 		
 		if(isset($inputData['username']))

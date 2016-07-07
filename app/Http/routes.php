@@ -23,9 +23,12 @@ Route::post('bookupdate','BookingController@update');
 					'book' => 'BookingController',
 					'password' => 'Auth\PasswordController']);
 */
+
 //Route:get('/auth/register','Auth\AuthController@getRegister');
-Route::get('/auth/register','Auth\AuthController@getRegister');
-Route::post('/auth/register','Auth\AuthController@postRegister');
+Route::get('/auth/register','Admin\AdminController@getRegister');
+Route::post('/auth/register','Admin\AdminController@postRegister');
+//Route::get('/auth/register','Admin\RegisterController@getRegister');
+
 
 Route::post('/language/chooser','LanguageController@chooser');
 

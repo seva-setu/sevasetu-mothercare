@@ -1,21 +1,29 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php 
+
+namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use App\Models\Fieldworkers;
 use App\Models\Admin;
 use App\Models\Callchampions;
 use App\Models\Users;
-use Request;
+use App\Models\User;
+use App\Services\Registrar;
+//use Request;
+use \Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Auth\UserInterface;
+use Illuminate\Http\Response;
+
+
 use Mail;
 use Hash;
 use Auth;
 use DB;
 use Validator;
 use Session;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Http\Response;
 use Hashids\Hashids;
 use Image;
 use App\Http\Helpers;
@@ -423,22 +431,22 @@ class AdminController extends Controller{
   		$users=new Users;
 		$data['result']= $users::where('v_status', 'Active')->where('v_email', Input::get('txtForgotEmailId'))->get()->toArray();
   		if(count($data['result'])>0){
-		//email activation starts
-		$sent=Mail::send('emails.password',$data, function($message)
-			{
-			$message->to(Input::get('txtForgotEmailId'))->subject('Forgot Password in Mother Care Tool');
-			});
-		if($sent){
-			Session::flash('sucmessage', trans("routes.changepassmailmsg"));
-			return Redirect::to('/admin/login/');
+			//email activation starts
+			$sent=Mail::send('emails.password',$data, function($message)
+				{
+				$message->to(Input::get('txtForgotEmailId'))->subject('Forgot Password in Mother Care Tool');
+				});
+			if($sent){
+				Session::flash('sucmessage', trans("routes.changepassmailmsg"));
+				return Redirect::to('/admin/login/');
+			}else{
+				Session::flash('sucmessage', trans("routes.email_exist"));
+				return Redirect::to('/admin/login/');
+			}	
 		}else{
-  			Session::flash('sucmessage', trans("routes.email_exist"));
+			Session::flash('message', trans("routes.email_exist"));
 			return Redirect::to('/admin/login/');
-  		}	
-  	}else{
-  		Session::flash('message', trans("routes.email_exist"));
-		return Redirect::to('/admin/login/');
-  	}	
+		}	
   }
   //update password view
   public function updatePassowrd($id){
@@ -585,5 +593,91 @@ class AdminController extends Controller{
   	$result =$data['result'][0];
   	echo json_encode($result);
   }
-
+  
+  ///////////////////////////////////////////////////////////
+  
+    public function getRegister()
+    {
+        return $this->showRegistrationForm();
+    }
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        if (property_exists($this, 'registerView')) {
+            return view($this->registerView);
+        }
+        return view('auth.register');
+    }
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postRegister(Request $request)
+    {
+        return $this->register($request);
+    }
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {	
+		$reg = new Registrar();
+        $validator = $reg->validator($request->all());
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+		
+		// Create a new user		
+		$user = new User;
+		
+		$data_to_push = [
+			'v_name' => $request->get('name'),
+			'v_email' => $request->get('email'),
+			'password' => Hash::make($request->get('password')),
+		];
+		$usr_record = $user->mod_user($data_to_push, 2);
+		if($usr_record === false){
+			// something wrong here. needs to be checked.
+			die("done");
+		}
+		// User successfully saved
+		// Now create a copy in the call champion table
+		
+		$call_champion = new CallChampion();
+		$beneficiary
+		
+		// Send a confirmation mail
+		
+		//
+		$validlogin = true;//$users->validate_login($userdata);
+       	if(!$validlogin){
+			Session::flash('message', trans("routes.loginerror"));
+    		return Redirect::to('admin');
+    	}
+		
+				
+    	//return Redirect::to('/admin/dashboard/');
+        //Auth::guard($this->getGuard())->login($this->create($request->all()));
+        //return redirect($this->redirectPath());
+    }
+    /**
+     * Get the guard to be used during registration.
+     *
+     * @return string|null
+     */
+    protected function getGuard()
+    {
+        return property_exists($this, 'guard') ? $this->guard : null;
+    }
 }
