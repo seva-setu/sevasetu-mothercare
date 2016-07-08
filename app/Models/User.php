@@ -61,12 +61,17 @@ class User extends Eloquent {
 		
 	}
 	 
-	public function validate_login1($inputData){
-		$userdata = Users::where('v_email', '=', $inputData['email'])->where('v_status','Active')->first();
+	public function log_in_user($inputData){
+		Session::put('user_logged',$inputData);
+		return true;		
+	} 
+	public function validate_login($inputData){
+		$userdata = User::where('v_email', '=', $inputData['email'])->where('e_status','Active')->first();
 		if(!empty($userdata)){
 			$checklogin=Hash::check($inputData['password'], $userdata->v_password);
 			if($checklogin){
-				
+				$this->log_in_user($inputData);
+				// to delete all after this
 				$v_role = $userdata->v_role;
 				$user_table ="";
 				//dd(Session::get(null));exit;
@@ -81,23 +86,22 @@ class User extends Eloquent {
 						break;
 					}
 					
-					$res = DB::table('mct_user_login')
-					->join($user_table,'mct_user_login.bi_id','=',$user_table.'.bi_user_login_id')
-					->select($user_table.'.bi_id')
-					->where('mct_user_login.bi_id','=',$userdata->bi_id)
-					->get();
-					$user_id=$res[0]->bi_id;
+					// $res = DB::table($table)
+					// ->join($user_table,$table'.bi_id','=',$user_table.'.bi_user_login_id')
+					// ->select($user_table.'.bi_id')
+					// ->where('mct_user_login.bi_id','=',$userdata->bi_id)
+					// ->get();
+					$user_id=$userdata->user_id;
 				}
 				
 				$userdet=array(
-						'b_id' => $userdata->bi_id,
+						'b_id' => $userdata->user_id,
 						'v_name' => $userdata->v_name,
 						'v_user_name' => $userdata->v_email,
 						'v_role' => $userdata->v_role,
 						'user_id'=>$user_id 
 				);
-				Session::put('user_logged',$userdet);
-				return true;
+				return $this->log_in_user($userdet);
 			}else{
 				return false;
 			}

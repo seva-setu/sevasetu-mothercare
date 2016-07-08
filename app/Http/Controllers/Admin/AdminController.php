@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Fieldworkers;
 use App\Models\Admin;
-use App\Models\Callchampions;
-use App\Models\Users;
+
+//use App\Models\Callchampions;
+//use App\Models\Users;
+
 use App\Models\User;
+use App\Models\CallChampion;
 use App\Services\Registrar;
 //use Request;
 use \Illuminate\Http\Request;
@@ -38,13 +41,17 @@ class AdminController extends Controller{
 	
 	public function __construct(){
 		$userinfo=Session::get('user_logged');
-	
-		$this->usertype=$userinfo['v_role'];
-		$this->userid=$userinfo['b_id'];
-		$this->helper = new Helpers();
-	
-		$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
-		$this->helper->clearBen_Data();
+		if(isset($userinfo['b_id'])){
+			$this->userid=$userinfo['b_id'];
+		}
+		if(isset($userinfo['v_role'])){
+			$this->helper = new Helpers();
+			
+			$this->usertype=$userinfo['v_role'];
+			$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
+			
+			$this->helper->clearBen_Data();
+		}
 	}
 	
 	
@@ -52,7 +59,7 @@ class AdminController extends Controller{
 		if(isset($this->userid)){
 			Redirect::to('/admin/dashboard')->send();
 		}
-		$data['title']= "Login" . SITENAME ;
+		$data['title']= "Login";
 		return view('admin/login',$data);
 	}
 	
@@ -73,7 +80,7 @@ class AdminController extends Controller{
 	 */
  	public function login() {
  	// Getting all post data
- 	$users=new Users;
+ 	$users=new User;
  	$userdata = array(
 		    'email' => Input::get('txtUserName'),
 		    'password' => Input::get('txtPassword')
@@ -628,8 +635,8 @@ class AdminController extends Controller{
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function register(Request $request)
-    {	
+    public function register(Request $request){	
+		$ROLE = 2; //by default, those registering via the form are call champions
 		$reg = new Registrar();
         $validator = $reg->validator($request->all());
         if ($validator->fails()) {
@@ -646,20 +653,39 @@ class AdminController extends Controller{
 			'v_email' => $request->get('email'),
 			'password' => Hash::make($request->get('password')),
 		];
-		$usr_record = $user->mod_user($data_to_push, 2);
+		$usr_record = $user->mod_user($data_to_push, $ROLE);
 		if($usr_record === false){
 			// something wrong here. needs to be checked.
-			die("done");
+			die("ohmyuser");
 		}
 		// User successfully saved
-		// Now create a copy in the call champion table
+		// Now create a record in the call champion table
 		
-		$call_champion = new CallChampion();
-		$beneficiary
-		
+		$call_champ_obj = new CallChampion;
+		$cc_record = $call_champ_obj->add_champion($usr_record);
+		if(!$cc_record){
+			// something wrong here. needs to be checked.
+			die("ohmycc");
+		}
 		// Send a confirmation mail
 		
-		//
+		// Log the candidate in
+		//// create an entry in the session and redirect user to panel
+		$userdet=array(
+			'b_id' => $usr_record,
+			'v_name' => $request->get('name'),
+			'v_user_name' => $request->get('name'),
+			'v_role' => $ROLE,
+			'user_id'=>$usr_record 
+		);
+		$ret = $user->log_in_user($userdet);
+		if($ret)
+			return Redirect::to('/admin/dashboard/');
+		else{
+			Session::flash('message', trans("routes.loginerror"));
+			return Redirect::to('admin');
+		}
+		
 		$validlogin = true;//$users->validate_login($userdata);
        	if(!$validlogin){
 			Session::flash('message', trans("routes.loginerror"));
