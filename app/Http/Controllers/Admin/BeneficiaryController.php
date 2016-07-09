@@ -4,6 +4,9 @@ use App\Models\Beneficiary;
 use App\Models\Fieldworkers;
 use App\Models\Callchampions;
 use App\Models\Users;
+use App\Models\DueList;
+use App\Models\Checklist;
+
 use Request;
 use Mail;
 use Auth;
@@ -22,7 +25,7 @@ use Hashids\Hashids;
 use \Maatwebsite\Excel\Files\ImportHandler;
 use App\Http\Helpers; 
 use App\Models\App\Models;
-use App\Models\Checklist;
+
 
 class BeneficiaryController extends Controller{
 	protected $model;
@@ -70,17 +73,15 @@ class BeneficiaryController extends Controller{
 	public function tester_method(){
 		$bene_obj = Beneficiary::all();
 		foreach($bene_obj as $bene){
-			echo $bene->dt_due_date;
-			echo "<pre>";
-			print_r($this->calculate_due_list($bene->dt_due_date));
-			die("asd");
+			$this->add_due_list($bene->b_id, $bene->dt_due_date);
 		}
 		
 	}
 	
-	public function add_due_list($beneficiary_data, $beneficiary_id, $delivery_date){
+	public function add_due_list($beneficiary_id, $delivery_date){
 		$due_list = $this->calculate_due_list($delivery_date);
-		
+		$duelist_obj = new DueList;
+		$duelist_obj->update_due_list($beneficiary_id, $due_list);
 	}
 	
 	public function calculate_due_list($delivery_date){
