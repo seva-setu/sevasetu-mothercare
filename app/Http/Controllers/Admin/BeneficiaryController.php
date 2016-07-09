@@ -46,6 +46,153 @@ class BeneficiaryController extends Controller{
 		$this->helper->clearBen_Data();
 	}
 
+	// make the input to this function an excel
+	public function add_beneficiary_list(Request $request, $field_worker_id){
+		$data = import_excel(Excel input);
+		foreach($data as $beneficiary){
+			$result1 = add_new_beneficiary($beneficiary, $field_worker_id);
+			$result2 = add_due_list($beneficiary, $delivery_date);
+			if(!$result1 or !$result2)
+				die("exception");
+		}
+		return true;
+	}
+	public function add_new_beneficiary($beneficiary, $field_worker_id){
+		//Model beneficiary:: add_beneficiary
+		
+	}
+	
+	public function add_due_list($beneficiary, $delivery_date){
+		
+	}
+	
+	public function calculate_due_list($delivery_date){
+		
+	}
+	
+	public function importExcel(){
+    	$beneficiary= new Beneficiary;
+    	$mess=array();
+    	$destinationPath = 'external/uploads'; // upload path
+    	$extension = Input::file('txtExcel')->getClientOriginalExtension(); // getting image extension
+    	$fileName = rand(11111,99999).'.'.$extension; // renameing image
+    	Input::file('txtExcel')->move($destinationPath, $fileName); // uploading file to given path
+    	
+  	// Applying validation rules.
+    $filedworkerid="";
+    if($_POST['fieldwrokerid']!="")
+    	$filedworkerid=$this->decode($_POST['fieldwrokerid']);
+  	$rules = array(
+  			'name' => 'required|min:3|max:20|Regex:/^[A-Za-z]+[A-Za-z0-9.\' ]*$/',
+  			'husband_name'=>'required|min:3|max:20',
+  			'phone_number'=>'required|numeric|digits_between:10,20',
+  			'village'=>'required|min:3|max:20',
+  			'language'=>'required',
+  			'pincode'=>'required|numeric|digits_between:4,6',
+  			'due_date'=>'required_without:delivery_date|date_format:d/m/Y',
+  			'delivery_date'=>'required_without:due_date|date_format:d/m/Y'
+  			
+  	);
+  		$arr = Excel::load($destinationPath.'/'.$fileName)->get();
+    	$i=0;
+    	if(!empty($arr)){
+    		if(isset($arr[0]->name) && isset($arr[0]->language) && isset($arr[0]->number_pregnancies) && isset($arr[0]->husband_name) && isset($arr[0]->phone_number) && isset($arr[0]->alternate_phone_no)  && isset($arr[0]->village) && isset($arr[0]->pincode)   && isset($arr[0]->taluka) && isset($arr[0]->awc_name) && isset($arr[0]->awc_number) && isset($arr[0]->due_date) && isset($arr[0]->delivery_date)){
+    		
+    		}else{
+    			Session::flash('message', '<div class="alert alert-error" style="clear:both;">
+              <button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.excelvalid").'</div>');
+    			return Redirect::to('/admin/beneficiary/');
+    		}
+    		foreach($arr as $key=>$val){
+    			$datetime = date("Y-m-d H:i:s");
+    			$i++;
+    			$due_date=str_replace("-", "/", $val->due_date);
+    			$delivery_date=str_replace("-", "/", $val->delivery_date);
+    			$userdata = array(
+    					'name' => $val->name,
+    					'husband_name'=>$val->husband_name,
+    					'phone_number'=>$val->phone_number,
+    					'village'=>$val->village,
+    					'language'=>$val->language,
+    					'pincode'=>$val->pincode,
+    					'due_date'=>date('d/m/Y',strtotime($due_date)),
+    					'delivery_date'=>date('d/m/Y',strtotime($delivery_date))
+    			);
+    			$validator = Validator::make($userdata, $rules);
+    			$address_id="";
+    			$address_id= DB::table('mct_address')->where('v_pincode', 'LIKE', '%'.$val->pincode.'%')->take(1)->get();
+    			$language=explode(",", strtolower($val->language));
+    			$langId= DB::table('mct_language')->select('bi_id')->whereIn('v_language',$language)->get();
+    			$result = array();
+    			if(count($langId)>0){
+	    			foreach ($langId as $key => $value) {
+	    				$result[] = $value->bi_id;
+	    			}
+    			}
+    			$langid=implode(",",$result);
+    			if ($validator->fails() || empty($address_id)){ //check validation
+    				$messages = $validator->messages()->toArray();
+    				if(empty($address_id))
+    					$messages["zipcode"]="Address does not Match.";
+    				$mess[$i]=$messages;
+    			}else{
+    				$lastrow=$beneficiary::orderBy('bi_id', 'DESC')->first();
+	
+					if(count($lastrow)>0)
+						$code='BF'.($lastrow->bi_id+1);
+					else
+						$code='BF1';
+					
+    				$data=array(
+    						'v_name' =>$val->name,
+    						'v_language'=>$langid,
+    						'i_number_pregnancies'=>$val->number_pregnancies,
+    						'v_husband_name'=>$val->husband_name,
+    						'v_phone_number'=>$val->phone_number,
+    						'v_alternate_phone_no'=>$val->alternate_phone_no,
+    						'v_address'=>$val->village,
+    						'i_address_id' =>$address_id[0]->bi_id,
+    						'v_awc_name'=>$val->awc_name,
+    						'v_awc_number'=>$val->awc_number,
+    						'v_unique_code'=>$code,
+    						'dt_due_date'=>date("Y-m-d H:i:s",strtotime($val->due_date)),
+    						'dt_delivery_date'=>date("Y-m-d H:i:s",strtotime($val->delivery_date)),
+    						'dt_lmp_date'=>date('Y-m-d H:i:s',strtotime('-36 week', strtotime($val->due_date))),
+    						'dt_create_date'=>$datetime,
+    						'dt_modify_date'=>$datetime,
+    						'e_status'=>"Active",
+    						'v_ip'=>$_SERVER['REMOTE_ADDR']);
+    				$data=$beneficiary->insert($data);//insert excel data into database
+    				$lastid=DB::getPdo()->lastInsertId();
+    				if($lastid){
+    					if($this->usertype==3){
+    						$user = Fieldworkers::query()->where('bi_user_login_id', $this->userid)->get(array('bi_id'));
+    						$data=$beneficiary::where('bi_id', $lastid)->update(['bi_field_worker_id' => $user[0]->bi_id]);
+    					}elseif($filedworkerid!=""){
+    						$data=$beneficiary::where('bi_id', $lastid)->update(['bi_field_worker_id' => $filedworkerid]);
+    					}
+    				}
+    				//Session::flash('message', '<div class="alert alert-success" style="clear:both;">
+              //<button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.beneficiary").' '.trans("routes.addmessage").'</div>');
+    			}
+    		}
+    		Session::flash('errormessage',$mess);
+    		return Redirect::to('/admin/beneficiary/');
+    	}
+ 	}
+ 	
+	
+	
+	
+	
+	
+	///////////////////////////////////////////
+	
+	
+	
+	
+	
+	
 //defualt method for beneficiary	
 public function  index(){
 	$data = array();
@@ -501,117 +648,7 @@ public function add(){// add record
     	return view('beneficiary/manage',$data);
     }
     //import excel and save into database
-    public function importExcel(){
-    	$beneficiary= new Beneficiary;
-    	$mess=array();
-    	$destinationPath = 'external/uploads'; // upload path
-    	$extension = Input::file('txtExcel')->getClientOriginalExtension(); // getting image extension
-    	$fileName = rand(11111,99999).'.'.$extension; // renameing image
-    	Input::file('txtExcel')->move($destinationPath, $fileName); // uploading file to given path
-    	
-  	// Applying validation rules.
-    $filedworkerid="";
-    if($_POST['fieldwrokerid']!="")
-    	$filedworkerid=$this->decode($_POST['fieldwrokerid']);
-  	$rules = array(
-  			'name' => 'required|min:3|max:20|Regex:/^[A-Za-z]+[A-Za-z0-9.\' ]*$/',
-  			'husband_name'=>'required|min:3|max:20',
-  			'phone_number'=>'required|numeric|digits_between:10,20',
-  			'village'=>'required|min:3|max:20',
-  			'language'=>'required',
-  			'pincode'=>'required|numeric|digits_between:4,6',
-  			'due_date'=>'required_without:delivery_date|date_format:d/m/Y',
-  			'delivery_date'=>'required_without:due_date|date_format:d/m/Y'
-  			
-  	);
-  		$arr = Excel::load($destinationPath.'/'.$fileName)->get();
-    	$i=0;
-    	if(!empty($arr)){
-    		if(isset($arr[0]->name) && isset($arr[0]->language) && isset($arr[0]->number_pregnancies) && isset($arr[0]->husband_name) && isset($arr[0]->phone_number) && isset($arr[0]->alternate_phone_no)  && isset($arr[0]->village) && isset($arr[0]->pincode)   && isset($arr[0]->taluka) && isset($arr[0]->awc_name) && isset($arr[0]->awc_number) && isset($arr[0]->due_date) && isset($arr[0]->delivery_date)){
-    		
-    		}else{
-    			Session::flash('message', '<div class="alert alert-error" style="clear:both;">
-              <button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.excelvalid").'</div>');
-    			return Redirect::to('/admin/beneficiary/');
-    		}
-    		foreach($arr as $key=>$val){
-    			$datetime = date("Y-m-d H:i:s");
-    			$i++;
-    			$due_date=str_replace("-", "/", $val->due_date);
-    			$delivery_date=str_replace("-", "/", $val->delivery_date);
-    			$userdata = array(
-    					'name' => $val->name,
-    					'husband_name'=>$val->husband_name,
-    					'phone_number'=>$val->phone_number,
-    					'village'=>$val->village,
-    					'language'=>$val->language,
-    					'pincode'=>$val->pincode,
-    					'due_date'=>date('d/m/Y',strtotime($due_date)),
-    					'delivery_date'=>date('d/m/Y',strtotime($delivery_date))
-    			);
-    			$validator = Validator::make($userdata, $rules);
-    			$address_id="";
-    			$address_id= DB::table('mct_address')->where('v_pincode', 'LIKE', '%'.$val->pincode.'%')->take(1)->get();
-    			$language=explode(",", strtolower($val->language));
-    			$langId= DB::table('mct_language')->select('bi_id')->whereIn('v_language',$language)->get();
-    			$result = array();
-    			if(count($langId)>0){
-	    			foreach ($langId as $key => $value) {
-	    				$result[] = $value->bi_id;
-	    			}
-    			}
-    			$langid=implode(",",$result);
-    			if ($validator->fails() || empty($address_id)){ //check validation
-    				$messages = $validator->messages()->toArray();
-    				if(empty($address_id))
-    					$messages["zipcode"]="Address does not Match.";
-    				$mess[$i]=$messages;
-    			}else{
-    				$lastrow=$beneficiary::orderBy('bi_id', 'DESC')->first();
-	
-					if(count($lastrow)>0)
-						$code='BF'.($lastrow->bi_id+1);
-					else
-						$code='BF1';
-					
-    				$data=array(
-    						'v_name' =>$val->name,
-    						'v_language'=>$langid,
-    						'i_number_pregnancies'=>$val->number_pregnancies,
-    						'v_husband_name'=>$val->husband_name,
-    						'v_phone_number'=>$val->phone_number,
-    						'v_alternate_phone_no'=>$val->alternate_phone_no,
-    						'v_address'=>$val->village,
-    						'i_address_id' =>$address_id[0]->bi_id,
-    						'v_awc_name'=>$val->awc_name,
-    						'v_awc_number'=>$val->awc_number,
-    						'v_unique_code'=>$code,
-    						'dt_due_date'=>date("Y-m-d H:i:s",strtotime($val->due_date)),
-    						'dt_delivery_date'=>date("Y-m-d H:i:s",strtotime($val->delivery_date)),
-    						'dt_lmp_date'=>date('Y-m-d H:i:s',strtotime('-36 week', strtotime($val->due_date))),
-    						'dt_create_date'=>$datetime,
-    						'dt_modify_date'=>$datetime,
-    						'e_status'=>"Active",
-    						'v_ip'=>$_SERVER['REMOTE_ADDR']);
-    				$data=$beneficiary->insert($data);//insert excel data into database
-    				$lastid=DB::getPdo()->lastInsertId();
-    				if($lastid){
-    					if($this->usertype==3){
-    						$user = Fieldworkers::query()->where('bi_user_login_id', $this->userid)->get(array('bi_id'));
-    						$data=$beneficiary::where('bi_id', $lastid)->update(['bi_field_worker_id' => $user[0]->bi_id]);
-    					}elseif($filedworkerid!=""){
-    						$data=$beneficiary::where('bi_id', $lastid)->update(['bi_field_worker_id' => $filedworkerid]);
-    					}
-    				}
-    				//Session::flash('message', '<div class="alert alert-success" style="clear:both;">
-              //<button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.beneficiary").' '.trans("routes.addmessage").'</div>');
-    			}
-    		}
-    		Session::flash('errormessage',$mess);
-    		return Redirect::to('/admin/beneficiary/');
-    	}
- 	}
- 	//get city list base on state
+    //get city list base on state
  	function getcitylists(){
  		$state=Input::get('state');
  		$citylist= DB::table('mct_address')->distinct()->select('v_district')->where('v_state', 'LIKE', '%'.$state.'%')->get();

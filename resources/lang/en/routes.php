@@ -220,5 +220,7 @@ return array(
 		'exportreport' => 'Export Report',
 		'excelformat' => 'Excel Format',
 		'pdfformat' => 'PDF Format',
-		'welcome' => 'Welcome'
+		'welcome' => 'Welcome',
+		
+		'number_of' =>'Number of mothers assigned to you',
 );

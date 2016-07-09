@@ -22,5 +22,13 @@ class CallChampion extends Eloquent {
 		else
 			return false;
 	}
+	
+	public function get_number_of_calls_done($user_id){
+	
+	}
+	
+	public function get_assigned_mothers($user_id){
+		
+	}
 	 
 }

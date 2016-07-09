@@ -67,11 +67,25 @@ class AdminController extends Controller{
 	 * Dashboard Page
 	 */
 	public function dashboard(){// defualt method
+		//security concern. there should be a middleware checking for this
 		if(!isset($this->userid)){
 			Redirect::to('/admin/')->send();
 		}
 		$data['title']= "Dashboard" . SITENAME;
-		return view('admin/dashboard',$data);
+		
+		// Generate dashboard landing data as per the role
+		// If its a call champion
+		if($this->usertype == 2){
+			$callchamp = new CallChampion;
+			$dashboard_data = $callchamp->get_dashboard_data($this->userid);
+		}
+		// If its a fieldworker
+		elseif($this->usertype == 3){
+			$fieldworker = new Fieldworkers;
+			$dashboard_data = $fieldworker->get_dashboard_data($this->userid);
+		}
+		
+		return view('admin/dashboard',$dashboard_data);
 	}
 	
 	
@@ -601,7 +615,9 @@ class AdminController extends Controller{
   	echo json_encode($result);
   }
   
-  ///////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////
+  /////// SHOULD IDEALLY GO INTO A REGISTRATION CONTROLLER //////
+  ///////////////////////////////////////////////////////////////
   
     public function getRegister()
     {

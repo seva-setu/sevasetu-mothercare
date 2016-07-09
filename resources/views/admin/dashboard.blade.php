@@ -49,16 +49,24 @@
        			<a class="shortcut" href="<?php echo Config::get('constant.SITEURL'); ?>admin/assigncallchampion"> <i class="shortcut-icon icon-user"></i> <span class="shortcut-label"><?php echo trans('routes.assigncall'); ?></span> </a> 
                 <a class="shortcut" href="<?php echo Config::get('constant.SITEURL'); ?>admin/callchampions"> <i class="shortcut-icon icon-user"></i> <span class="shortcut-label"><?php echo trans('routes.callchampion'); ?></span> </a>
                 <?php }?>
+				
 		       	<?php if($userinfo['v_role']==3){?>
 		       	<!--  a class="shortcut" href="<?php echo Config::get('constant.SITEURL'); ?>admin/beneficiary/searchbenificiary"><i class="shortcut-icon icon-user"></i> <span class="shortcut-label"><?php echo trans('routes.searchbenificiary'); ?></span></a>-->
 		       <?php }?>
+			   
 		       <?php if($userinfo['v_role']==2){/*?>
 		       	<a class="shortcut" href="<?php echo Config::get('constant.SITEURL'); ?>admin/assignbeneficiary"><i class="shortcut-icon icon-user"></i> <span class="shortcut-label"><?php echo trans('routes.assignben'); ?></span></a>
 		       <?php */}?>
+			   
 		       <?php if($userinfo['v_role']==3 || $userinfo['v_role']==1 || $userinfo['v_role']==2){?>
 		       <a class="shortcut" href="<?php echo Config::get('constant.SITEURL'); ?>admin/userprofile"> <i class="shortcut-icon icon-user"></i> <span class="shortcut-label"><?php echo trans('routes.profile'); ?></span> </a> 
                <?php }?>	
-                <a class="shortcut" href="<?php echo Config::get('constant.SITEURL'); ?>admin/changepassword"> <i class="shortcut-icon icon-edit"></i> <span class="shortcut-label"><?php echo trans('routes.changepassword'); ?></span> </a>  
+			   
+                <a class="shortcut" href="<?php echo Config::get('constant.SITEURL'); ?>admin/changepassword"> <i class="shortcut-icon icon-edit"></i> <span class="shortcut-label"><?php echo trans('routes.changepassword'); ?></span> </a>
+				
+				<a class="shortcut" href="<?php echo Config::get('constant.SITEURL'); ?>admin/changepassword"> <i class="shortcut-icon icon-edit"></i> <span class="shortcut-label"><?php echo trans('routes.number_of').": ".$number_of; ?></span> </a>
+				
+				
                 <!--  a class="shortcut" href="<?php //echo Config::get('constant.SITEURLADM'); ?>logout"> <i class="shortcut-icon icon-share-alt"></i> <span class="shortcut-label"><?php echo trans('routes.logout'); ?></span> </a>-->  
               </div>
             </div>
