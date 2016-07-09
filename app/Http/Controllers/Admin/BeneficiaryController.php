@@ -48,26 +48,53 @@ class BeneficiaryController extends Controller{
 
 	// make the input to this function an excel
 	public function add_beneficiary_list(Request $request, $field_worker_id){
-		$data = import_excel(Excel input);
-		foreach($data as $beneficiary){
-			$result1 = add_new_beneficiary($beneficiary, $field_worker_id);
-			$result2 = add_due_list($beneficiary, $delivery_date);
+		$data = import_excel($input);
+		foreach($data as $beneficiary_data){
+			$beneficiary_id = add_new_beneficiary($beneficiary_data, $field_worker_id);
+			$result2 = add_due_list($beneficiary_data, $beneficiary_id, $delivery_date);
 			if(!$result1 or !$result2)
 				die("exception");
 		}
 		return true;
 	}
-	public function add_new_beneficiary($beneficiary, $field_worker_id){
-		//Model beneficiary:: add_beneficiary
+	public function add_new_beneficiary($beneficiary_data, $field_worker_id){
+		// Model beneficiary::add_beneficiary
+		$beneficiary_obj = new Beneficiary;
+		$beneficiary_id = $beneficiary_obj->insert($beneficiary_data);
+		if(!$beneficiary_id)
+			die("exception");
+		
+		return $beneficiary_id;
+	}
+	
+	public function tester_method(){
+		$bene_obj = Beneficiary::all();
+		foreach($bene_obj as $bene){
+			echo $bene->dt_due_date;
+			echo "<pre>";
+			print_r($this->calculate_due_list($bene->dt_due_date));
+			die("asd");
+		}
 		
 	}
 	
-	public function add_due_list($beneficiary, $delivery_date){
+	public function add_due_list($beneficiary_data, $beneficiary_id, $delivery_date){
+		$due_list = $this->calculate_due_list($delivery_date);
 		
 	}
 	
 	public function calculate_due_list($delivery_date){
+		// LMP: Last Menstrual Period
+		$LMP_DATE_CALC_WEEKS = 39;
+		$begin_date  = date("Y-m-d", strtotime('-'.$LMP_DATE_CALC_WEEKS.' weeks',strtotime($delivery_date)));
 		
+		$weeks_to_add = array(0, 12, 16, 26, 36, 40, 46, 50, 54, 64);
+		$due_list = array();
+		for($i=0;$i<count($weeks_to_add);$i++){
+			$due_list []= date("Y-m-d", strtotime('+'.$weeks_to_add[$i].' weeks',strtotime($begin_date)));
+		}
+		
+		return $due_list;
 	}
 	
 	public function importExcel(){

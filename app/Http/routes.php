@@ -9,6 +9,9 @@
 | and give it the controller to call when that URI is requested.
 |
 */	
+
+Route::get('/test','Admin\BeneficiaryController@tester_method');
+
 //Route::get('/','WelcomeController@index');
 Route::get('/','Admin\AdminController@index');
 //Route::get('/','Auth\AuthController@getLogin');
