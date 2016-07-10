@@ -53,9 +53,17 @@ class BeneficiaryController extends Controller{
 	public function add_beneficiary_list(Request $request, $field_worker_id){
 		$data = import_excel($input);
 		foreach($data as $beneficiary_data){
+			// add a beneficiary into the system
 			$beneficiary_id = add_new_beneficiary($beneficiary_data, $field_worker_id);
-			$result2 = add_due_list($beneficiary_data, $beneficiary_id, $delivery_date);
-			if(!$result1 or !$result2)
+			
+			// prepare the due list for registered beneficiary
+			$due_list_ids = add_due_list($beneficiary_data, $beneficiary_id, $delivery_date);
+			
+			// assign a call champion	
+			// This assigns a call champion to all the due-list IDs belonging to a beneficiary
+			// Another way is call champions are assigned to due-list IDs individually 
+			$result3 = allocate_call_champion($beneficiary_id, $due_list_ids);
+			if(!$result1 or !$result2 or !result3)
 				die("exception");
 		}
 		return true;
@@ -73,7 +81,7 @@ class BeneficiaryController extends Controller{
 	public function tester_method(){
 		$bene_obj = Beneficiary::all();
 		foreach($bene_obj as $bene){
-			$this->add_due_list($bene->b_id, $bene->dt_due_date);
+			$this->allocate_call_champion($bene->b_id, $bene->dt_due_date);
 		}
 		
 	}
@@ -96,6 +104,56 @@ class BeneficiaryController extends Controller{
 		}
 		
 		return $due_list;
+	}
+	
+	public function allocate_call_champion($beneficiary_id, $due_list_ids_arr = array(), $MAX_ALLOWED_PER_CC = 5){
+		$prev_champ_ids = $this->get_previous_call_champions_for_beneficiary($beneficiary_id);
+		if(!$prev_champ_ids){
+			$call_champ_id = $this->randomly_select_call_champ();
+			return $this->assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr);
+		}
+		else{
+			$existing_assign_counts = $this->check_existing_assignments($prev_champ_ids);
+			for($i=0; $i<count($prev_champ_ids); $i++){
+				$call_champ_id = $prev_champ_ids[$i]->cc_id;
+				if($existing_assign_counts[$call_champ_id] < $MAX_ALLOWED_PER_CC){
+					return $this->assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr);
+				}
+			}
+			// This means all past users are aboove their threshold
+			// In which case randomly assign one
+			$call_champ_id = $this->randomly_select_call_champ();
+			return $this->assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr);
+		}
+	}
+	
+	public function check_existing_assignments($prev_champ_ids){
+		$list = array();
+		for($i = 0; $i<count($prev_champ_ids); $i++)
+			$list []= $prev_champ_ids[$i]->cc_id;
+		
+
+		$due_list_obj = new DueList;
+		$existing_counts = $due_list_obj->get_existing_assignments($list);
+		
+		//prepare output as a key-value pair
+		return $existing_counts;
+	}
+	public function get_previous_call_champions_for_beneficiary($beneficiary_id){
+		$due_list_obj = new DueList;
+		$list = $due_list_obj->get_previous_call_champions($beneficiary_id);
+		return $list;
+	}
+	
+	public function assign_call_champion_beneficiary_id($beneficiary_id, $call_champ_id){
+		$due_list_obj = new DueList
+		$due_list_ids_arr = $due_list_obj->get_beneficiary_duelist_id($beneficiary_id, $call_champ_id);
+		return $due_list_obj->assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr);
+	}
+	
+	public function assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr){
+		$due_list_obj = new DueList
+		return $due_list_obj->assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr);
 	}
 	
 	public function importExcel(){
