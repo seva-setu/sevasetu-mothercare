@@ -34,12 +34,23 @@ class CallChampion extends Eloquent {
 		return $list_cc;	
 	}
 	
-	public function get_number_of_calls_done($user_id){
-	
+	public function get_dashboard_data($cc_id){
+		$number_of_calls = $this->get_number_of_calls_done($cc_id);
+		$assigned_beneficiaries = $this->get_assigned_beneficiaries($cc_id);
+		$next_scheduled_call = $this->get_next_scheduled_call($cc_id);
 	}
 	
-	public function get_assigned_beneficiaries($user_id){
+	public function get_number_of_calls_done($cc_id){
+		$select = DB::select("select count(*) where cc_id = ".$cc_id);
+		print_r($select);
+		die();
+	}
+	
+	public function get_assigned_beneficiaries($cc_id){
 		
 	}
 	 
+	public function get_next_scheduled_call($cc_id, $beneficiary_id){
+		
+	} 
 }

@@ -86,13 +86,23 @@ class DueList extends Eloquent {
 		
 		return $due_list_ids;
 	}
-	public function assign_call_champion_beneficiary_id($call_champ_id, $due_list_ids_arr){
+		
+	public function get_duelist($beneficiary_id){
 		echo "<pre>";
-		print_r($call_champ_id);
-		print_r($due_list_arr);
+		$select = DB::table($this->table)
+					->select('due_id')
+					->where('fk_b_id','=',$beneficiary_id)
+					->get();
+		$duelist_arr = array();
+		foreach($select as $due)
+			$duelist_arr []= $due->due_id;
+		return $duelist_arr;
+	}
+	
+	public function assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr){
 		$select_bid_ccid = DB::table($this->table)
-									->wherein('fk_cc_id',$due_list_ids_arr)
-									->update($call_champ_id);
+									->wherein('due_id',$due_list_ids_arr)
+									->update(['fk_cc_id'=>$call_champ_id]);
 	}
 }
 ?>

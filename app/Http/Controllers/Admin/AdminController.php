@@ -54,7 +54,6 @@ class AdminController extends Controller{
 		}
 	}
 	
-	
 	public function index(){
 		if(isset($this->userid)){
 			Redirect::to('/admin/dashboard')->send();
@@ -79,6 +78,7 @@ class AdminController extends Controller{
 			$callchamp = new CallChampion;
 			$dashboard_data = $callchamp->get_dashboard_data($this->userid);
 		}
+		
 		// If its a fieldworker
 		elseif($this->usertype == 3){
 			$fieldworker = new Fieldworkers;

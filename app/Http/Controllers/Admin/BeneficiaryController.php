@@ -81,12 +81,13 @@ class BeneficiaryController extends Controller{
 	public function tester_method(){
 		$bene_obj = Beneficiary::all();
 		foreach($bene_obj as $bene){
-			for($i=0;$i<10;$i++)
-				echo($this->randomly_select_call_champ()."<br/>");
-			die("Asd");
-			$this->allocate_call_champion($bene->b_id, $bene->dt_due_date);
+			for($i=0;$i<10;$i++){
+				$duelist_obj = new DueList();
+				$due_list = $duelist_obj->get_duelist($bene->b_id);
+				$this->allocate_call_champion($due_list, $bene->b_id);
+			}
 		}
-		
+		die("adone");
 	}
 	
 	public function add_due_list($beneficiary_id, $delivery_date){

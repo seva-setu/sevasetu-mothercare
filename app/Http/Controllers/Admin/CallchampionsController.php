@@ -35,6 +35,8 @@ class CallchampionsController extends Controller{
 		$this->helper = new Helpers();
 		$this->helper->clearBen_Data();
 	}
+	
+	
 //main methode of call champion
 public function index(){
 	$name = Session::get('user_logged');
