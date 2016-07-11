@@ -35,9 +35,9 @@ class CallChampion extends Eloquent {
 	}
 	
 	public function get_dashboard_data($cc_id){
-		$number_of_calls = $this->get_number_of_calls_done($cc_id);
+		//$number_of_calls 	= $this->get_number_of_calls_done($cc_id);
+		//$next_scheduled_call = $this->get_next_scheduled_call($cc_id);
 		$assigned_beneficiaries = $this->get_assigned_beneficiaries($cc_id);
-		$next_scheduled_call = $this->get_next_scheduled_call($cc_id);
 	}
 	
 	public function get_number_of_calls_done($cc_id){
@@ -53,11 +53,24 @@ class CallChampion extends Eloquent {
 		return count($select);
 	}
 	
+	public function get_next_scheduled_call($cc_id){
+		$join_table_name = 'mct_callchampion_report';
+		$base_table_name = 'mct_due_list';
+		$select = DB::table($base_table_name)
+					->join($join_table_name, $join_table_name.'.fk_due_id','=',$base_table_name.'.due_id')
+					->select(DB::raw('min(dt_intervention_date) as next_date'))
+					->where($join_table_name.'.has_called','=',0)
+					->where($base_table_name.'.fk_cc_id','=',$cc_id)
+					->get();
+					
+		if(isset($result[0]))
+			return $select[0]->next_date;
+		else
+			die("pop");
+	} 
+	
 	public function get_assigned_beneficiaries($cc_id){
 		
 	}
 	 
-	public function get_next_scheduled_call($cc_id, $beneficiary_id){
-		
-	} 
 }
