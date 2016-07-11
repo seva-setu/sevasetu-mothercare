@@ -34,20 +34,26 @@ use App\Http\Helpers;
 class AdminController extends Controller{
 	protected $model;
 	public $title="Admin Login";
-	public $userid;
-	public $usertype;
+	public $user_id;
+	public $role_id;
+	public $role_type;
 	protected $helper;
 	protected $role_permissions;
 	
 	public function __construct(){
 		$userinfo=Session::get('user_logged');
-		if(isset($userinfo['b_id'])){
-			$this->userid=$userinfo['b_id'];
+		if(isset($userinfo['user_id'])){
+			$this->user_id=$userinfo['user_id'];
 		}
+		
+		if(isset($userinfo['role_id'])){
+			$this->role_id=$userinfo['role_id'];
+		}
+				
 		if(isset($userinfo['v_role'])){
 			$this->helper = new Helpers();
 			
-			$this->usertype=$userinfo['v_role'];
+			$this->role_type=$userinfo['v_role'];
 			$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
 			
 			$this->helper->clearBen_Data();
@@ -55,7 +61,7 @@ class AdminController extends Controller{
 	}
 	
 	public function index(){
-		if(isset($this->userid)){
+		if(isset($this->user_id)){
 			Redirect::to('/admin/dashboard')->send();
 		}
 		$data['title']= "Login";
@@ -67,20 +73,20 @@ class AdminController extends Controller{
 	 */
 	public function dashboard(){// defualt method
 		//security concern. there should be a middleware checking for this
-		if(!isset($this->userid)){
+		if(!isset($this->user_id)){
 			Redirect::to('/admin/')->send();
 		}
 		$data['title']= "Dashboard" . SITENAME;
 		
 		// Generate dashboard landing data as per the role
 		// If its a call champion
-		if($this->usertype == 2){
+		if($this->role_type == 2){
 			$callchamp = new CallChampion;
-			$dashboard_data = $callchamp->get_dashboard_data($this->userid);
+			$dashboard_data = $callchamp->get_dashboard_data($this->role_id);
 		}
 		
 		// If its a fieldworker
-		elseif($this->usertype == 3){
+		elseif($this->role_type == 3){
 			$fieldworker = new Fieldworkers;
 			$dashboard_data = $fieldworker->get_dashboard_data($this->userid);
 		}
@@ -688,12 +694,13 @@ class AdminController extends Controller{
 		// Log the candidate in
 		//// create an entry in the session and redirect user to panel
 		$userdet=array(
-			'b_id' => $usr_record,
+			'role_id' => $cc_record,
 			'v_name' => $request->get('name'),
 			'v_user_name' => $request->get('name'),
 			'v_role' => $ROLE,
 			'user_id'=>$usr_record 
 		);
+		
 		$ret = $user->log_in_user($userdet);
 		if($ret)
 			return Redirect::to('/admin/dashboard/');
