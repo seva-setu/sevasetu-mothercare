@@ -2,7 +2,7 @@
 use App\Http\Controllers\Controller;
 use App\Models\Beneficiary;
 use App\Models\Fieldworkers;
-use App\Models\Callchampions;
+use App\Models\CallChampion;
 use App\Models\Users;
 use App\Models\DueList;
 use App\Models\Checklist;
@@ -81,7 +81,8 @@ class BeneficiaryController extends Controller{
 	public function tester_method(){
 		$bene_obj = Beneficiary::all();
 		foreach($bene_obj as $bene){
-			echo("$$$$".$this->add_due_list(13, $bene->dt_due_date));
+			for($i=0;$i<10;$i++)
+				echo($this->randomly_select_call_champ()."<br/>");
 			die("Asd");
 			$this->allocate_call_champion($bene->b_id, $bene->dt_due_date);
 		}
@@ -110,7 +111,7 @@ class BeneficiaryController extends Controller{
 	
 	public function allocate_call_champion($due_list_ids_arr = array(), $beneficiary_id = -1, $MAX_ALLOWED_PER_CC = 5){
 		if($beneficiary_id == -1)
-			$this->get_beneficiary_id($due_list_ids_arr);
+			$beneficiary_id = $this->get_beneficiary_id($due_list_ids_arr);
 		
 		// the input to the method below may have to be due_list_ids_arr
 		$prev_champ_ids = $this->get_previous_call_champions_for_beneficiary($beneficiary_id);
@@ -134,7 +135,10 @@ class BeneficiaryController extends Controller{
 	}
 	
 	public function randomly_select_call_champ(){
-		return 1;
+		$call_champ_obj = new CallChampion;
+		$list_champ = $call_champ_obj->get_active_call_champions();
+		$rand_ind = rand(0,count($list_champ)-1);
+		return $list_champ[$rand_ind];
 	}
 	
 	public function check_existing_assignments($prev_champ_ids){
