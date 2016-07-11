@@ -35,9 +35,15 @@ class CallChampion extends Eloquent {
 	}
 	
 	public function get_dashboard_data($cc_id){
-		//$number_of_calls 	= $this->get_number_of_calls_done($cc_id);
-		//$next_scheduled_call = $this->get_next_scheduled_call($cc_id);
+		$number_of_calls 	= $this->get_number_of_calls_done($cc_id);
+		$next_scheduled_call = $this->get_next_scheduled_call($cc_id);
 		$assigned_beneficiaries = $this->get_assigned_beneficiaries($cc_id);
+		
+		$dashboard_data['number_of_calls'] = $number_of_calls;
+		$dashboard_data['next_scheduled_call'] = $next_scheduled_call;
+		$dashboard_data['assigned_beneficiaries'] = $assigned_beneficiaries;
+		
+		print_r($dashboard_data);		
 	}
 	
 	public function get_number_of_calls_done($cc_id){
@@ -63,14 +69,28 @@ class CallChampion extends Eloquent {
 					->where($base_table_name.'.fk_cc_id','=',$cc_id)
 					->get();
 					
-		if(isset($result[0]))
+		if(isset($select[0]))
 			return $select[0]->next_date;
 		else
 			die("pop");
 	} 
 	
 	public function get_assigned_beneficiaries($cc_id){
+		$join_table_name = 'mct_beneficiary';
+		$base_table_name = 'mct_due_list';
 		
+		$select = DB::table($base_table_name)
+					->join($join_table_name,$join_table_name.'.b_id','=',$base_table_name.'.fk_b_id')
+					->select($join_table_name.'.v_name')
+					->distinct()
+					->where($base_table_name.'.fk_cc_id','=',$cc_id)
+					->get();
+					
+		$list_beneficiaries = [];
+		foreach($select as $vname)
+			$list_beneficiaries []= $vname->v_name;
+			
+		return $list_beneficiaries;
 	}
 	 
 }
