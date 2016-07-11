@@ -54,15 +54,15 @@ class BeneficiaryController extends Controller{
 		$data = import_excel($input);
 		foreach($data as $beneficiary_data){
 			// add a beneficiary into the system
-			$beneficiary_id = add_new_beneficiary($beneficiary_data, $field_worker_id);
+			$beneficiary_id = $this->add_new_beneficiary($beneficiary_data, $field_worker_id);
 			
 			// prepare the due list for registered beneficiary
-			$due_list_ids = add_due_list($beneficiary_data, $beneficiary_id, $delivery_date);
+			$due_list_ids = $this->add_due_list($beneficiary_id, $delivery_date);
 			
 			// assign a call champion	
 			// This assigns a call champion to all the due-list IDs belonging to a beneficiary
 			// Another way is call champions are assigned to due-list IDs individually 
-			$result3 = allocate_call_champion($beneficiary_id, $due_list_ids);
+			$result3 = $this->allocate_call_champion($due_list_ids, $beneficiary_id);
 			if(!$result1 or !$result2 or !result3)
 				die("exception");
 		}
@@ -81,6 +81,8 @@ class BeneficiaryController extends Controller{
 	public function tester_method(){
 		$bene_obj = Beneficiary::all();
 		foreach($bene_obj as $bene){
+			echo("$$$$".$this->add_due_list(13, $bene->dt_due_date));
+			die("Asd");
 			$this->allocate_call_champion($bene->b_id, $bene->dt_due_date);
 		}
 		
@@ -89,7 +91,7 @@ class BeneficiaryController extends Controller{
 	public function add_due_list($beneficiary_id, $delivery_date){
 		$due_list = $this->calculate_due_list($delivery_date);
 		$duelist_obj = new DueList;
-		$duelist_obj->update_due_list($beneficiary_id, $due_list);
+		return $duelist_obj->update_due_list($beneficiary_id, $due_list);
 	}
 	
 	public function calculate_due_list($delivery_date){
@@ -106,7 +108,11 @@ class BeneficiaryController extends Controller{
 		return $due_list;
 	}
 	
-	public function allocate_call_champion($beneficiary_id, $due_list_ids_arr = array(), $MAX_ALLOWED_PER_CC = 5){
+	public function allocate_call_champion($due_list_ids_arr = array(), $beneficiary_id = -1, $MAX_ALLOWED_PER_CC = 5){
+		if($beneficiary_id == -1)
+			$this->get_beneficiary_id($due_list_ids_arr);
+		
+		// the input to the method below may have to be due_list_ids_arr
 		$prev_champ_ids = $this->get_previous_call_champions_for_beneficiary($beneficiary_id);
 		if(!$prev_champ_ids){
 			$call_champ_id = $this->randomly_select_call_champ();
@@ -127,6 +133,10 @@ class BeneficiaryController extends Controller{
 		}
 	}
 	
+	public function randomly_select_call_champ(){
+		return 1;
+	}
+	
 	public function check_existing_assignments($prev_champ_ids){
 		$list = array();
 		for($i = 0; $i<count($prev_champ_ids); $i++)
@@ -139,20 +149,22 @@ class BeneficiaryController extends Controller{
 		//prepare output as a key-value pair
 		return $existing_counts;
 	}
+	
 	public function get_previous_call_champions_for_beneficiary($beneficiary_id){
+		// the input to the method below may have to be due_list_ids_arr
 		$due_list_obj = new DueList;
 		$list = $due_list_obj->get_previous_call_champions($beneficiary_id);
 		return $list;
 	}
 	
 	public function assign_call_champion_beneficiary_id($beneficiary_id, $call_champ_id){
-		$due_list_obj = new DueList
-		$due_list_ids_arr = $due_list_obj->get_beneficiary_duelist_id($beneficiary_id, $call_champ_id);
+		$due_list_obj = new DueList;
+		$due_list_ids_arr = $due_list_obj->get_beneficiary_duelist_id($beneficiary_id);
 		return $due_list_obj->assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr);
 	}
 	
 	public function assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr){
-		$due_list_obj = new DueList
+		$due_list_obj = new DueList;
 		return $due_list_obj->assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr);
 	}
 	

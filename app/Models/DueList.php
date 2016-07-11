@@ -27,6 +27,13 @@ class DueList extends Eloquent {
 			$due_list_arr []= $due_list_i;
 		}
 		$this->insert($due_list_arr);
+		$val = DB::select("select last_insert_id() as last_insert_id");
+		$last_insert_id = $val[0]->last_insert_id;
+		
+		for($i=0; $i<count($due_list); $i++)
+			$due_list_ids []= $last_insert_id+$i;
+		
+		return $due_list_ids;
 	}
 	
 	public function get_previous_call_champions($beneficiary_id){
