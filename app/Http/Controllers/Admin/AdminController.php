@@ -88,7 +88,7 @@ class AdminController extends Controller{
 		// If its a fieldworker
 		elseif($this->role_type == 3){
 			$fieldworker = new Fieldworkers;
-			$dashboard_data = $fieldworker->get_dashboard_data($this->userid);
+			$dashboard_data = $fieldworker->get_dashboard_data($this->role_id);
 		}
 		
 		return view('admin/dashboard',$dashboard_data);

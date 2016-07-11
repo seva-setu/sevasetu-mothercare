@@ -41,23 +41,16 @@ class CallChampion extends Eloquent {
 	}
 	
 	public function get_number_of_calls_done($cc_id){
-		echo($cc_id);
-		die();
 		$join_table_name = 'mct_callchampion_report';
-		$select = DB::table('mct_due_list')
-					->join($join_table_name,$join_table_name.'.due_id','=',$this->table.'.fk_due_id')
-					->select($join_table_name.'.due_id')
-					->where($this->table.'.fk_cc_id','=',$cc_id)
+		$base_table_name = 'mct_due_list';
+		$select = DB::table($base_table_name)
+					->join($join_table_name,$join_table_name.'.fk_due_id','=',$base_table_name.'.due_id')
+					->select($join_table_name.'.fk_due_id')
+					->where($base_table_name.'.fk_cc_id','=',$cc_id)
+					->where($join_table_name.'.has_called','>',0)
 					->get();
 		
-		print_r($select);
-		die();
-		
-		$data['result']=DB::table('mct_beneficiary')
-		->leftJoin('mct_address', 'mct_beneficiary.i_address_id', '=', 'mct_address.bi_id')
-		->select('mct_beneficiary.*','mct_address.v_village', 'mct_address.v_village_pincode', 'mct_address.v_taluka', 'mct_address.v_pincode', 'mct_address.v_taluka', 'mct_address.v_district', 'mct_address.v_state', 'mct_address.v_country')
-		->where('mct_beneficiary.bi_id',$id)
-		->get();
+		return count($select);
 	}
 	
 	public function get_assigned_beneficiaries($cc_id){
