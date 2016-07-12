@@ -95,42 +95,45 @@ $languagedata= DB::table('mct_language')->where('e_status', 'Active')->orderBy('
                   <th>{{ trans('routes.uniqueid') }}</th>
                   <th>{{ trans('routes.name') }}</th>
                   <th>{{ trans('routes.location') }}</th>
-				  <th>{{ trans('routes.phonenumber') }}</th>
 				  <th>{{ trans('routes.interventionpoint') }}</th>
-				  @if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1) 
-				    <th>{{ trans('routes.callchampion') }}</th> 
-				  @endif
+				  <th>hey there</th> 
+				  
 			    </tr>
               </thead>
-              <input type="hidden" name="hdnRepId" id="hdnRepId"  value="">
-              <input type="hidden" name="hdnRepStart" id="hdnRepStart"  value="<?php echo $startdate;?>">
-              <input type="hidden" name="hdnRepEnd" id="hdnRepEnd"  value="<?php echo $enddate;?>">
-              <?php if(!empty($assigned_beneficiaries) && count($assigned_beneficiaries) > 0) { ?>
+              <?php if(!empty($due_list) && count($due_list) > 0) { ?>
               <tbody>
-              	<?php foreach ($assigned_beneficiaries as $value){ ?>
+              	<?php foreach ($due_list as $value){ ?>
 					<tr>
-			        <td><input type="checkbox" name="chkCheckedBox[]" id="chkCheckedBox"  class="CheckedBox" value="<?php echo $value->fieldworker_id; ?>" /></td>
+			        <td><input type="checkbox" name="chkCheckedBox[]" id="chkCheckedBox"  class="CheckedBox" value="<?php echo $value->due_id; ?>" /></td>
 					
-                    <td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/admin/beneficiary/view/'.Hashids::encode($value->fieldworker_id); ?>" ><?php echo "M".$value->fieldworker_id;?></a></td>
+                    <td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->due_id;?></a></td>
 					
-                    <td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/admin/beneficiary/view/'.Hashids::encode($value->fieldworker_id); ?>" ><?php echo $value->name;?></a></td>
+                    <td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->name;?></a></td>
 					
-					<td @if(isset($value->village_name) && $value->village_name!="") data-title="{{ trans('routes.location') }}" @endif>
-					<?php echo $value->village_name;?>
+					<td data-title="{{ trans('routes.location') }}"><?php echo $value->village_name;?>
 					</td>
-     				
-					<td data-title="{{ trans('routes.phonenumber') }}">{{ $value->phone_number or '' }}</td>
 					
-					<td @if(isset($value->v_alternate_phone_no)) data-title="{{ trans('routes.alternateno') }}" @endif>{{ $value->v_alternate_phone_no or '' }}</td>
-					
-					<td data-title="{{ trans('routes.interventionpoint') }}">{{ $value->due_date or '' }}</td>
+					<td data-title="{{ trans('routes.interventionpoint') }}">
+						<?php
+							echo(date("d M y", strtotime($value->action_date)));
+						?>
+					</td>
+					<td>
+						<?php
+							//Write the difference of the dates here.
+						?>
+					</td>
 				 
 					<?php //@if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td></td> @endif
 					?>
 					
-					</tr>                	
-				<?php } ?>	
-              </tbody>
+					</tr>  
+					
+				<?php } ?>
+					<tr>
+						<td colspan="10"><center>{!! $due_list->render() !!}</center></td>
+					</tr>
+				</tbody>
 			  
 			  
               <?php } else { ?>

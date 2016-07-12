@@ -58,7 +58,7 @@ class WeeklyCalllistController extends Controller{
 	
 	public function list_all_calls(){
 		$due_list_obj = new DueList;
-		$data = $due_list_obj->get_due_list_callchamp($this->role_id);
+		$data['due_list'] = $due_list_obj->get_due_list_callchamp($this->role_id);
 		return view('weeklyreport.manage',$data);
 	}
 	

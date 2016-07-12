@@ -116,22 +116,22 @@ class DueList extends Eloquent {
 					->join($join_table_name3, $join_table_name3.'.b_id','=', $this->table.'.fk_b_id')
 					->select(
 								$this->table.'.due_id',
-								$this->table.'.fk_b_id',
-								$this->table.'.dt_intervention_date',
+								$this->table.'.fk_b_id as b_id',
+								$this->table.'.dt_intervention_date as action_date',
 								$join_table_name1.'.has_called',
-								$join_table_name1.'.e_call_status',
-								$join_table_name2.'.i_action_id',
-								$join_table_name2.'.i_reference_week',
-								$join_table_name3.'.v_name',
-								$join_table_name3.'.v_village_name'
+								$join_table_name1.'.e_call_status as status',
+								$join_table_name2.'.i_action_id as action_id',
+								$join_table_name2.'.i_reference_week as ref_week',
+								$join_table_name3.'.v_name as name',
+								$join_table_name3.'.v_village_name as village_name'
 							)
 					->distinct()
 					->orderBy($join_table_name1.'.has_called','asc')
 					->orderBy($this->table.'.dt_intervention_date','asc')
 					->where($this->table.'.fk_cc_id','=',$cc_id)
-					->get();
+					->simplepaginate(5);
 		
-		return $sample;
+		return $select;
 	}
 }
 ?>
