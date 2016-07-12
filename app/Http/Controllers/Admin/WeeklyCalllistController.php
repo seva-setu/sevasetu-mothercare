@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Helpers;
 use Request;
 use App\Models\Checklist;
+use App\Models\DueList;
 use Input;
 use Validator;
 use App\Models\App\Models;
@@ -19,22 +20,24 @@ use Excel;
 use Cache;
 
 class WeeklyCalllistController extends Controller{
-	public $userid;
-	public $usertype;
+	public $user_id;
+	public $user_type;
+	public $role_id;
 	public $beneficiary_details;
 	protected $helper;
 	protected $role_permissions;
 	
 	public function __construct(){
-		$userinfo				= Session::get('user_logged');
+		$userinfo = Session::get('user_logged');
 		$this->beneficiary_details 	= Session::get('user');
 		
 		//check for valid use
 		if(!isset($userinfo['role_id']) or !isset($this->beneficiary_details)){
 			Redirect::to('/admin/')->send();
 		}
-		$this->usertype=$userinfo['v_role'];
-		$this->userid=$userinfo['user_id'];
+		$this->user_type = $userinfo['v_role'];
+		$this->user_id = $userinfo['user_id'];
+		$this->role_id = $userinfo['role_id'];
 		
 		$this->helper = new Helpers();
 		$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
@@ -54,7 +57,9 @@ class WeeklyCalllistController extends Controller{
 	}
 	
 	public function list_all_calls(){
-		return view('weeklyreport.manage',$this->beneficiary_details);
+		$due_list_obj = new DueList;
+		$data = $due_list_obj->get_due_list_callchamp($this->role_id);
+		return view('weeklyreport.manage',$data);
 	}
 	
 	

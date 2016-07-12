@@ -88,7 +88,6 @@ class DueList extends Eloquent {
 	}
 		
 	public function get_duelist($beneficiary_id){
-		echo "<pre>";
 		$select = DB::table($this->table)
 					->select('due_id')
 					->where('fk_b_id','=',$beneficiary_id)
@@ -103,6 +102,36 @@ class DueList extends Eloquent {
 		$select_bid_ccid = DB::table($this->table)
 									->wherein('due_id',$due_list_ids_arr)
 									->update(['fk_cc_id'=>$call_champ_id]);
+	}
+	
+	public function get_due_list_callchamp($cc_id){
+		//first get out the due list details
+		$join_table_name1 = 'mct_callchampion_report';
+		$join_table_name2 = 'mct_checklist_master';
+		$join_table_name3 = 'mct_beneficiary';
+		
+		$select = DB::table($this->table)
+					->join($join_table_name1, $join_table_name1.'.fk_due_id','=',$this->table.'.due_id')
+					->join($join_table_name2, $join_table_name2.'.i_action_id', '=', $this->table.'.fk_action_id')
+					->join($join_table_name3, $join_table_name3.'.b_id','=', $this->table.'.fk_b_id')
+					->select(
+								$this->table.'.due_id',
+								$this->table.'.fk_b_id',
+								$this->table.'.dt_intervention_date',
+								$join_table_name1.'.has_called',
+								$join_table_name1.'.e_call_status',
+								$join_table_name2.'.i_action_id',
+								$join_table_name2.'.i_reference_week',
+								$join_table_name3.'.v_name',
+								$join_table_name3.'.v_village_name'
+							)
+					->distinct()
+					->orderBy($join_table_name1.'.has_called','asc')
+					->orderBy($this->table.'.dt_intervention_date','asc')
+					->where($this->table.'.fk_cc_id','=',$cc_id)
+					->get();
+		
+		return $sample;
 	}
 }
 ?>
