@@ -15,7 +15,7 @@ class Beneficiary extends Eloquent {
 	/*
 	 * Insert Beneficiary Report in Database.
 	 */
-	 
+	
 	public function insert($beneficiary_data, $field_worker_id){
 		$this->v_name 			= $beneficiary_data[''];
 		$this->fk_f_id 			= $field_worker_id;
@@ -32,7 +32,9 @@ class Beneficiary extends Eloquent {
 		else
 			return false;
 	} 
-	 
+	
+	
+	
 	public function insertReport($benId,$emergencynote){
 		$res = DB::select("select  bi_field_worker_id,bi_calls_champion_id from mct_beneficiary where bi_id=$benId");
 		

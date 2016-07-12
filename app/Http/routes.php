@@ -63,23 +63,27 @@ Route::get('/admin/changeuserpassword/{id}', 'Admin\AdminController@changeuserpa
 Route::post('/admin/dochangeuserpassword', 'Admin\AdminController@dochangeuserpassword');
 Route::get('/admin/searchdataaddress/{name}/{name1}/{name2}', 'Admin\AdminController@searchdataaddress');
 Route::post('/admin/editaddress', 'Admin\AdminController@editaddress');
-
-
-
-
+//////////////////////////////
+Route::get('/admin/mothers', 'Admin\BeneficiaryController@list_all_beneficiaries');
+Route::get('/admin/calls', 'Admin\WeeklyCalllistController@my_list');
+Route::get('/admin/callchampions/edit','Admin\CallchampionsController@edit');
+//////////////////////////////
 //for call chamption 
 Route::get('/admin/callchampions', 'Admin\CallchampionsController@index');
 Route::get('/admin/callchampions/edit/{id}','Admin\CallchampionsController@edit');
-Route::get('/admin/callchampions/edit','Admin\CallchampionsController@edit');
 Route::get('/admin/callchampions/delete/{id}/{userid}/{flag}','Admin\CallchampionsController@delete');
 Route::post('/admin/callchampions/update','Admin\CallchampionsController@update');
 Route::post('/admin/callchampions/add', 'Admin\CallchampionsController@add');
 Route::post('/admin/callchampions/deleteSelected', 'Admin\CallchampionsController@deleteSelected');
+
 Route::get('/admin/dashboard', 'Admin\AdminController@dashboard');
+
 Route::get('/admin/callchampions/view/{id}', 'Admin\CallchampionsController@view');
 Route::get('/admin/callchampions/autocompletecallchampion', 'Admin\CallchampionsController@autocompletecallchampion');
 Route::get('/admin/callchampions/searchdatacallchampion/{id}/{search}', 'Admin\CallchampionsController@searchdatacallchampion');
 Route::get('/admin/callchampions/searchdatacallchampion', 'Admin\CallchampionsController@searchdatacallchampion');
+
+
 //for Fields Worker
 Route::get('/admin/fieldworkers', 'Admin\FieldworkerController@index');
 Route::get('/admin/fieldworkers/edit/{id}','Admin\FieldworkerController@edit');

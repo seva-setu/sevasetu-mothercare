@@ -30,18 +30,22 @@ use App\Models\App\Models;
 class BeneficiaryController extends Controller{
 	protected $model;
 	public $title="Admin Login";
-	public $userid;
-	public $usertype;
+	
+	public $user_id;
+	public $role_id;
+	public $role_type;
+	
 	protected $helper;
 	protected $role_permissions;
 	public function __construct(){
 		$userinfo=Session::get('user_logged');
 		//check for valid use
-		if(!isset($userinfo['b_id'])){
+		if(!isset($userinfo['role_id'])){
 			Redirect::to('/admin/')->send();
 		}
-		$this->usertype=$userinfo['v_role'];
-		$this->userid=$userinfo['b_id'];
+		$this->role_type=$userinfo['v_role'];
+		$this->user_id=$userinfo['user_id'];
+		$this->role_id = $userinfo['role_id'];
 		
 		$this->helper = new Helpers();
 		$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
@@ -87,6 +91,7 @@ class BeneficiaryController extends Controller{
 				$this->allocate_call_champion($due_list, $bene->b_id);
 			}
 		}
+		
 		die("adone");
 	}
 	

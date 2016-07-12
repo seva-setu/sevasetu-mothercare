@@ -4,7 +4,7 @@
 	if($active=='adminusrs'){ $users="class='active'"; } else { $users=""; }
 	if($active=='callchampions'){ $deals="class='active'"; } else { $deals=""; }
 	if($active=='fieldworkers'){ $fieldworker="class='active'"; } else { $fieldworker=""; }
-	if($active=='beneficiary'){ $beneficiary="class='active'"; } else { $beneficiary=""; }
+	if($active=='beneficiary'){ $mothers="class='active'"; } else { $mothers=""; }
 	if($active=='userprofile'){ $profile="class='active'"; } else { $profile=""; }
 	if($active=='changepassword'){ $changepassword="class='active'"; } else { $changepassword=""; }
 	if($active=='manageInterventionPoint'){ $intervetion="class='active'"; } else { $intervetion=""; }
@@ -28,12 +28,12 @@
        <li <?php echo $fieldworker; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/fieldworkers"><i class="icon icon-user"></i> <span><?php  echo trans('routes.fieldworker'); ?></span></a></li>
        <?php }?>
         <?php if($userinfo['v_role']==3 || $userinfo['v_role']==1 || $userinfo['v_role']==2){ ?>
-       	<li <?php echo $beneficiary; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/beneficiary"><i class="icon-menu fa fa-female"></i> <span><?php  echo trans('routes.beneficiary'); ?></span></a></li>
+       	<li <?php echo $mothers; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/mothers"><i class="icon-menu fa fa-female"></i> <span><?php  echo trans('routes.mothers'); ?></span></a></li>
        	<?php }else{?>
        		<li <?php echo $users; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/adminusrs"><i class="icon icon-user"></i> <span><?php  echo trans('routes.adminuser'); ?></span></a></li>
        		<li <?php echo $deals; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/callchampions"><i class="icon icon-user"></i> <span><?php  echo trans('routes.callchampion'); ?></span></a></li>
        		<li <?php echo $fieldworker; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/fieldworkers"><i class="icon icon-user"></i> <span><?php  echo trans('routes.fieldworker'); ?></span></a></li>
-       		<li <?php echo $beneficiary; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/beneficiary"><i class="icon-menu fa fa-female"></i> <span><?php  echo trans('routes.beneficiary'); ?></span></a></li>
+       		<li <?php echo $mothers; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/mothers"><i class="icon-menu fa fa-female"></i> <span><?php  echo trans('routes.mothers'); ?></span></a></li>
        		<li <?php echo $intervetion; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/manageInterventionPoint"><i class="icon-menu fa fa-calendar"></i> <span><?php  echo trans('routes.interventionpoint'); ?></span></a></li>
        		<li <?php echo $addlocation; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/addlocation"><i class="icon-map-marker"></i> <span><?php  echo trans('routes.location'); ?></span></a></li>
        <?php }?>
@@ -53,16 +53,12 @@
        <?php */}?>
        
         <?php if($userinfo['v_role']!=3 ){?>
-       	<li <?php echo $weeklycalllistt; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/weeklycalllist"><i class="icon-menu fa fa-phone"></i> <span><?php echo trans('routes.weeklycalllist'); ?></span></a></li>
+       	<li <?php echo $weeklycalllistt; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/mycalls"><i class="icon-menu fa fa-phone"></i> <span><?php echo trans('routes.mycalls'); ?></span></a></li>
        <?php }?>
        
        <?php if($userinfo['v_role']==3 || $userinfo['v_role']==1 || $userinfo['v_role']==2){?>
        <li <?php echo $profile; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/userprofile"><i class="icon icon-user"></i> <span><?php echo trans('routes.profile'); ?></span></a></li>
        <?php }?>
        
-        <!--li <?php //echo $cmsPage; ?>><a href="<?php echo Config::get('constant.SITEURLADM'); ?>cmsPage"><i class="shortcut-icon icon-file"></i> <span>Page</span></a></li>
-      <?php /*?><li ><a href="<?php echo SITEURLADM; ?>backup"><i class="icon icon-download-alt"></i><span>Backup</span></a></li><?php */?>
-      --><li <?php echo $changepassword; ?>><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/changepassword"><i class="icon icon-edit"></i><span><?php  echo trans('routes.changepassword'); ?></span></a></li>
-      <!--li><a href="<?php echo Config::get('constant.SITEURL'); ?>admin/logout"><i class="icon icon-share-alt"></i> <span>Log Out</span></a></li> -->
   </ul>
 </div>
