@@ -21,17 +21,20 @@ use Cache;
 class WeeklyCalllistController extends Controller{
 	public $userid;
 	public $usertype;
+	public $beneficiary_details;
 	protected $helper;
 	protected $role_permissions;
 	
 	public function __construct(){
-		$userinfo=Session::get('user_logged');
+		$userinfo				= Session::get('user_logged');
+		$this->beneficiary_details 	= Session::get('user');
+		
 		//check for valid use
-		if(!isset($userinfo['b_id'])){
+		if(!isset($userinfo['role_id']) or !isset($this->beneficiary_details)){
 			Redirect::to('/admin/')->send();
 		}
 		$this->usertype=$userinfo['v_role'];
-		$this->userid=$userinfo['b_id'];
+		$this->userid=$userinfo['user_id'];
 		
 		$this->helper = new Helpers();
 		$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
@@ -40,18 +43,20 @@ class WeeklyCalllistController extends Controller{
 	/*
 	 * Weekly Call List
 	 */
+	 
+	 
 	public function index(){
 		if($this->role_permissions['canweeklyreport']){
-			
-			
-			$data['morebutton'] = "none";
-			$startdate = date('d-m-Y',strtotime('last sunday', time()));
-			
-			return $this->searchbenificiarydata($startdate);
+			return $this->list_all_calls();
 		}else{
 			return Redirect::to('/admin/');
 		}
 	}
+	
+	public function list_all_calls(){
+		return view('weeklyreport.manage',$this->beneficiary_details);
+	}
+	
 	
 	public function searchbenificiarydata($startdate){
 		$data['title'] = "Weekly Call List" . SITENAME;

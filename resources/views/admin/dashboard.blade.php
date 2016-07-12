@@ -37,8 +37,9 @@
 					admin/mothers"> <i class="shortcut-icon icon-user"></i> <span class="shortcut-label">
 					<?php 
 						echo trans('routes.assigned_beneficiary').":<br/>";
-						foreach($assigned_beneficiaries as $mother)
-							echo("<b>".$mother[0]."</b> from <b>".$mother[1]."</b><br/>");
+						foreach($assigned_beneficiaries as $mother){
+							echo("<b>".$mother->name."</b> from <b>".$mother->village_name."</b><br/>");
+						}
 					 
 					?></span> </a> 
 				   

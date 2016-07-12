@@ -21,6 +21,7 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Http\Response;
 
 
+
 use Mail;
 use Hash;
 use Auth;
@@ -90,7 +91,9 @@ class AdminController extends Controller{
 			$fieldworker = new Fieldworkers;
 			$dashboard_data = $fieldworker->get_dashboard_data($this->role_id);
 		}
-		
+		//ideally should be hashed
+		$encoded_data 	= $dashboard_data;
+		Session::put('user', $encoded_data);
 		return view('admin/dashboard',$dashboard_data);
 	}
 	

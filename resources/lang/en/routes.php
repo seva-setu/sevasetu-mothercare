@@ -225,4 +225,5 @@ return array(
 		'number_calls' =>'Number of calls you have made',
 		'assigned_beneficiary' =>'You are connected to the following mothers',
 		'next_scheduled' =>'Next scheduled call',
+		'weeklycalllist' => 'My calls'
 );

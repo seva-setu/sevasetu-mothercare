@@ -178,6 +178,10 @@ class BeneficiaryController extends Controller{
 		return $due_list_obj->assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr);
 	}
 	
+	public function list_all_beneficiaries(){
+		
+	}
+	
 	public function importExcel(){
     	$beneficiary= new Beneficiary;
     	$mess=array();

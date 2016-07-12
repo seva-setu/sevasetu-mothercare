@@ -65,7 +65,7 @@ Route::get('/admin/searchdataaddress/{name}/{name1}/{name2}', 'Admin\AdminContro
 Route::post('/admin/editaddress', 'Admin\AdminController@editaddress');
 //////////////////////////////
 Route::get('/admin/mothers', 'Admin\BeneficiaryController@list_all_beneficiaries');
-Route::get('/admin/calls', 'Admin\WeeklyCalllistController@my_list');
+Route::get('/admin/mycalls', 'Admin\WeeklyCalllistController@list_all_calls');
 Route::get('/admin/callchampions/edit','Admin\CallchampionsController@edit');
 //////////////////////////////
 //for call chamption 

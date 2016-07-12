@@ -28,25 +28,14 @@ $languagedata= DB::table('mct_language')->where('e_status', 'Active')->orderBy('
 @include('template/script_multilanguage')
 <div id="content">
 	<div id="content-header">
-    	<h1><?php echo trans('routes.weeklycalllist'); ?></h1>
+    	<h1><?php echo trans('routes.mycalls'); ?></h1>
 	</div>
 	<div id="breadcrumb">
-    	<a href="<?php echo Config::get('app.url'); ?>admin/dashboard" title="Go to Home" class="tip-bottom"><i class="icon-home"></i><?php  echo trans('routes.home'); ?></a><a class="current"><?php echo trans('routes.weeklycalllist'); ?></a> 
+    	<a href="<?php echo Config::get('app.url'); ?>admin/dashboard" title="Go to Home" class="tip-bottom"><i class="icon-home"></i><?php  echo trans('routes.home'); ?></a><a class="current"><?php echo trans('routes.mycalls'); ?></a> 
    	</div>
 	<div class="container-fluid"> 
     <br>
     	<div class="span12" style="margin-left:0;">
-    	<!-- div class="span4" style="float:left;">
-    	<div style="width: 20%"><?php  echo trans('routes.search'); ?></div>
-		<div style="width: 80%;position: relative;" id="keywordtextbox">
-			<input placeholder="<?php  echo trans('routes.searchlabel'); ?>" type="text" name="searchadministrator" id="searchadministrator" style="width:99%;" class="input-new search-input" title="<?php  echo trans('routes.searchlabel'); ?>" value="<?php //echo $tag; ?>" onkeyup="clearText(this.id)" >
-			<?php //if($tag!=""){?>
-			<a class="search-reset searchadministrator" id="search-reset" style="<?php //echo $display; ?>" href="<?php //echo Config::get('app.url').'admin/assignbeneficiary'?>"></a>
-			<?php //}else{?>
-			<div class="search-reset searchadministrator" id="search-reset" onClick="hidesearch(this.id);"></div>
-			<?php //}?>
-	    </div 
-    	</div>-->
     	<div class="span5 custom-label"  style="margin:0px">
     	<label><?php echo trans('routes.weekof')?></label>
 
@@ -62,11 +51,6 @@ $languagedata= DB::table('mct_language')->where('e_status', 'Active')->orderBy('
 			<a href="javascript:showDatePicker();" style="position: relative;" class="add-on"><i class="icon-calendar" style="right: 5px;top: -3px;"></i></a>
         </div>
     	</div>
-    	<!--  div class="span1" style="float:left;">
-    	<div style="width: 100%;position: relative;" id="keywordtextbox">
-			<button type="button" name="searchTaluka" id="searchTaluka" style="width:99%;" class="btn btn-primary" onclick="showbeficiarybydate();" ><?php echo trans('routes.searchbtn'); ?></button>
-	    </div>
-	    </div>-->
 	    </form>
 	    
 	    
@@ -112,7 +96,6 @@ $languagedata= DB::table('mct_language')->where('e_status', 'Active')->orderBy('
                   <th>{{ trans('routes.name') }}</th>
                   <th>{{ trans('routes.location') }}</th>
 				  <th>{{ trans('routes.phonenumber') }}</th>
-				  <th>{{ trans('routes.alternateno') }}</th>
 				  <th>{{ trans('routes.interventionpoint') }}</th>
 				  @if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1) 
 				    <th>{{ trans('routes.callchampion') }}</th> 
@@ -122,21 +105,34 @@ $languagedata= DB::table('mct_language')->where('e_status', 'Active')->orderBy('
               <input type="hidden" name="hdnRepId" id="hdnRepId"  value="">
               <input type="hidden" name="hdnRepStart" id="hdnRepStart"  value="<?php echo $startdate;?>">
               <input type="hidden" name="hdnRepEnd" id="hdnRepEnd"  value="<?php echo $enddate;?>">
-              <?php if(!empty($result) && count($result) > 0) { ?>
+              <?php if(!empty($assigned_beneficiaries) && count($assigned_beneficiaries) > 0) { ?>
               <tbody>
-              	<?php foreach ($result as $value){ ?>
-			       <tr>
-			        <td><input type="checkbox" name="chkCheckedBox[]" id="chkCheckedBox"  class="CheckedBox" value="<?php echo $value['bi_id']; ?>" /></td>
-                    <td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/admin/beneficiary/view/'.Hashids::encode($value['bi_id']); ?>" ><?php echo $value['v_unique_code'];?></a></td>
-                    <td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/admin/beneficiary/view/'.Hashids::encode($value['bi_id']); ?>" ><?php echo $value['v_name'];?></a></td>
-					<td @if(isset($value['v_village']) && $value['v_village']!="") data-title="{{ trans('routes.location') }}" @endif>@if(isset($value['v_village']) && $value['v_village']!=""){{{  $value['v_village'] or '' }}}, {{{ $value['v_taluka'] or '' }}}, {{{  $value['v_district'] or '' }}} @endif</td>
-     				<td data-title="{{ trans('routes.phonenumber') }}">{{ $value['v_phone_number'] or '' }}</td>
-					<td @if($value['v_alternate_phone_no']!="") data-title="{{ trans('routes.alternateno') }}" @endif>{{ $value['v_alternate_phone_no'] or '' }}</td>
-					<td data-title="{{ trans('routes.interventionpoint') }}">{{ $value['intervention_date'] or '' }}</td>
-				 @if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td @if($value['champ_name']!="") data-title="{{ trans('routes.callchampion') }}" @endif>{{{ $value['champ_name'] or '' }}}</td> @endif
+              	<?php foreach ($assigned_beneficiaries as $value){ ?>
+					<tr>
+			        <td><input type="checkbox" name="chkCheckedBox[]" id="chkCheckedBox"  class="CheckedBox" value="<?php echo $value->fieldworker_id; ?>" /></td>
+					
+                    <td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/admin/beneficiary/view/'.Hashids::encode($value->fieldworker_id); ?>" ><?php echo "M".$value->fieldworker_id;?></a></td>
+					
+                    <td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/admin/beneficiary/view/'.Hashids::encode($value->fieldworker_id); ?>" ><?php echo $value->name;?></a></td>
+					
+					<td @if(isset($value->village_name) && $value->village_name!="") data-title="{{ trans('routes.location') }}" @endif>
+					<?php echo $value->village_name;?>
+					</td>
+     				
+					<td data-title="{{ trans('routes.phonenumber') }}">{{ $value->phone_number or '' }}</td>
+					
+					<td @if(isset($value->v_alternate_phone_no)) data-title="{{ trans('routes.alternateno') }}" @endif>{{ $value->v_alternate_phone_no or '' }}</td>
+					
+					<td data-title="{{ trans('routes.interventionpoint') }}">{{ $value->due_date or '' }}</td>
+				 
+					<?php //@if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td></td> @endif
+					?>
+					
 					</tr>                	
 				<?php } ?>	
               </tbody>
+			  
+			  
               <?php } else { ?>
               <tbody>
               	  <tr>

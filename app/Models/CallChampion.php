@@ -44,6 +44,7 @@ class CallChampion extends Eloquent {
 		$dashboard_data['assigned_beneficiaries'] = $assigned_beneficiaries;
 		
 		return $dashboard_data;		
+		
 	}
 	
 	public function get_number_of_calls_done($cc_id){
@@ -115,14 +116,13 @@ class CallChampion extends Eloquent {
 			$village_details[$entry->f_id] = array($entry->field_worker_name, $entry->field_worker_phone_number, $entry->f_id);
 		}
 		
-		$list_beneficiaries = [];
 		foreach($select as $entry){
 			$entry->field_worker_name = $village_details[$entry->fieldworker_id][0];
 			$entry->field_worker_number = $village_details[$entry->fieldworker_id][1];
 			$entry->field_worker_id = $village_details[$entry->fieldworker_id][2];
 			
 		}
-		return $list_beneficiaries;
+		return $select;
 	}
 	 
 }
