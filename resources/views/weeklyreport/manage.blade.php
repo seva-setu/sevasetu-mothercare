@@ -42,7 +42,7 @@ smallfont{
 		<hr />
 		<div class="row">
 			<div class="col-lg-10 col-md-10">
-			<h3>
+			<h4>
 			<?php $next_call = 1;
 				if(isset($next_call)) { 
 					$difference_from_today_in_weeks = 1; //formula
@@ -50,13 +50,17 @@ smallfont{
 						<span class="badge">{{ trans('routes.close') }}</span>
 			<?php 	}
 					echo trans('routes.nextcall');
-					echo date("d M y", time());
+					echo "<b>".date("d M y", time())."</b>. ";
+					echo "Call XX from YY on 991919191";
+			?>
+				<a href="" class="btn btn-info">{{ trans('routes.details') }}</a>
+			<?php
+					
 				} else{ ?>
 					{{ trans('routes.nocall') }} 
 			<?php } ?>
-			
-			</h3>
 			</div>
+			</h4>
 		</div>
 		<hr />
 		<div class="row">
@@ -148,7 +152,7 @@ smallfont{
 							</td>
 							<td>
 								<?php //Should have a confirmation check on this button ?>
-								<a href="" class="btn btn-danger">Cancel</a>
+								<a href="" class="btn btn-success"><?php echo trans('routes.edit'); ?></a>
 							</td>
 							<?php //@if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td></td> @endif
 							?>
