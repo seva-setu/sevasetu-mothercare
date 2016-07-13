@@ -1,66 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>{{ $title or '' }}</title>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-@include('template/admin_cssscripta')
-<link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>external/css_admin/dashboard.css" />
+	<title>{{ $title or '' }}</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	@include('template/admin_cssscripta')
+	<link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>external/css_admin/dashboard.css" />
 </head>
+
 <body>
 @include('template/admin_header')
 @include('template/admin_sidebar')
-<div id="content">
-  <div id="content-header">
-    <h1><?php  echo trans('routes.dashboard'); ?></h1>
-  </div>
-  <?php echo Session::get('message'); ?>
-  <div id="breadcrumb">
-   	<a href="<?php echo Config::get('app.url'); ?>admin/dashboard" title="<?php echo trans('routes.homelabel')?>" class="tip-bottom"><i class="icon-home"></i><?php  echo trans('routes.home'); ?></a><a href="javascript:void(0);" class="current"><?php  echo trans('routes.dashboard'); ?></a> 
-   </div>
-  <div class="container-fluid">
-    <div class="row-fluid">
-      <div class="span12">
-        <div class="widget-box">
-          <div class="widget-title"> <span class="icon"> <i class="icon-bookmark"></i> </span>
-            <h5><?php echo trans('routes.shortcuts')?></h5>
-          </div>
-          <div class="widget-content">
-            <div align="center" class="row-fluid">
-              <div class="shortcuts">
-               <?php 
-               $userinfo=Session::get('user_logged');
-               ?> 
-               
-		       <?php if($userinfo['v_role'] == 2){?>
-					<a class="shortcut" href="<?php echo Config::get('constant.SITEURL');?>
-					admin/mothers"> <i class="shortcut-icon icon-user"></i> <span class="shortcut-label">
+ <div id="page-wrapper" >
+	<div id="page-inner">
+	   <div class="row">
+			<div class="col-md-12">
+				<h2><?php  echo trans('routes.dashboard'); ?></h2>
+			</div>
+	   </div>
+		<hr />
+		<div class="row">
+			<div class="col-lg-4 col-md-4">
+				<div class="panel panel-primary">
+				<div class="panel-heading">
+				   <?php echo trans('routes.assigned_beneficiary');?>
+				</div>
+				<div class="panel-body">
+					<table class="table table-responsive">
 					<?php 
-						echo trans('routes.assigned_beneficiary').":<br/>";
 						foreach($assigned_beneficiaries as $mother){
-							echo("<b>".$mother->name."</b> from <b>".$mother->village_name."</b><br/>");
+							echo "<tr>";
+							
+							echo "<td>";
+							echo $mother->name;
+							echo "</td>";
+							
+							echo "<td>";
+							echo (" from");
+							echo "</td>";
+							
+							echo "<td>";
+							echo $mother->village_name;
+							echo "</td>";
+							
+							echo "</tr>";
 						}
-					 
-					?></span> </a> 
+					?>
+					</table>
 				   
-				   <a class="shortcut" href="<?php echo Config::get('constant.SITEURL'); ?>admin/mycalls"> <i class="shortcut-icon icon-user"></i> <span class="shortcut-label">
-				   <?php 
-						echo trans('routes.next_scheduled').": ".$next_scheduled_call;
-					?></span> </a> 
+				</div>
+				<div class="panel-footer">
+				</div>
+			 </div>
+			</div>
+			<div class="col-lg-4 col-md-4">
+            <table>
+			<tr><td>
+				<div class="panel panel-primary">
+				<div class="panel-heading">
+				   <?php echo trans('routes.next_scheduled');?>
+				</div>
+				<div class="panel-body">
+					<?php 
+						echo $next_scheduled_call;
+					?>
 				   
-					<a class="shortcut" href="<?php echo Config::get('constant.SITEURL'); ?>admin/mycalls"> <i class="shortcut-icon icon-edit"></i> <span class="shortcut-label">
-					<?php echo trans('routes.number_calls').": ".$number_of_calls; ?></span> </a>
-				<?php }?>	
-				
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    @include('template/admin_footer')
-  </div>
-</div>
-@include('template/admin_jsscript')
+				</div>
+				<div class="panel-footer">
+				</div>
+			 </div>
+			
+			</td></tr>
+			<tr><td>
+			
+				<div class="panel panel-primary">
+				<div class="panel-heading">
+				   <?php echo trans('routes.number_calls')?>
+				</div>
+				<div class="panel-body">
+					<?php 
+						echo $number_of_calls; 
+					?>
+				</div>
+				<div class="panel-footer">
+				</div>
+			 </div>
+			 
+			</td></tr>
+			</div>
+		</div>
+		<hr />
+		</div>
+	</div>
 </body>
 </html>

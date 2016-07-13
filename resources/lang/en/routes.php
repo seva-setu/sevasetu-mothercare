@@ -10,7 +10,7 @@ return array(
 	'adminuser'=>'Program Coordinator',
 	'callchampion'=>'Call Champion',
 	'fieldworker'=>'Field Worker',
-	'interventionpoint'=>'Intervention Point',
+	'interventionpoint'=>'Call on',
 	'callsummary' => 'Call Summary',
 	'checklists' => 'Check Lists',
 	'actionitem' => 'Action Item',
@@ -31,7 +31,7 @@ return array(
 	'username'=>'User Name',
 	'email'=>'Email',
 	'language'=>'Language',
-	'uniqueid'=>'Unique Id',
+	'uniqueid'=>'ID',
 	'phonenumber'=>'Phone Number',
 	'profession'=>'Profession',
 	'action'=>'Action',
@@ -223,7 +223,7 @@ return array(
 		'welcome' => 'Welcome',
 		
 		'number_calls' =>'Number of calls you have made',
-		'assigned_beneficiary' =>'You are connected to the following mothers',
+		'assigned_beneficiary' =>'You are connected to',
 		'next_scheduled' =>'Next scheduled call',
 		'weeklycalllist' => 'My calls'
 );
