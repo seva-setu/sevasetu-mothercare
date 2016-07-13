@@ -10,16 +10,12 @@
 <nav class="navbar-default navbar-side" role="navigation">
 	<div class="sidebar-collapse">
 		<ul class="nav" id="main-menu">
-			<li class="active-link"> 
-			<a href="{{url()}}/admin"><i class="fa fa-desktop "></i>Dashboard</a>
-			</li>
-
-			<li>
-			<a href="{{url()}}/admin/mycalls"><i class="fa fa-phone	 "></i>My calls  <span class="badge">15 scheduled</span></a>
+			<li class="active-link">
+			<a href="{{url()}}/admin/mycalls"><i class="fa fa-phone	 "></i>My calls  <span class="badge">X scheduled</span></a>
 			</li>
 			
 			<li>
-			<a href="{{url()}}/admin/mothers"><i class="fa fa-female "></i>Mothers  <span class="badge">2 assigned</span></a>
+			<a href="{{url()}}/admin/mothers"><i class="fa fa-female "></i>Mothers  <span class="badge">Y assigned</span></a>
 			</li>
 
 

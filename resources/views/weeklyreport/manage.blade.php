@@ -41,8 +41,24 @@ smallfont{
 	   </div>
 		<hr />
 		<div class="row">
-		
+			<div class="col-lg-10 col-md-10">
+			<h3>
+			<?php $next_call = 1;
+				if(isset($next_call)) { 
+					$difference_from_today_in_weeks = 1; //formula
+					if($difference_from_today_in_weeks <= 1){ ?>
+						<span class="badge">{{ trans('routes.close') }}</span>
+			<?php 	}
+					echo trans('routes.nextcall');
+					echo date("d M y", time());
+				} else{ ?>
+					{{ trans('routes.nocall') }} 
+			<?php } ?>
+			
+			</h3>
+			</div>
 		</div>
+		<hr />
 		<div class="row">
 			<div class="col-lg-6 col-md-6">
 				<h3>Calls scheduled</h3>
@@ -71,14 +87,14 @@ smallfont{
 								<br/>
 								<smallfont>
 								<?php
-									//Write the difference of the dates here.
-									echo "(.. weeks to go)";
+									//Write the difference of the dates here instead of ..
+									echo "(.. ".trans('routes.weeks'). ")";
 								?>
 								</smallfont>
 							</td>
 							<td>
 								<?php //Should have a confirmation check on this button ?>
-								<a href="" class="btn btn-danger">Cancel</a>
+								<a href="" class="btn btn-danger">{{ trans('routes.cancel') }}</a>
 							</td>
 							<?php //@if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td></td> @endif
 							?>
@@ -91,7 +107,7 @@ smallfont{
 						<?php } else { ?>
 						<tbody>
 							  <tr>
-								<td colspan="10"><center><em><?php echo trans('routes.norecord'); ?></em></center></td>
+								<td colspan="5"><center><em><?php echo trans('routes.norecord'); ?></em></center></td>
 							  </tr>
 					  </tbody>
 						  <?php } ?>

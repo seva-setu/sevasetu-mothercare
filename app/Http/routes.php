@@ -64,7 +64,7 @@ Route::post('/admin/dochangeuserpassword', 'Admin\AdminController@dochangeuserpa
 Route::get('/admin/searchdataaddress/{name}/{name1}/{name2}', 'Admin\AdminController@searchdataaddress');
 Route::post('/admin/editaddress', 'Admin\AdminController@editaddress');
 //////////////////////////////
-Route::get('/admin/mothers', 'Admin\BeneficiaryController@list_all_beneficiaries');
+Route::get('/admin/mothers', 'Admin\BeneficiaryController@d');
 Route::get('/admin/mycalls', 'Admin\WeeklyCalllistController@list_all_calls');
 Route::get('/admin/callchampions/edit','Admin\CallchampionsController@edit');
 //////////////////////////////
@@ -76,7 +76,7 @@ Route::post('/admin/callchampions/update','Admin\CallchampionsController@update'
 Route::post('/admin/callchampions/add', 'Admin\CallchampionsController@add');
 Route::post('/admin/callchampions/deleteSelected', 'Admin\CallchampionsController@deleteSelected');
 
-Route::get('/admin/dashboard', 'Admin\AdminController@dashboard');
+Route::get('/admin/dashboard', 'Admin\WeeklyCalllistController@list_all_calls');
 
 Route::get('/admin/callchampions/view/{id}', 'Admin\CallchampionsController@view');
 Route::get('/admin/callchampions/autocompletecallchampion', 'Admin\CallchampionsController@autocompletecallchampion');

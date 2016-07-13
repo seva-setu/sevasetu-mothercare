@@ -225,5 +225,10 @@ return array(
 		'number_calls' =>'Number of calls you have made',
 		'assigned_beneficiary' =>'You are connected to',
 		'next_scheduled' =>'Next scheduled call',
-		'weeklycalllist' => 'My calls'
+		'weeklycalllist' => 'My calls',
+		'cancel' => 'cancel',
+		'weeks' => 'weeks to go',
+		'nextcall' => 'Your next call is scheduled for ',
+		'close' => 'Coming up',
+		'nocall' => 'No calls scheduled so far',
 );
