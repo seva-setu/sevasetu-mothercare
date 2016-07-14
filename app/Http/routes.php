@@ -66,7 +66,9 @@ Route::post('/admin/editaddress', 'Admin\AdminController@editaddress');
 //////////////////////////////
 Route::get('/admin/mothers', 'Admin\BeneficiaryController@d');
 Route::get('/admin/mycalls', 'Admin\WeeklyCalllistController@list_all_calls');
+Route::get('/admin/mycalls/view/{id}', 'Admin\WeeklyCalllistController@list_specific_call_details');
 Route::get('/admin/callchampions/edit','Admin\CallchampionsController@edit');
+
 //////////////////////////////
 //for call chamption 
 Route::get('/admin/callchampions', 'Admin\CallchampionsController@index');

@@ -32,7 +32,7 @@ class WeeklyCalllistController extends Controller{
 		$this->beneficiary_details 	= Session::get('user');
 		
 		//check for valid use
-		if(!isset($userinfo['role_id']) or !isset($this->beneficiary_details)){
+		if(!isset($userinfo['role_id'])){
 			Redirect::to('/admin/')->send();
 		}
 		$this->user_type = $userinfo['v_role'];
@@ -59,8 +59,27 @@ class WeeklyCalllistController extends Controller{
 	public function list_all_calls(){
 		$due_list_obj = new DueList;
 		$data['due_list'] = $due_list_obj->get_due_list_callchamp($this->role_id);
-		return view('weeklyreport.manage',$data);
+		return view('mycalls.dashboard',$data);
 	}
+	
+	public function list_specific_call_details($due_id_encoded){
+		$due_list_obj = new DueList;
+		$due_id = $due_id_encoded->decode();
+		if($due_id == 0)
+			return($due_list_obj->get_due_list_dueid($due_id));
+		else
+			return view('mycalls.details',$get_due_list_dueid($due_id));
+	}
+	
+	public function decode($id=0){
+  		if($id){
+  			$hashids = new Hashids();
+  			$arr = $hashids->decode($id);
+  			return (!empty($arr)) ? $id=$arr[0] : 0;
+  			//return $id=$arr[0];
+  		}else
+  			return 0;
+  	}
 	
 	
 	public function searchbenificiarydata($startdate){

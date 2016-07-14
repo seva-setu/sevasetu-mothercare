@@ -17,8 +17,9 @@
 			<li>
 			<a href="{{url()}}/admin/mothers"><i class="fa fa-female "></i>Mothers  <span class="badge">Y assigned</span></a>
 			</li>
-
-
+			<li>
+			<a href="{{url()}}/admin/settings"><i class="fa fa-list-ol "></i>Check list</a>
+			</li>
 			<li>
 			<a href="{{url()}}/admin/settings"><i class="fa fa-cogs "></i>Settings</a>
 			</li>

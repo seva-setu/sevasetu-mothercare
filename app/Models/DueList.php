@@ -133,5 +133,10 @@ class DueList extends Eloquent {
 		
 		return $select;
 	}
+	
+	public function get_due_list_dueid($due_id){
+		return true;
+		
+	}
 }
 ?>
