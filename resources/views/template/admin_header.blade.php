@@ -10,12 +10,12 @@ $userinfo=Session::get('user_logged');
 		  <span class="icon-bar"></span>
 		  <span class="icon-bar"></span>
 		  </button>
-		  <a class="navbar-brand" href="#">
-		  <img src="assets/img/logo.png" />
-		  </a>
+		  <span class="logout-spn" >
+			<a href="#" style="color:#fff;">Seva Setu's Mother care tool</a>  
+		  </span>
 	   </div>
 	   <span class="logout-spn" >
-	   <a href="#" style="color:#fff;">LOGOUT</a>  
+	   <a href="#" style="color:#fff;">Logout</a>  
 	   </span>
 	</div>
  </div>

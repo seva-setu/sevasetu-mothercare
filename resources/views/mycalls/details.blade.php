@@ -45,7 +45,7 @@ smallfont{
 		<?php } else { ?>
 		   <div class="row">
 				<div class="col-lg-5 col-md-5">
-					<h3><?php  echo "<b>Lohia Manohar Ram Kumar</b>"; ?></h3>
+					<h3><?php  echo "<b>Rani Jhansi Phulan Devi</b>"; ?></h3>
 				</div>
 				<div class="col-lg-5 col-md-5">
 				</div>
@@ -59,30 +59,38 @@ smallfont{
 		   </div>
 			<hr />
 			<div class="row">
+			<h5>
 				<div class="col-lg-5 col-md-5">
+					<p>
 					<?php echo "<b>".trans('routes.expecteddate')."</b>: ";
 						echo "12 June 2017";
 					?>
-					<br/>
+					</p>
+					<p>
 					<?php  echo "<b>".trans('routes.husbandname')."</b>: ";
 							echo "Rammanohar Lohia Kumar"
 					?>
+					</p>
 				</div>
 				<div class="col-lg-7 col-md-7">
+					<p>
 					<?php  echo "<b>".trans('routes.village')."</b>: ";
 							echo "Musohri Tola Bhusola Danapur"
 					?>
-					<br/>
+					</p>
+					<p>
 					<?php  echo "<b>".trans('routes.fieldworkername')."</b>: ";
 							echo "Lohia Manohar Ram Kumar"
 					?>
+					</p>
 				</div>
+			</h5>
 			</div>
 			<hr />
 			<div class="row">
 				<div class="col-lg-12 col-md-12">
 					<h4><b>
-					<?php 	echo "#"."534: ";
+					<?php 	echo trans('routes.callid')."534: ";
 							echo " ".trans('routes.thiscallscheduled')." ";
 							echo "12 June 2016";
 					?>
@@ -99,21 +107,43 @@ smallfont{
 					<?php } ?>			
 					</b></h4>					
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#notes" data-toggle="tab"> <b> {{ trans('routes.notes') }} </b></a>
+						<li class="active"><a href="#t_notes" data-toggle="tab"> <b> {{ trans('routes.notes') }} </b></a>
 						</li>
-						<li><a href="#actionitem" data-toggle="tab"> <b> {{ trans('routes.actionitem') }} </b></a>
+						<li><a href="#t_actionitem" data-toggle="tab"> <b> {{ trans('routes.actionitem') }} </b></a>
 						</li>
-						<li class=""><a href="#profile" data-toggle="tab"> <b> {{ trans('routes.profile') }} </b></a>
+						<li class=""><a href="#t_profile" data-toggle="tab"> <b> {{ trans('routes.profile') }} </b></a>
 						</li>
-						<li class=""><a href="#previouscalls" data-toggle="tab"> <b>{{ trans('routes.callscompleted') }} </b> </a>
+						<li class=""><a href="#t_previouscalls" data-toggle="tab"> <b>{{ trans('routes.callscompleted') }} </b> </a>
 						</li>
-						<li class=""><a href="#nextcall" data-toggle="tab"> <b>{{ trans('routes.callsscheduled') }} </b> </a>
+						<li class=""><a href="#t_nextcall" data-toggle="tab"> <b>{{ trans('routes.callsscheduled') }} </b> </a>
 						</li>
 					 </ul>
+					 <!-- BEGIN CODE FOR TABBED CONTENT -->
+					 <div class="tab-content">
+					 
+					 <!-- BEGIN CODE FOR TAB "Notes from call" -->
+                        <div class="tab-pane fade active in" id="t_notes">
+                           <p>
+                              NOTES Lorem ipsum dolor sit amet, consectetur adipisicing elit eserunt mollit anim id est laborum.
+                              Lorem ipsum dolor sit amet, consectetur adipisicing elit eserunt mollit anim id est laborum.
+                              Lorem ipsum dolor sit amet, consectetur adipisicing elit eserunt mollit anim id est laborum.
+                           </p>
+                        </div>
+						
+					<!-- BEGIN CODE FOR TAB "Action items" -->
+						<div class="tab-pane fade" id="t_actionitem">
+                           <p>
+                              ACTION ITEM dolor sit amet, consectetur adipisicing elit eserunt mollit anim id est laborum.
+                           </p>
+                        </div>
+					 </div>
+					 
+					 <!-- END CODE FOR TABBED CONTENT -->
+					 
 				</div>
 			</div>
 		<?php } //END IF RECORD EMPTY CHECK ?>
 	</div>
 </div>
-
+@include('template/admin_jsscript')
 </body>
