@@ -239,6 +239,7 @@ return array(
 		'actionitems' => 'Items to discuss on next call',
 		'details' => 'Details',
 		'callscompleted' => 'Calls completed',
+		'callscompletedscheduled' => 'Calls completed and scheduled',
 		'callsscheduled' => 'Calls scheduled',
 		
 		'notes' => 'Notes from call',
@@ -247,6 +248,9 @@ return array(
 		'callcompleted' => 'This call has been made',
 		'thiscallscheduled' => 'This call is scheduled for',
 		'callid' => 'Call ID #',
+		'notes_general' => 'General notes',
+		'notes_field' => 'Action points for Seva Setu\'s field worker',
+		'submitnote' => 'Submit note'
 		
 		
 );

@@ -48,13 +48,18 @@ smallfont{
 					<h3><?php  echo "<b>Rani Jhansi Phulan Devi</b>"; ?></h3>
 				</div>
 				<div class="col-lg-5 col-md-5">
-				</div>
-				<div class="col-lg-5 col-md-5">
 					<h3>
 					<?php  echo "<b>".trans('routes.phonenumber')."</b>: "; 
 							echo "12312312312";
 					?>
 					</h3>
+				</div>
+				<div class="col-lg-2 col-md-2">
+					<h3><b>
+					<span class="label label-success">
+						<?php 	echo trans('routes.callid')."534"; ?>
+					</span>
+					</b></h3>
 				</div>
 		   </div>
 			<hr />
@@ -86,48 +91,43 @@ smallfont{
 				</div>
 			</h5>
 			</div>
-			<hr />
 			<div class="row">
-				<div class="col-lg-2 col-md-2">
+				<div class="col-lg-5 col-md-5">
 					<h4><b>
-					<div class="alert alert-info">
-						<?php 	echo trans('routes.callid')."534"; ?>
-						
-					</div>
-					</b></h4>
-				</div>	
-				<div class="col-lg-10 col-md-10">
-					<h4><b>
+					<span class="label label-primary">
+					
 					<?php 
 							echo " ".trans('routes.thiscallscheduled')." ";
 							echo "12 June 2016";
 					?>
+					</span>
+					</b></h4>
+				</div>
+				<div class="col-lg-5 col-md-5">
+					<h4><b>
 					<?php 
 					// Logic for checking whether this call is done or not 
 						$call_done = false;
 						if($call_done){ 
 					?>
-						<span class = "badge"> 
-							<h4><b>
+						
+						<span class = "label label-danger"> 
 							{{ trans('routes.callcompleted') }}
-							</b></h4>
 						</span>
+						
 					<?php } ?>
 					</b></h4>
 				</div>
 			</div>
+			<hr/>
 			<div class ="row">
 				<div class="col-lg-12 col-md-12">
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#t_notes" data-toggle="tab"> <b> {{ trans('routes.notes') }} </b></a>
 						</li>
-						<li><a href="#t_actionitem" data-toggle="tab"> <b> {{ trans('routes.actionitem') }} </b></a>
-						</li>
 						<li class=""><a href="#t_profile" data-toggle="tab"> <b> {{ trans('routes.profile') }} </b></a>
 						</li>
-						<li class=""><a href="#t_previouscalls" data-toggle="tab"> <b>{{ trans('routes.callscompleted') }} </b> </a>
-						</li>
-						<li class=""><a href="#t_nextcall" data-toggle="tab"> <b>{{ trans('routes.callsscheduled') }} </b> </a>
+						<li class=""><a href="#t_previouscalls" data-toggle="tab"> <b>{{ trans('routes.callscompletedscheduled') }} </b> </a>
 						</li>
 					 </ul>
 					 <!-- BEGIN CODE FOR TABBED CONTENT -->
@@ -135,11 +135,38 @@ smallfont{
 					 
 					 <!-- BEGIN CODE FOR TAB "Notes from call" -->
                         <div class="tab-pane fade active in" id="t_notes">
-                           <p>
-                              
-                           </p>
+							<!-- Begin section for action items -->
+							<div class="col-lg-6 col-md-6">
+								<h4><b>
+								<span class = "label label-warning">
+									{{trans('routes.actionitem')}}
+								</span>
+								</b></h4>
+								<br/>
+								<ul>
+									<li> Talk to me</li>
+									<li> Talk to you</li>
+								</ul>
+							
+							</div>
+							<!-- End section for action items -->
+							<!-- Begin section for textarea -->
+							<div class="col-lg-6 col-md-6">
+							   <div class="form-group">
+								  <label for="general_note">{{ trans('routes.notes_general')}}</label>
+								  <textarea class="form-control" rows="5" id="general_note"></textarea>
+								</div>
+								<div class="form-group">
+								  <label for="action_note">{{ trans('routes.notes_field')}}
+								  <span class="label label-danger">Important</span>
+								  </label>
+								  <textarea class="form-control" rows="5" id="action_note"></textarea>
+								</div>
+								<a href="#" class="btn btn-primary">{{trans('routes.submitnote')}}</a>
+							</div>
+							<!-- End section for textarea -->
                         </div>
-						
+							
 					<!-- BEGIN CODE FOR TAB "Action items" -->
 						<div class="tab-pane fade" id="t_actionitem">
                            <p>
