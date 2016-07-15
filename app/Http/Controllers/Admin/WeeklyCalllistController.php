@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\View;
+use Hashids\Hashids;
 use PDF;
 use Excel;
 use Cache;
@@ -64,11 +65,12 @@ class WeeklyCalllistController extends Controller{
 	
 	public function list_specific_call_details($due_id_encoded){
 		$due_list_obj = new DueList;
-		$due_id = $due_id_encoded->decode();
-		if($due_id == 0)
-			return($due_list_obj->get_due_list_dueid($due_id));
+		$due_id = $this->decode($due_id_encoded);
+		$data['not_found'] = true;
+		if(false)
+			return(view('mycalls.details',$data));
 		else
-			return view('mycalls.details',$get_due_list_dueid($due_id));
+			return(view('mycalls.details',$due_list_obj->get_due_list_dueid($due_id)));
 	}
 	
 	public function decode($id=0){

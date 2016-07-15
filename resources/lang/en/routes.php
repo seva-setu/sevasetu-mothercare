@@ -13,7 +13,7 @@ return array(
 	'interventionpoint'=>'Call on',
 	'callsummary' => 'Call Summary',
 	'checklists' => 'Check Lists',
-	'actionitem' => 'Action Item',
+	'actionitem' => 'Action items to be discussed',
 	'logout'=>'Logout',
 	'location'=>'Location',
 	'changepassword'=>'Change Password',
@@ -32,7 +32,7 @@ return array(
 	'email'=>'Email',
 	'language'=>'Language',
 	'uniqueid'=>'ID',
-	'phonenumber'=>'Phone Number',
+	'phonenumber'=>'Contact',
 	'profession'=>'Profession',
 	'action'=>'Action',
 	'view'=>'View',
@@ -66,7 +66,7 @@ return array(
 	'newpassword'=>'New Password',
 	'confpassword'=>'Confirm Password',
 	'village'=>'Village',
-	'husbandname'=>'Husband Name',
+	'husbandname'=>'Husband\'s name',
 	'altphonenumber'=>'Alternate Phone',
 	'nopregnancies'=>'Number Of Pregnancies',
 	'awcvame'=>'AWC Name',
@@ -144,7 +144,7 @@ return array(
 	'imagelabel'=>'Profile Picture',
 	'selectimage'=>'Select Photo',
 	'emergancynote'=>'Emergency Note',
-	'fieldworkername'=>'Field Worker Name',
+	'fieldworkername'=>'Seva Setu\'s field worker associated',
 	'fieldworkernumber'=>'Field Worker Phone Number',
 	'downloadreport'=>'Download Report',
 	'download' => 'Download',	
@@ -223,6 +223,8 @@ return array(
 		'welcome' => 'Welcome',
 		
 		'number_calls' =>'Number of calls you have made',
+		'callsmade' => 'Calls made',
+		
 		'assigned_beneficiary' =>'You are connected to',
 		'next_scheduled' =>'Next scheduled call',
 		'weeklycalllist' => 'My calls',
@@ -234,4 +236,17 @@ return array(
 		'info' => 'Get call information',
 		'details' => 'Call details',
 		'edit' => 'Follow up',
+		'actionitems' => 'Items to discuss on next call',
+		'details' => 'Details',
+		'callscompleted' => 'Calls completed',
+		'callsscheduled' => 'Calls scheduled',
+		
+		'notes' => 'Notes from call',
+		'profile' => 'Notes on mother',
+		'expecteddate' => 'Expected date of delivery',
+		'callcompleted' => 'This call has been made',
+		'thiscallscheduled' => 'This call is scheduled for',
+		'callid' => 'Call ID: ',
+		
+		
 );

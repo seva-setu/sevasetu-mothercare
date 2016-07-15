@@ -35,13 +35,15 @@ smallfont{
 <div id="page-wrapper" >
 	<div id="page-inner">
 	   <div class="row">
-			<div class="col-md-12">
+			<div class="col-lg-5 col-md-6">
 				<h2><?php  echo trans('routes.mycalls'); ?></h2>
 			</div>
+			<div class="col-lg-3 col-md-3"> </div>
+			<div class="col-lg-4 col-md-4"> </div>
 	   </div>
 		<hr />
-		<div class="row">
-			<div class="col-lg-10 col-md-10">
+		<div class = "row">
+			<div class="col-lg-12 col-md-12">
 			<h4>
 			<?php $next_call = 1;
 				if(isset($next_call)) { 
@@ -65,7 +67,7 @@ smallfont{
 		<hr />
 		<div class="row">
 			<div class="col-lg-6 col-md-6">
-				<h3>Calls scheduled</h3>
+				<h3>{{ trans('routes.callsscheduled')}}</h3>
 				<table class="table table-striped table-bordered table-hover">
                         <thead class="warning">
 							<th>{{ trans('routes.uniqueid') }}</th>
@@ -119,7 +121,7 @@ smallfont{
 			</div>
 			
 			<div class="col-lg-6 col-md-6">
-				<h3>Calls completed</h3>
+				<h3>{{ trans('routes.callscompleted') }}  </h3>
 				<table class="table table-striped table-bordered table-hover">
                         <thead class="warning">
 							<th>{{ trans('routes.uniqueid') }}</th>

@@ -23,7 +23,9 @@
 			<li>
 			<a href="{{url()}}/admin/settings"><i class="fa fa-cogs "></i>Settings</a>
 			</li>
-			
+			<li>
+			<a href="{{url()}}/admin/settings"><i class="fa fa-volume-up"></i>Feedback</a>
+			</li>
 		</ul>
 	</div>
 </nav>

@@ -135,7 +135,8 @@ class DueList extends Eloquent {
 	}
 	
 	public function get_due_list_dueid($due_id){
-		return true;
+		$arr['data'] = 1;
+		return $arr;
 		
 	}
 }
