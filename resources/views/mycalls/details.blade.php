@@ -88,24 +88,36 @@ smallfont{
 			</div>
 			<hr />
 			<div class="row">
-				<div class="col-lg-12 col-md-12">
+				<div class="col-lg-2 col-md-2">
 					<h4><b>
-					<?php 	echo trans('routes.callid')."534: ";
+					<div class="alert alert-info">
+						<?php 	echo trans('routes.callid')."534"; ?>
+						
+					</div>
+					</b></h4>
+				</div>	
+				<div class="col-lg-10 col-md-10">
+					<h4><b>
+					<?php 
 							echo " ".trans('routes.thiscallscheduled')." ";
 							echo "12 June 2016";
 					?>
 					<?php 
 					// Logic for checking whether this call is done or not 
-						$call_done = true;
+						$call_done = false;
 						if($call_done){ 
 					?>
 						<span class = "badge"> 
-							<h5><b>
+							<h4><b>
 							{{ trans('routes.callcompleted') }}
-							</b></h5>
+							</b></h4>
 						</span>
-					<?php } ?>			
-					</b></h4>					
+					<?php } ?>
+					</b></h4>
+				</div>
+			</div>
+			<div class ="row">
+				<div class="col-lg-12 col-md-12">
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#t_notes" data-toggle="tab"> <b> {{ trans('routes.notes') }} </b></a>
 						</li>
@@ -124,9 +136,7 @@ smallfont{
 					 <!-- BEGIN CODE FOR TAB "Notes from call" -->
                         <div class="tab-pane fade active in" id="t_notes">
                            <p>
-                              NOTES Lorem ipsum dolor sit amet, consectetur adipisicing elit eserunt mollit anim id est laborum.
-                              Lorem ipsum dolor sit amet, consectetur adipisicing elit eserunt mollit anim id est laborum.
-                              Lorem ipsum dolor sit amet, consectetur adipisicing elit eserunt mollit anim id est laborum.
+                              
                            </p>
                         </div>
 						

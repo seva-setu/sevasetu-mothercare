@@ -246,7 +246,7 @@ return array(
 		'expecteddate' => 'Expected date of delivery',
 		'callcompleted' => 'This call has been made',
 		'thiscallscheduled' => 'This call is scheduled for',
-		'callid' => 'Call #',
+		'callid' => 'Call ID #',
 		
 		
 );
