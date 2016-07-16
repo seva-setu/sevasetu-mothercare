@@ -13,7 +13,7 @@ if($startdate!="" && $enddate!=""){
 	$datelable=$startdate." to ".$enddate;
 }	 
 $languagedata= DB::table('mct_language')->where('e_status', 'Active')->orderBy('bi_id', 'ASC')->get();
- 
+  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,15 +107,23 @@ smallfont{
 					<h4><b>
 					<?php 
 					// Logic for checking whether this call is done or not 
-						$call_done = false;
+						$call_done = true;
 						if($call_done){ 
 					?>
 						
 						<span class = "label label-danger"> 
 							{{ trans('routes.callcompleted') }}
 						</span>
-						
-					<?php } ?>
+					
+					<?php }
+						$prev_calls_unattended = true;
+						if($prev_calls_unattended){	
+					?>		
+						<span class = "label label-danger">
+						XX {{ trans('routes.callsunattended') }}
+						</span>
+					<?php }
+					?>
 					</b></h4>
 				</div>
 			</div>
@@ -124,8 +132,6 @@ smallfont{
 				<div class="col-lg-12 col-md-12">
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#t_notes" data-toggle="tab"> <b> {{ trans('routes.notes') }} </b></a>
-						</li>
-						<li class=""><a href="#t_profile" data-toggle="tab"> <b> {{ trans('routes.profile') }} </b></a>
 						</li>
 						<li class=""><a href="#t_previouscalls" data-toggle="tab"> <b>{{ trans('routes.callscompletedscheduled') }} </b> </a>
 						</li>
@@ -153,15 +159,17 @@ smallfont{
 							<!-- Begin section for textarea -->
 							<div class="col-lg-6 col-md-6">
 							   <div class="form-group">
-								  <label for="general_note">{{ trans('routes.notes_general')}}</label>
-								  <textarea class="form-control" rows="5" id="general_note"></textarea>
-								</div>
-								<div class="form-group">
 								  <label for="action_note">{{ trans('routes.notes_field')}}
 								  <span class="label label-danger">Important</span>
 								  </label>
 								  <textarea class="form-control" rows="5" id="action_note"></textarea>
 								</div>
+								
+							   <div class="form-group">
+								  <label for="general_note">{{ trans('routes.notes_general') }} Rani Jhansi</label>
+								  <textarea class="form-control" rows="5" id="general_note"></textarea>
+								</div>
+								
 								<a href="#" class="btn btn-primary">{{trans('routes.submitnote')}}</a>
 							</div>
 							<!-- End section for textarea -->

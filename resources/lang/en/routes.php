@@ -248,9 +248,10 @@ return array(
 		'callcompleted' => 'This call has been made',
 		'thiscallscheduled' => 'This call is scheduled for',
 		'callid' => 'Call ID #',
-		'notes_general' => 'General notes',
-		'notes_field' => 'Action points for Seva Setu\'s field worker',
-		'submitnote' => 'Submit note'
+		'notes_general' => 'General notes about',
+		'notes_field' => 'Action points for Seva Setu\'s field worker based on this call',
+		'submitnote' => 'Submit note',
+		'callsunattended' => ' previous calls were not made. Please discuss action items from those calls too.',
 		
 		
 );
