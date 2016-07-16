@@ -68,7 +68,7 @@ Route::get('/admin/mothers', 'Admin\CallchampionsController@list_mothers');
 Route::get('/admin/mycalls', 'Admin\WeeklyCalllistController@list_all_calls');
 Route::get('/admin/mycalls/view/{id}', 'Admin\WeeklyCalllistController@list_specific_call_details');
 Route::get('/admin/callchampions/edit','Admin\CallchampionsController@edit');
-
+Route::get('/admin/checklist', 'Admin\WeeklyCalllistController@get_master_checklist');
 //////////////////////////////
 //for call chamption 
 Route::get('/admin/callchampions', 'Admin\CallchampionsController@index');

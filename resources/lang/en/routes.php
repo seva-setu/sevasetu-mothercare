@@ -260,4 +260,15 @@ return array(
 		'assigned' => 'You are a Call Champion to',
 		'addmother' => 'Be a call champion to another mother',
 		'info' => 'You can be a change to another mother. Schedule another one',
+		
+		'masterchecklist' => 'Master Check List',
+		'masterchecklist_descrip' => 'Refer to this check list to talk your way through a phone call. Very important information here',
+		
+		'num' => '#',
+		'weekofpregnancy' => 'Week of pregnancy to intervene in',
+		'stage' => 'What stage this week represents',
+		'action' => 'Action items to be conveyed by the Call Champion to the Mother',
+		
+		
+		
 );

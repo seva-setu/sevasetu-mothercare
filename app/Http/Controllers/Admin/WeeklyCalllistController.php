@@ -19,6 +19,7 @@ use Hashids\Hashids;
 use PDF;
 use Excel;
 use Cache;
+use DB;
 
 class WeeklyCalllistController extends Controller{
 	public $user_id;
@@ -55,6 +56,14 @@ class WeeklyCalllistController extends Controller{
 		}else{
 			return Redirect::to('/admin/');
 		}
+	}
+	
+	public function get_master_checklist(){
+		$table_name = 'mct_checklist_master';
+		$select['checklist_master'] = DB::table($table_name)
+			->select('*')
+			->get();
+		return view('checklist/list',$select);
 	}
 	
 	public function list_all_calls(){
