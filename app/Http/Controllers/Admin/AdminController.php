@@ -43,6 +43,10 @@ class AdminController extends Controller{
 	
 	public function __construct(){
 		$userinfo=Session::get('user_logged');
+		if(!isset($userinfo)){
+			return Redirect::to('/admin/');
+		}
+		
 		if(isset($userinfo['user_id'])){
 			$this->user_id=$userinfo['user_id'];
 		}
@@ -58,6 +62,24 @@ class AdminController extends Controller{
 			$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
 			
 			$this->helper->clearBen_Data();
+		}
+		
+		$user_stats = Session::get('user_stats');
+		if(!isset($user_stats)){// Generate dashboard landing data as per the role
+			// If its a call champion
+			if($this->role_type == 2){
+				$callchamp = new CallChampion;
+				$dashboard_data = $callchamp->get_dashboard_data($this->role_id);
+			}
+			
+			// If its a fieldworker
+			elseif($this->role_type == 3){
+				$fieldworker = new Fieldworkers;
+				$dashboard_data = $fieldworker->get_dashboard_data($this->role_id);
+			}
+			//ideally should be hashed
+			$encoded_data 	= $dashboard_data;
+			Session::put('user_stats', $encoded_data);
 		}
 	}
 	
@@ -77,24 +99,7 @@ class AdminController extends Controller{
 		if(!isset($this->user_id)){
 			Redirect::to('/admin/')->send();
 		}
-		$data['title']= "Dashboard" . SITENAME;
-		
-		// Generate dashboard landing data as per the role
-		// If its a call champion
-		if($this->role_type == 2){
-			$callchamp = new CallChampion;
-			$dashboard_data = $callchamp->get_dashboard_data($this->role_id);
-		}
-		
-		// If its a fieldworker
-		elseif($this->role_type == 3){
-			$fieldworker = new Fieldworkers;
-			$dashboard_data = $fieldworker->get_dashboard_data($this->role_id);
-		}
-		//ideally should be hashed
-		$encoded_data 	= $dashboard_data;
-		Session::put('user', $encoded_data);
-		return view('admin/dashboard',$dashboard_data);
+		Redired::to('/admin/mothers');
 	}
 	
 	

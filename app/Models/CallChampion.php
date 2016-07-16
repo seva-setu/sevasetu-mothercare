@@ -35,28 +35,38 @@ class CallChampion extends Eloquent {
 	}
 	
 	public function get_dashboard_data($cc_id){
-		$number_of_calls 	= $this->get_number_of_calls_done($cc_id);
-		$next_scheduled_call = $this->get_next_scheduled_call($cc_id);
-		$assigned_beneficiaries = $this->get_assigned_beneficiaries($cc_id);
+		$number_mothers_assigned = $this->get_number_mothers_assigned($cc_id);
+		$number_calls_scheduled = $this->get_number_calls_assigned($cc_id);
 		
-		$dashboard_data['number_of_calls'] = $number_of_calls;
-		$dashboard_data['next_scheduled_call'] = $next_scheduled_call;
-		$dashboard_data['assigned_beneficiaries'] = $assigned_beneficiaries;
+		//$next_scheduled_call = $this->get_next_scheduled_call($cc_id);
+		//$assigned_beneficiaries = $this->get_assigned_beneficiaries($cc_id);
 		
-		return $dashboard_data;		
+		$dashboard_data['number_of_calls'] = $number_calls_scheduled;
+		$dashboard_data['number_mothers_assigned'] = $number_mothers_assigned;
 		
+		return $dashboard_data;
 	}
 	
-	public function get_number_of_calls_done($cc_id){
+	public function get_number_calls_assigned($cc_id){
 		$join_table_name = 'mct_callchampion_report';
 		$base_table_name = 'mct_due_list';
 		$select = DB::table($base_table_name)
 					->join($join_table_name,$join_table_name.'.fk_due_id','=',$base_table_name.'.due_id')
 					->select($join_table_name.'.fk_due_id')
 					->where($base_table_name.'.fk_cc_id','=',$cc_id)
-					->where($join_table_name.'.has_called','>',0)
 					->get();
 		
+		return count($select);
+	}
+	
+	public function get_number_mothers_assigned($cc_id){
+		$base_table_name = 'mct_due_list';
+		$select = DB::table($base_table_name)
+					->select('fk_b_id')
+					->distinct()
+					->where('fk_cc_id','=',$cc_id)
+					->get();
+					
 		return count($select);
 	}
 	

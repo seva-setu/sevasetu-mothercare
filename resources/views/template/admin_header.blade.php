@@ -15,7 +15,7 @@ $userinfo=Session::get('user_logged');
 		  </span>
 	   </div>
 	   <span class="logout-spn" >
-	   <a href="#" style="color:#fff;">Logout</a>  
+	   <a href="<?php echo url(); ?>/admin/logout" style="color:#fff;">Logout</a>  
 	   </span>
 	</div>
  </div>
