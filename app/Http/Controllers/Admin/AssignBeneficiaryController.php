@@ -21,29 +21,32 @@ use App\Http\Helpers;
 
 class AssignBeneficiaryController extends Controller{
 	protected $model;
-	public $title="Admin User";
-	public $userid;
-	public $usertype;
-	public $callchampsid;
-	public $email;
+	public $user_id;
+	public $user_type;
+	public $role_id;
+	public $beneficiary_details;
+	protected $helper;
+	protected $role_permissions;
+	
 	public function __construct(){
 		
-		$this->helper = new Helpers();
-		$this->helper->clearBen_Data();
+		$userinfo = Session::get('user_logged');
+		$this->beneficiary_details 	= Session::get('user');
 		
-		$userinfo=Session::get('user_logged');
-		if(!isset($userinfo['b_id'])){
+		//check for valid use
+		if(!isset($userinfo['role_id'])){
 			Redirect::to('/admin/')->send();
 		}
-		$this->usertype=$userinfo['v_role'];
-		$this->userid=$userinfo['b_id'];
-		$this->email=$userinfo['v_user_name'];
-		$user = DB::table('mct_call_champions')->where('bi_user_login_id', $this->userid)->get(array('bi_id'));
-		if(count($user)>0)
-			$this->callchampsid=$user[0]->bi_id;
-		else
-			$this->callchampsid=session('callchampid');
+		$this->user_type = $userinfo['v_role'];
+		$this->user_id = $userinfo['user_id'];
+		$this->role_id = $userinfo['role_id'];
+		
+		$this->helper = new Helpers();
+		$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
 	}
+		
+	
+/////////////////////////////////////////////////////////////	
 //main mothode	
 public function  index($id=""){
 	if($id!=""){

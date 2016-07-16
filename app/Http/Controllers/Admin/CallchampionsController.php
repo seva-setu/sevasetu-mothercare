@@ -1,6 +1,7 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php 
+namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
-use App\Models\Callchampions;
+use App\Models\CallChampion;
 use App\Models\Users;
 use Request;
 use Mail;
@@ -22,20 +23,45 @@ use App\Http\Helpers;
 class CallchampionsController extends Controller{
 	protected $model;
 	public $title="Call Champions";
+	public $user_id;
+	public $role_id;
+	public $role_type;
+	protected $helper;
+	protected $role_permissions;
+	
 	public function __construct(){
 		$userinfo=Session::get('user_logged');
-		if(isset($userinfo['b_id'])){
-			if($userinfo['v_role']==1 || $userinfo['v_role']==0){
-			}else{
-				Redirect::to('/admin/')->send();
-			}
-		}else{
-			Redirect::to('/admin/')->send();
+		if(isset($userinfo['user_id'])){
+			$this->user_id=$userinfo['user_id'];
 		}
-		$this->helper = new Helpers();
-		$this->helper->clearBen_Data();
+		
+		if(isset($userinfo['role_id'])){
+			$this->role_id=$userinfo['role_id'];
+		}
+				
+		if(isset($userinfo['v_role'])){
+			$this->helper = new Helpers();
+			
+			$this->role_type=$userinfo['v_role'];
+			$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
+			
+			$this->helper->clearBen_Data();
+		}
 	}
-	
+
+	public function list_mothers($cc_id = -1){
+		if($cc_id = -1){
+			$cc_id = $this->role_id;
+		}
+		$cc_obj = new CallChampion();
+		$data['data'] = $cc_obj->get_assigned_beneficiaries($cc_id);
+		
+		return view('mothers/dashboard',$data);
+	}
+////////////////////////////////////////////////
+
+
+
 	
 //main methode of call champion
 public function index(){

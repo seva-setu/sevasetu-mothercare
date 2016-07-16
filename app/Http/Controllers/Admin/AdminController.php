@@ -63,7 +63,7 @@ class AdminController extends Controller{
 	
 	public function index(){
 		if(isset($this->user_id)){
-			Redirect::to('/admin/dashboard')->send();
+			Redirect::to('/admin/mothers')->send();
 		}
 		$data['title']= "Login";
 		return view('admin/login',$data);
