@@ -88,9 +88,14 @@ class DueList extends Eloquent {
 	}
 		
 	public function get_duelist($beneficiary_id){
+		if(!is_array($beneficiary_id))
+			$beneficiary_ids = array($beneficiary_id);
+		else
+			$beneficiary_ids = $beneficiary_id;
+		
 		$select = DB::table($this->table)
 					->select('due_id')
-					->where('fk_b_id','=',$beneficiary_id)
+					->wherein('fk_b_id','=',$beneficiary_ids)
 					->get();
 		$duelist_arr = array();
 		foreach($select as $due)
@@ -105,6 +110,7 @@ class DueList extends Eloquent {
 	}
 	
 	public function get_due_list_callchamp($cc_id){
+		
 		//first get out the due list details
 		$join_table_name1 = 'mct_callchampion_report';
 		$join_table_name2 = 'mct_checklist_master';
@@ -123,14 +129,18 @@ class DueList extends Eloquent {
 								$join_table_name2.'.i_action_id as action_id',
 								$join_table_name2.'.i_reference_week as ref_week',
 								$join_table_name3.'.v_name as name',
-								$join_table_name3.'.v_village_name as village_name'
+								$join_table_name3.'.v_village_name as village_name',
+								$join_table_name3.'.v_phone_number as phone_number'
 							)
 					->distinct()
-					->orderBy($join_table_name1.'.has_called','asc')
+					->orderBy($join_table_name1.'.has_called','desc')
 					->orderBy($this->table.'.dt_intervention_date','asc')
 					->where($this->table.'.fk_cc_id','=',$cc_id)
 					->simplepaginate(5);
 		
+		// echo "<pre>";
+		// print_r($select);
+		// die();
 		return $select;
 	}
 	

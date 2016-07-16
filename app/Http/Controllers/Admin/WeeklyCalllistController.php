@@ -59,13 +59,19 @@ class WeeklyCalllistController extends Controller{
 	
 	public function list_all_calls(){
 		$due_list_obj = new DueList;
-		$data['due_list'] = $due_list_obj->get_due_list_callchamp($this->role_id);
+		$return_info = $due_list_obj->get_due_list_callchamp($this->role_id);
+		$data['due_list_scheduled'] = $return_info;
+		$data['due_list_completed'] = $return_info;
+				
 		return view('mycalls.dashboard',$data);
 	}
 	
 	public function list_specific_call_details($due_id_encoded){
 		$due_list_obj = new DueList;
 		$due_id = $this->decode($due_id_encoded);
+		
+		$due_list_obj = new DueList;
+		//$data['data'] = $due_list_obj ->get_due_list_dueid($due_id);
 		$data['not_found'] = true;
 		if(false)
 			return(view('mycalls.details',$data));

@@ -45,17 +45,18 @@ smallfont{
 		<div class = "row">
 			<div class="col-lg-12 col-md-12">
 			<h4>
-			<?php $next_call = 1;
-				if(isset($next_call)) { 
+			<?php
+				if(isset($due_list_scheduled) && count($due_list_scheduled) > 0){
 					$difference_from_today_in_weeks = 1; //formula
 					if($difference_from_today_in_weeks <= 1){ ?>
 						<span class="badge">{{ trans('routes.close') }}</span>
 			<?php 	}
 					echo trans('routes.nextcall');
-					echo "<b>".date("d M y", time())."</b>. ";
-					echo "Call XX from YY on 991919191";
+					echo "<b>".date("d M y", strtotime($due_list_scheduled[0]->action_date))."</b>. ";
+					
+					echo "Call <b>".$due_list_scheduled[0]->name."</b> from <b>". $due_list_scheduled[0]->village_name."</b> on <b>".$due_list_scheduled[0]->phone_number."</b>";
 			?>
-				<a href="" class="btn btn-info">{{ trans('routes.details') }}</a>
+					<a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($due_list_scheduled[0]->due_id);?>" class="btn btn-info">{{ trans('routes.details') }}</a>
 			<?php
 					
 				} else{ ?>
@@ -75,9 +76,9 @@ smallfont{
 							<th>{{ trans('routes.location') }}</th>
 							<th colspan="2">{{ trans('routes.interventionpoint') }}</th>
 						</thead>
-						<?php if(!empty($due_list) && count($due_list) > 0) { ?>
+						<?php if(isset($due_list_scheduled) && count($due_list_scheduled) > 0) { ?>
 						<tbody>
-							<?php foreach ($due_list as $value){ ?>
+							<?php foreach ($due_list_scheduled as $value){ ?>
 							<tr>
 							<td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->due_id;?></a></td>
 							
@@ -107,7 +108,7 @@ smallfont{
 							</tr>  
 							<?php } ?>
 							<tr>
-								<td colspan="6"><center>{!! $due_list->render() !!}</center></td>
+								<td colspan="6"><center>{!! $due_list_scheduled->render() !!}</center></td>
 							</tr>
 						</tbody>
 						<?php } else { ?>
@@ -129,9 +130,9 @@ smallfont{
 							<th>{{ trans('routes.location') }}</th>
 							<th colspan="2">{{ trans('routes.interventionpoint') }}</th>
 						</thead>
-						<?php if(!empty($due_list) && count($due_list) > 0) { ?>
+						<?php if(isset($due_list_completed) && count($due_list_completed) > 0) { ?>
 						<tbody>
-							<?php foreach ($due_list as $value){ ?>
+							<?php foreach ($due_list_completed as $value){ ?>
 							<tr>
 							<td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->due_id;?></a></td>
 							
@@ -161,7 +162,7 @@ smallfont{
 							</tr>  
 							<?php } ?>
 							<tr>
-								<td colspan="6"><center>{!! $due_list->render() !!}</center></td>
+								<td colspan="6"><center>{!! $due_list_completed->render() !!}</center></td>
 							</tr>
 						</tbody>
 						<?php } else { ?>
