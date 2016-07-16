@@ -255,9 +255,9 @@ return array(
 		
 		'mothers' => 'Mothers',
 		
-		'intromct' => 'Welcome to Seva Setu\'s mother care tool. We aim to ..... For more information, have a quick look at this video. For more information, have a quick look at this video. For more information, have a quick look at this video. For more information, have a quick look at this video.',
+		'intromct' => 'Welcome Champion!',
 		
-		'assigned' => 'You are a Call Champion to',
+		'assigned' => 'You are a Call Champion to the following mothers',
 		'addmother' => 'Be a call champion to another mother',
 		'info' => 'You can be a change to another mother. Schedule another one',
 		
@@ -268,6 +268,11 @@ return array(
 		'weekofpregnancy' => 'Week of pregnancy to intervene in',
 		'stage' => 'What stage this week represents',
 		'action' => 'Action items to be conveyed by the Call Champion to the Mother',
+		
+		'getstarted' => 'Weclome to the Mother Care program. Click to get started',
+		
+		'whatismct' => 'What is the Mother Care program?',
+		'sevasetuinmedia' => 'Other stories from Seva Setu',
 		
 		
 		

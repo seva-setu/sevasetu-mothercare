@@ -33,16 +33,11 @@ smallfont{
 
 <div id="page-wrapper" >
 	<div id="page-inner">
-	   <div class = "row">
-			<div class="col-lg-10 col-md-10">
-			<h4>
-				{{ trans('routes.intromct') }}
-			</h4>			
-			</div>
-		</div>
-		<hr />
 		<div class="row">
-			<div class="col-lg-6 col-md-6">
+			<div class="col-lg-8 col-md-8">
+				<?php 
+					if(isset($data) && is_array($data) && count($data) > 0){
+				?>
 				<h3>
 					{{ trans('routes.assigned') }}
 				</h3>
@@ -55,7 +50,7 @@ smallfont{
 						   <div class="panel-heading">
 							  <h4 class="panel-title">
 								 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $i; ?>" class="collapsed">
-								 {{ $value->name }} from {{ $value->village_name }}
+								 <b>{{ $value->name }}</b> from {{ $value->village_name }}
 								 </a>
 							  </h4>
 						   </div>
@@ -79,6 +74,15 @@ smallfont{
 					}
 					?>
 				</div>
+			</div>
+		</div>
+		<div class = "row">
+			<div class="col-lg-4 col-md-4">
+					<?php } 
+						//End of if($data)
+						else
+							echo "<h4>".trans('routes.getstarted')."</h4>";
+					?>
 				<h4>
 					<a href="<?php echo url().'/admin/schedule/'.Hashids::encode($userinfo['role_id']);?>" class="btn btn-primary"> 
 					<b>{{trans('routes.addmother')}}</b>
@@ -86,7 +90,32 @@ smallfont{
 				</h4>
 			</div>
 			<!-- end main content in the page -->
-			
+		</div>
+		<hr/>
+		<div class="row">
+			<div class="col-lg-6 col-md-6">
+			<!-- Begin RHS content on the page -->
+				<h4>{{ trans('routes.whatismct') }}</h4>
+				 <div class="panel panel-primary">
+					<div class="panel-body">
+						<div class="embed-responsive embed-responsive-16by9">
+						<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/VeohOCDw2bc"></iframe>
+						</div>
+					</div>
+				 </div>
+			</div>
+			<div class="col-lg-6 col-md-6">
+			<!-- Begin RHS content on the page -->
+				<h4>{{ trans('routes.sevasetuinmedia') }}</h4>
+				 <div class="panel panel-primary">
+					<div class="panel-body">
+						<div class="embed-responsive embed-responsive-16by9">
+						<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/uXLACvILofE"></iframe>
+						</div>
+					</div>
+				 </div>
+			</div>
+			<!-- End RHS content on the page -->	
 		</div>
 	</div>
 </div>
