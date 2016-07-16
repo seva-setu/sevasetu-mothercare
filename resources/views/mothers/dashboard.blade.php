@@ -13,7 +13,6 @@ if($startdate!="" && $enddate!=""){
 	$datelable=$startdate." to ".$enddate;
 }	 
 $languagedata= DB::table('mct_language')->where('e_status', 'Active')->orderBy('bi_id', 'ASC')->get();
- 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,152 +33,64 @@ smallfont{
 
 <div id="page-wrapper" >
 	<div id="page-inner">
-	   <div class="row">
-			<div class="col-lg-5 col-md-6">
-				<h2><?php  echo trans('routes.mothers'); ?></h2>
-			</div>
-			<div class="col-lg-3 col-md-3"> </div>
-			<div class="col-lg-4 col-md-4"> </div>
-	   </div>
-		<hr />
-		<div class = "row">
-			<div class="col-lg-12 col-md-12">
+	   <div class = "row">
+			<div class="col-lg-10 col-md-10">
 			<h4>
-			<?php
-				if(isset($due_list_scheduled) && count($due_list_scheduled) > 0){
-					$difference_from_today_in_weeks = 1; //formula
-					if($difference_from_today_in_weeks <= 1){ ?>
-						<span class="badge">{{ trans('routes.close') }}</span>
-			<?php 	}
-					echo trans('routes.nextcall');
-					echo "<b>".date("d M y", strtotime($due_list_scheduled[0]->action_date))."</b>. ";
-					
-					echo "Call <b>".$due_list_scheduled[0]->name."</b> from <b>". $due_list_scheduled[0]->village_name."</b> on <b>".$due_list_scheduled[0]->phone_number."</b>";
-			?>
-					<a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($due_list_scheduled[0]->due_id);?>" class="btn btn-info">{{ trans('routes.details') }}</a>
-			<?php
-					
-				} else{ ?>
-					{{ trans('routes.nocall') }} 
-			<?php } ?>
+				{{ trans('routes.intromct') }}
+			</h4>			
 			</div>
-			</h4>
 		</div>
 		<hr />
 		<div class="row">
 			<div class="col-lg-6 col-md-6">
-				<h3>{{ trans('routes.callsscheduled')}}</h3>
-				<table class="table table-striped table-bordered table-hover">
-                        <thead class="warning">
-							<th>{{ trans('routes.uniqueid') }}</th>
-							<th>{{ trans('routes.name') }}</th>
-							<th>{{ trans('routes.location') }}</th>
-							<th colspan="2">{{ trans('routes.interventionpoint') }}</th>
-						</thead>
-						<?php if(isset($due_list_scheduled) && count($due_list_scheduled) > 0) { ?>
-						<tbody>
-							<?php foreach ($due_list_scheduled as $value){ ?>
-							<tr>
-							<td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->due_id;?></a></td>
-							
-							<td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->name;?></a></td>
-							
-							<td data-title="{{ trans('routes.location') }}"><?php echo $value->village_name;?>
-							</td>
-							
-							<td data-title="{{ trans('routes.interventionpoint') }}">
-								<?php
-									echo(date("d M y", strtotime($value->action_date)));
-								?>
+				<h3>
+					{{ trans('routes.assigned') }}
+				</h3>
+				<div class="panel-group" id="accordion">
+					<?php
+					$i = 0;
+					foreach($data as $value){
+					?>
+						<div class="panel panel-default">
+						   <div class="panel-heading">
+							  <h4 class="panel-title">
+								 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $i; ?>" class="collapsed">
+								 {{ $value->name }} from {{ $value->village_name }}
+								 </a>
+							  </h4>
+						   </div>
+						   <div id="collapse<?php echo $i; ?>" class="panel-collapse collapse" style="height: 0px;">
+							  <div class="panel-body">
+								
+									<b>{{ trans('routes.name') }}</b>: {{ $value->name }}
 								<br/>
-								<smallfont>
-								<?php
-									//Write the difference of the dates here instead of ..
-									echo "(.. ".trans('routes.weeks'). ")";
-								?>
-								</smallfont>
-							</td>
-							<td>
-								<?php //Should have a confirmation check on this button ?>
-								<a href="" class="btn btn-danger">{{ trans('routes.cancel') }}</a>
-							</td>
-							<?php //@if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td></td> @endif
-							?>
-							</tr>  
-							<?php } ?>
-							<tr>
-								<td colspan="6"><center>{!! $due_list_scheduled->render() !!}</center></td>
-							</tr>
-						</tbody>
-						<?php } else { ?>
-						<tbody>
-							  <tr>
-								<td colspan="5"><center><em><?php echo trans('routes.norecord'); ?></em></center></td>
-							  </tr>
-					  </tbody>
-						  <?php } ?>
-				</table>
-			</div>
-			
-			<div class="col-lg-6 col-md-6">
-				<h3>{{ trans('routes.callscompleted') }}  </h3>
-				<table class="table table-striped table-bordered table-hover">
-                        <thead class="warning">
-							<th>{{ trans('routes.uniqueid') }}</th>
-							<th>{{ trans('routes.name') }}</th>
-							<th>{{ trans('routes.location') }}</th>
-							<th colspan="2">{{ trans('routes.interventionpoint') }}</th>
-						</thead>
-						<?php if(isset($due_list_completed) && count($due_list_completed) > 0) { ?>
-						<tbody>
-							<?php foreach ($due_list_completed as $value){ ?>
-							<tr>
-							<td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->due_id;?></a></td>
-							
-							<td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->name;?></a></td>
-							
-							<td data-title="{{ trans('routes.location') }}"><?php echo $value->village_name;?>
-							</td>
-							
-							<td data-title="{{ trans('routes.interventionpoint') }}">
-								<?php
-									echo(date("d M y", strtotime($value->action_date)));
-								?>
+									<b>{{ trans('routes.village') }}</b>: {{ $value->village_name }}
 								<br/>
-								<smallfont>
-								<?php
-									//Write the difference of the dates here.
-									echo "(.. weeks to go)";
-								?>
-								</smallfont>
-							</td>
-							<td>
-								<?php //Should have a confirmation check on this button ?>
-								<a href="" class="btn btn-success"><?php echo trans('routes.edit'); ?></a>
-							</td>
-							<?php //@if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td></td> @endif
-							?>
-							</tr>  
-							<?php } ?>
-							<tr>
-								<td colspan="6"><center>{!! $due_list_completed->render() !!}</center></td>
-							</tr>
-						</tbody>
-						<?php } else { ?>
-						<tbody>
-							  <tr>
-								<td colspan="10"><center><em><?php echo trans('routes.norecord'); ?></em></center></td>
-							  </tr>
-					  </tbody>
-						  <?php } ?>
-				</table>
+									<b>{{ trans('routes.name') }}</b>: {{ $value->phone_number }}
+								<br/>
+									<b>{{ trans('routes.fieldworkername') }}</b>: {{ $value->field_worker_name }} 
+								<br/>
+									<b>{{ trans('routes.fieldworkernumber') }}</b>: {{ $value->field_worker_number }} 
+							  </div>
+						   </div>
+						</div>
+					<?php 
+						$i++;
+					}
+					?>
+				</div>
+				<h4>
+					<a href="<?php echo url().'/admin/schedule/'.Hashids::encode($userinfo['role_id']);?>" class="btn btn-primary"> 
+					<b>{{trans('routes.addmother')}}</b>
+					</a>
+				</h4>
 			</div>
-			
+			<!-- end main content in the page -->
 			
 		</div>
 	</div>
 </div>
-
+@include('template/admin_jsscript')
 </body>
 
 

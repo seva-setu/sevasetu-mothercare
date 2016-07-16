@@ -62,8 +62,8 @@ smallfont{
 				} else{ ?>
 					{{ trans('routes.nocall') }} 
 			<?php } ?>
-			</div>
 			</h4>
+			</div>
 		</div>
 		<hr />
 		<div class="row">

@@ -145,7 +145,7 @@ return array(
 	'selectimage'=>'Select Photo',
 	'emergancynote'=>'Emergency Note',
 	'fieldworkername'=>'Seva Setu\'s field worker associated',
-	'fieldworkernumber'=>'Field Worker Phone Number',
+	'fieldworkernumber'=>'Field worker\'s contact',
 	'downloadreport'=>'Download Report',
 	'download' => 'Download',	
 	'lmpdate'=>'LMP date',
@@ -255,5 +255,9 @@ return array(
 		
 		'mothers' => 'Mothers',
 		
+		'intromct' => 'Welcome to Seva Setu\'s mother care tool. We aim to ..... For more information, have a quick look at this video. For more information, have a quick look at this video. For more information, have a quick look at this video. For more information, have a quick look at this video.',
 		
+		'assigned' => 'You are a Call Champion to',
+		'addmother' => 'Be a call champion to another mother',
+		'info' => 'You can be a change to another mother. Schedule another one',
 );
