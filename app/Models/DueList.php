@@ -133,15 +133,19 @@ class DueList extends Eloquent {
 								$join_table_name3.'.v_phone_number as phone_number'
 							)
 					->distinct()
-					->orderBy($join_table_name1.'.has_called','desc')
 					->orderBy($this->table.'.dt_intervention_date','asc')
 					->where($this->table.'.fk_cc_id','=',$cc_id);
 		if($beneficiary_id > -1)
 			$select = $select->where($this->table.'.fk_b_id','=',$beneficiary_id);
 		
-		$select = $select->simplepaginate(5);
+		$select_has_called_not  = clone $select;	
+		$select_has_called 		= $select->where($join_table_name1.'.has_called','=',1);
+		$select_has_called_not  = $select_has_called_not->where($join_table_name1.'.has_called','=',0);
 		
-		return $select;
+		$selected['has_called'] 		= $select_has_called->simplepaginate(15);
+		$selected['has_called_not'] 	= $select_has_called_not->simplepaginate(15);
+		
+		return $selected;
 	}
 	
 	public function get_due_list_dueid($due_id){
