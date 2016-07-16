@@ -1,19 +1,5 @@
 <?php 
-$cstartdate = date('d/m/Y',strtotime('last sunday'));
-$cenddate = date('d/m/Y',strtotime('this saturday'));
-$state=isset($state) && $state!="all"?$state:"";
-$city=isset($city) && $city!="all"?$city:"";
-$taluka=isset($taluka) && $taluka!="all" ?$taluka:"";
-
-$userinfo=Session::get('user_logged');
-$startdate=isset($startdate)?date('d/m/Y',strtotime($startdate)):"";
-$enddate=isset($enddate)?date('d/m/Y',strtotime($enddate)):"";
-$datelable="";
-if($startdate!="" && $enddate!=""){
-	$datelable=$startdate." to ".$enddate;
-}	 
-$languagedata= DB::table('mct_language')->where('e_status', 'Active')->orderBy('bi_id', 'ASC')->get();
- 
+	$user_details = Session::get('user_logged');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,8 +86,8 @@ smallfont{
 								</smallfont>
 							</td>
 							<td>
-								<?php //Should have a confirmation check on this button ?>
-								<a href="" class="btn btn-danger">{{ trans('routes.cancel') }}</a>
+								<?php //Should have a JS confirmation check on this button ?>
+								<a href="<?php echo url().'/admin/schedule/'.Hashids::encode($user_details['role_id']).'/'.Hashids::encode($value->due_id);?>" class="btn btn-danger">{{ trans('routes.cancel') }}</a>
 							</td>
 							<?php //@if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td></td> @endif
 							?>
@@ -155,7 +141,7 @@ smallfont{
 							</td>
 							<td>
 								<?php //Should have a confirmation check on this button ?>
-								<a href="" class="btn btn-success"><?php echo trans('routes.edit'); ?></a>
+								<a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" class="btn btn-success"><?php echo trans('routes.edit'); ?></a>
 							</td>
 							<?php //@if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td></td> @endif
 							?>

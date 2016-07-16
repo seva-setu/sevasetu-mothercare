@@ -109,7 +109,7 @@ class DueList extends Eloquent {
 									->update(['fk_cc_id'=>$call_champ_id]);
 	}
 	
-	public function get_due_list_callchamp($cc_id){
+	public function get_due_list_callchamp($cc_id, $beneficiary_id = -1){
 		
 		//first get out the due list details
 		$join_table_name1 = 'mct_callchampion_report';
@@ -135,12 +135,12 @@ class DueList extends Eloquent {
 					->distinct()
 					->orderBy($join_table_name1.'.has_called','desc')
 					->orderBy($this->table.'.dt_intervention_date','asc')
-					->where($this->table.'.fk_cc_id','=',$cc_id)
-					->simplepaginate(5);
+					->where($this->table.'.fk_cc_id','=',$cc_id);
+		if($beneficiary_id > -1)
+			$select = $select->where($this->table.'.fk_b_id','=',$beneficiary_id);
 		
-		// echo "<pre>";
-		// print_r($select);
-		// die();
+		$select = $select->simplepaginate(5);
+		
 		return $select;
 	}
 	

@@ -80,7 +80,12 @@ class WeeklyCalllistController extends Controller{
 		$due_id = $this->decode($due_id_encoded);
 		
 		$due_list_obj = new DueList;
-		//$data['data'] = $due_list_obj ->get_due_list_dueid($due_id);
+		$beneficiary_id = $due_list_obj->get_due_list_callchamp(28);
+		die();
+		//$beneficiary_id = $due_list_obj->get_beneficiary_id($due_list_id);
+		//$data['data_mother'] = $due_list_obj->($due_id);
+		
+		
 		$data['not_found'] = true;
 		if(false)
 			return(view('mycalls.details',$data));
