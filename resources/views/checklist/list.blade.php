@@ -52,20 +52,16 @@ smallfont{
 					<tbody>
 						<?php
 						/////// Counts to manage row-count /////////
-						$current_val = $checklist_master[0]->i_reference_week;
-						$ref_week_counts = array();
-						$count = 0;
+						$current_val = -1;
 						foreach($checklist_master as $value){
 							if($current_val != $value->i_reference_week){
-								$ref_week_counts []= $count;
-								$count = 1;
 								$current_val = $value->i_reference_week;
 							}
-							else
-								$count++;
+							else{
+								$value->i_reference_week = '';
+								$value->v_reference_descrip = '';
+							}
 						}
-						$ref_week_counts []= $count;
-						$count = 0;
 						/////// Counts to manage row-count /////////
 						foreach($checklist_master as $value){
 						?>

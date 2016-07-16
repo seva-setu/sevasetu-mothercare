@@ -261,7 +261,7 @@ return array(
 		'addmother' => 'Be a call champion to another mother',
 		'info' => 'You can be a change to another mother. Schedule another one',
 		
-		'masterchecklist' => 'Master Check List',
+		'masterchecklist' => 'Check List',
 		'masterchecklist_descrip' => 'Refer to this check list to talk your way through a phone call. Very important information here',
 		
 		'num' => '#',
