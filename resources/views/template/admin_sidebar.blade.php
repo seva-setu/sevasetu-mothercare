@@ -26,7 +26,7 @@
 			<a href="{{url()}}/admin/settings"><i class="fa fa-cogs "></i>Settings</a>
 			</li>
 			<li <?php echo $feedback; ?> >
-			<a href="{{url()}}/admin/feedback"><i class="fa fa-volume-up"></i>Feedback</a>
+			<a href="{{url()}}/admin/feedback"><i class="fa fa-volume-up"></i>Feedback and Bugs</a>
 			</li>
 		</ul>
 	</div>

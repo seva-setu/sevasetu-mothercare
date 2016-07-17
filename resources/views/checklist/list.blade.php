@@ -18,7 +18,7 @@ smallfont{
 <div id="page-wrapper" >
 	<div id="page-inner">
 		<div class="row">
-			<div class="col-lg-9 col-md-9">
+			<div class="col-lg-10 col-md-10">
 				<h3>
 					{{ trans('routes.masterchecklist') }}
 				</h3>

@@ -1,3 +1,6 @@
+<?php 
+	$user_details = Session::get('user_logged');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,7 +54,7 @@ smallfont{
 				<div class="col-lg-5 col-md-5">
 					<p>
 					<?php echo "<b>".trans('routes.expecteddate')."</b>: ";
-						echo $personal_details->due_date;
+						echo (date("d M y", strtotime($personal_details->due_date)));
 					?>
 					</p>
 					<p>
@@ -80,8 +83,10 @@ smallfont{
 					<span class="label label-primary">
 					
 					<?php 
-							echo " ".trans('routes.thiscallscheduled')." ";
-							echo "12 June 2016";
+							if(isset($due_list_scheduled) && count($due_list_scheduled) > 0){
+								echo " ".trans('routes.thiscallscheduled')." ";
+								echo date("d M y", strtotime($due_list_scheduled[0]->action_date));
+							}
 					?>
 					</span>
 					</b></h4>
@@ -116,7 +121,8 @@ smallfont{
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#t_notes" data-toggle="tab"> <b> {{ trans('routes.notes') }} </b></a>
 						</li>
-						<li class=""><a href="#t_previouscalls" data-toggle="tab"> <b>{{ trans('routes.callscompletedscheduled') }} </b> </a>
+						<li class=""><a href="#t_previouscalls" data-toggle="tab"> <b>{{ trans('routes.callscompletedscheduled') }} </b> 
+						</a>
 						</li>
 					 </ul>
 					 <!-- BEGIN CODE FOR TABBED CONTENT -->
@@ -126,16 +132,30 @@ smallfont{
                         <div class="tab-pane fade active in" id="t_notes">
 							<!-- Begin section for action items -->
 							<div class="col-lg-6 col-md-6">
-								<h4><b>
-								<span class = "label label-warning">
+								<h5><b>
 									{{trans('routes.actionitem')}}
-								</span>
-								</b></h4>
-								<ul>
-									<li> Talk to me</li>
-									<li> Talk to you</li>
-								</ul>
-							
+								</b></h5>
+								<?php 
+									$prev = "";
+									foreach($action_items as $item){ 
+										if($prev != $item->reference_descrip){
+											if($prev != "")
+												echo "</ul>";
+								?>
+												<h4>
+												<span class="label label-success">
+								<?php
+												echo $item->reference_descrip;
+												$prev = $item->reference_descrip;
+								?>
+												</span>
+												</h4>
+											<ul>
+								<?php 	} ?>
+										<li> {{ $item->action_descrip }}</li>
+								<?php }	
+								?>
+											</ul>
 							</div>
 							<!-- End section for action items -->
 							<!-- Begin section for textarea -->
@@ -144,12 +164,12 @@ smallfont{
 								  <label for="action_note">{{ trans('routes.notes_field')}}
 								  <span class="label label-danger">Important</span>
 								  </label>
-								  <textarea class="form-control" rows="5" id="action_note"></textarea>
+								  <textarea class="form-control" rows="5" id="action_note" onfocus="if(this.value == '<?php echo trans('routes.textareadefaulttext');?>') this.value='';" onblur="if(this.value == '') this.value='<?php echo trans('routes.textareadefaulttext');?>';"><?php echo trans('routes.textareadefaulttext');?></textarea>
 								</div>
 								
 							   <div class="form-group">
-								  <label for="general_note">{{ trans('routes.notes_general') }} Rani Jhansi</label>
-								  <textarea class="form-control" rows="5" id="general_note"></textarea>
+								  <label for="general_note">{{ trans('routes.notes_general') }} {{ $personal_details->name }}</label>
+								  <textarea class="form-control" rows="5" id="general_note">{{ trim($personal_details->mother_notes) }}</textarea>
 								</div>
 								
 								<a href="#" class="btn btn-primary">{{trans('routes.submitnote')}}</a>

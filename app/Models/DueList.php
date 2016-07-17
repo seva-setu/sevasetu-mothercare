@@ -154,9 +154,8 @@ class DueList extends Eloquent {
 		$select_has_called_not  = $select_has_called_not->where($join_table_name1.'.has_called','=',0);
 		
 		$selected['due_list_scheduled'] 		= $select_has_called_not->simplepaginate(5,['*'],'one');
+		
 		$selected['due_list_completed'] 		= $select_has_called->simplepaginate(5,['*'],'two');
-		
-		
 		return $selected;
 	}
 		

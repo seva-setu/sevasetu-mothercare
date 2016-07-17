@@ -273,6 +273,7 @@ return array(
 		
 		'whatismct' => 'What is the Mother Care program?',
 		'sevasetuinmedia' => 'Other stories from Seva Setu',
+		'textareadefaulttext'=>'[[Mention only notes on which action items need to be taken. Place all general notes related to the call in the textbox below]]',
 		
 		
 		

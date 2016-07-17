@@ -33,7 +33,7 @@ smallfont{
 			<h4>
 			<?php
 				if(isset($due_list_scheduled) && count($due_list_scheduled) > 0){
-					$difference_from_today_in_weeks = 1; //formula
+					$difference_from_today_in_weeks = 2; //formula
 					if($difference_from_today_in_weeks <= 1){ ?>
 						<span class="badge">{{ trans('routes.close') }}</span>
 			<?php 	}

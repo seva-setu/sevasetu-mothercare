@@ -92,8 +92,8 @@ class WeeklyCalllistController extends Controller{
 		
 		
 		$data['personal_details'] = $beneficiary_details;
-		$data['due_list_completed'] = $call_details['due_list_scheduled'];
-		$data['due_list_scheduled'] = $call_details['due_list_completed'];
+		$data['due_list_completed'] = $call_details['due_list_completed'];
+		$data['due_list_scheduled'] = $call_details['due_list_scheduled'];
 		$data['action_items'] = $action_items;
 		
 		if(false)

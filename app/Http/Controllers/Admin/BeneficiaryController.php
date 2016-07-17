@@ -105,7 +105,6 @@ class BeneficiaryController extends Controller{
 		// LMP: Last Menstrual Period
 		$LMP_DATE_CALC_WEEKS = 39;
 		$begin_date  = date("Y-m-d", strtotime('-'.$LMP_DATE_CALC_WEEKS.' weeks',strtotime($delivery_date)));
-		
 		$weeks_to_add = array(0, 12, 16, 26, 36, 40, 46, 50, 54, 64);
 		$due_list = array();
 		for($i=0;$i<count($weeks_to_add);$i++){
