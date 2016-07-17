@@ -3,6 +3,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\CallChampion;
 use App\Models\Users;
+use App\Models\DueList;
+use App\Models\Beneficiary;
+
 use Request;
 use Mail;
 use Auth;
@@ -53,10 +56,15 @@ class CallchampionsController extends Controller{
 		if($cc_id = -1){
 			$cc_id = $this->role_id;
 		}
-		$cc_obj = new CallChampion();
-		$data['data'] = $cc_obj->get_assigned_beneficiaries($cc_id);
-		
-		return view('mothers/dashboard',$data);
+		if($cc_id > 0){
+			$due_list_obj = new DueList();
+			$beneficiary_ids_list = $due_list_obj->get_beneficiary_ids_list($cc_id);	
+						
+			$b_obj = new Beneficiary();
+			$data['data'] = $b_obj->get_beneficiary_details($beneficiary_ids_list);
+			
+			return view('mothers/dashboard',$data);
+		}
 	}
 ////////////////////////////////////////////////
 

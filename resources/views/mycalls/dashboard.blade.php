@@ -94,7 +94,7 @@ smallfont{
 							</tr>  
 							<?php } ?>
 							<tr>
-								<td colspan="6"><center>{!! $due_list_scheduled->render() !!}</center></td>
+								<td colspan="6"><center>{!! $due_list_scheduled->appends(['two'=>Request::query('two')])->render() !!}</center></td>
 							</tr>
 						</tbody>
 						<?php } else { ?>
@@ -148,7 +148,7 @@ smallfont{
 							</tr>  
 							<?php } ?>
 							<tr>
-								<td colspan="6"><center>{!! $due_list_completed->render() !!}</center></td>
+								<td colspan="6"><center>{!! $due_list_completed->appends(['one'=>Request::query('one')])->render() !!}</center></td>
 							</tr>
 						</tbody>
 						<?php } else { ?>

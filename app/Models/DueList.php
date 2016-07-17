@@ -16,7 +16,18 @@ class DueList extends Eloquent {
 	 * Insert Beneficiary Report in Database.
 	 */
 	 
-	 
+	public function get_beneficiary_ids_list($cc_id){
+		$beneficiary_objects = DB::table($this->table)
+								->select('fk_b_id')
+								->distinct()
+								->where('fk_cc_id','=',$cc_id)
+								->get();
+		
+		foreach($beneficiary_objects as $obj)
+			$beneficiary_list []= $obj->fk_b_id;
+		
+		return $beneficiary_list;
+	}
 	public function update_due_list($beneficiary_id, $due_list){
 		$due_list_arr = array();
 		for($i=0; $i<count($due_list); $i++){
@@ -142,8 +153,9 @@ class DueList extends Eloquent {
 		$select_has_called 		= $select->where($join_table_name1.'.has_called','=',1);
 		$select_has_called_not  = $select_has_called_not->where($join_table_name1.'.has_called','=',0);
 		
-		$selected['has_called'] 		= $select_has_called->simplepaginate(15);
-		$selected['has_called_not'] 	= $select_has_called_not->simplepaginate(15);
+		$selected['due_list_scheduled'] 		= $select_has_called_not->simplepaginate(5,['*'],'one');
+		$selected['due_list_completed'] 		= $select_has_called->simplepaginate(5,['*'],'two');
+		
 		
 		return $selected;
 	}

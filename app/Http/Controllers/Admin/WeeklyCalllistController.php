@@ -68,19 +68,21 @@ class WeeklyCalllistController extends Controller{
 	
 	public function list_all_calls(){
 		$due_list_obj = new DueList;
-		$return_info = $due_list_obj->get_due_list_callchamp($this->role_id);
-		$data['due_list_scheduled'] = $return_info;
-		$data['due_list_completed'] = $return_info;
-				
-		return view('mycalls.dashboard',$data);
+		$return_info = $due_list_obj->get_due_list_callchamp($this->role_id);				
+		return view('mycalls.dashboard',$return_info);
 	}
 	
 	public function list_specific_call_details($due_id_encoded){
-		$due_list_obj = new DueList;
 		$due_id = $this->decode($due_id_encoded);
-		
 		$due_list_obj = new DueList;
-		$beneficiary_id = $due_list_obj->get_due_list_callchamp(28);
+		$beneficiary_id_obj = $due_list_obj->find($due_id);
+		// ACTION_ITEM: Need exception handling here
+		$beneficiary_id = $beneficiary_id_obj['attributes']['fk_b_id'];
+		
+		$b_obj = new Beneficiary;
+		$beneficiary_details = $b_obj->get_beneficiary_details($beneficiary_id);
+		echo "<pre>";
+		print_r($beneficiary_details);
 		die();
 		//$beneficiary_id = $due_list_obj->get_beneficiary_id($due_list_id);
 		//$data['data_mother'] = $due_list_obj->($due_id);

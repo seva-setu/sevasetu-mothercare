@@ -15,11 +15,63 @@ class Beneficiary extends Eloquent {
 	/*
 	 * Insert Beneficiary Report in Database.
 	 */
-	 
-	 
-	 
-	 
-	 //////////////////////////////////////////////////
+	
+	
+	public function get_beneficiary_details($beneficiary_id){
+		$join_table1 = 'mct_field_workers';
+		$join_table2 = 'mct_user';
+		$select = DB::table($this->table)
+				->join($join_table1, $join_table1.'.f_id','=', $this->table.'.fk_f_id')
+				->join($join_table2, $join_table1.'.fk_user_id','=', $join_table2.'.user_id')
+				->select(
+							$this->table.'.v_name as name',
+							$this->table.'.v_village_name as village_name',
+							$this->table.'.v_husband_name as husband_name',
+							$this->table.'.v_phone_number as phone_number',
+							$this->table.'.dt_due_date as due_date',
+							$this->table.'.t_notes as mother_notes',
+							
+							$join_table1.'.f_id as fieldworker_id',
+							$join_table2.'.v_name as field_worker_name',
+							$join_table2.'.i_phone_number as field_worker_number'
+						);
+		if(is_array($beneficiary_id)){
+				$select = $select->wherein($this->table.'.b_id',$beneficiary_id);
+		}
+		else
+				$select = $select->where($this->table.'.b_id','=',$beneficiary_id);
+		$select = $select->get();
+				
+		return $select;
+	}
+	
+		
+	public function update_notes($beneficiary_id, $notes){
+		
+	}
+	
+	
+	
+	/////////////////////////////////////////////////////////
+	public function insert($beneficiary_data, $field_worker_id){
+		$this->v_name 			= $beneficiary_data[''];
+		$this->fk_f_id 			= $field_worker_id;
+		$this->v_husband_name 	= $beneficiary_data[''];
+		$this->v_phone_number 	= $beneficiary_data[''];
+		$this->v_awc_number 	= $beneficiary_data[''];
+		$this->v_village_name 	= $beneficiary_data[''];
+		$this->dt_due_date 		= $beneficiary_data[''];
+		$this->v_language 		= $beneficiary_data[''];
+		
+		$result = $this->save();
+		if($result)
+			return $this->getKey();
+		else
+			return false;
+	} 
+	
+	
+	
 	public function insertReport($benId,$emergencynote){
 		$res = DB::select("select  bi_field_worker_id,bi_calls_champion_id from mct_beneficiary where bi_id=$benId");
 		
