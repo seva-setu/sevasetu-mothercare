@@ -159,11 +159,17 @@ class DueList extends Eloquent {
 		
 		return $selected;
 	}
-	
-	public function get_due_list_dueid($due_id){
-		$arr['data'] = 1;
-		return $arr;
 		
+	public function get_checklist_items($action_item_id){
+		$table_name = 'mct_checklist_master';
+		$select = DB::table($table_name)
+			->select('v_reference_descrip as reference_descrip',
+					 'v_action_descrip as action_descrip'
+					)
+			->where('i_action_id','=',$action_item_id)
+			->get();
+		
+		return $select;
 	}
 }
 ?>

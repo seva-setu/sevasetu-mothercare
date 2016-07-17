@@ -75,24 +75,31 @@ class WeeklyCalllistController extends Controller{
 	public function list_specific_call_details($due_id_encoded){
 		$due_id = $this->decode($due_id_encoded);
 		$due_list_obj = new DueList;
-		$beneficiary_id_obj = $due_list_obj->find($due_id);
+		$due_id_obj = $due_list_obj->find($due_id);
+		
 		// ACTION_ITEM: Need exception handling here
-		$beneficiary_id = $beneficiary_id_obj['attributes']['fk_b_id'];
+		$beneficiary_id = $due_id_obj['attributes']['fk_b_id'];
 		
 		$b_obj = new Beneficiary;
 		$beneficiary_details = $b_obj->get_beneficiary_details($beneficiary_id);
-		echo "<pre>";
-		print_r($beneficiary_details);
-		die();
-		//$beneficiary_id = $due_list_obj->get_beneficiary_id($due_list_id);
-		//$data['data_mother'] = $due_list_obj->($due_id);
+		$beneficiary_details = $beneficiary_details[0];
+		$beneficiary_details->due_id = $due_id;
+		
+		$call_details = $due_list_obj->get_due_list_callchamp($due_id_obj['attributes']['fk_cc_id'], $beneficiary_id);
+		
+		$action_item_id = $due_id_obj['attributes']['fk_action_id'];
+		$action_items = $due_list_obj->get_checklist_items($action_item_id);
 		
 		
-		$data['not_found'] = true;
+		$data['personal_details'] = $beneficiary_details;
+		$data['due_list_completed'] = $call_details['due_list_scheduled'];
+		$data['due_list_scheduled'] = $call_details['due_list_completed'];
+		$data['action_items'] = $action_items;
+		
 		if(false)
 			return(view('mycalls.details',$data));
 		else
-			return(view('mycalls.details',$due_list_obj->get_due_list_dueid($due_id)));
+			return(view('mycalls.details',$data));
 	}
 	
 	public function decode($id=0){

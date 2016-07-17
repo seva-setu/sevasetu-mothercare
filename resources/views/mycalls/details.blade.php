@@ -28,19 +28,19 @@ smallfont{
 		<?php } else { ?>
 		   <div class="row">
 				<div class="col-lg-5 col-md-5">
-					<h3><?php  echo "<b>Rani Jhansi Phulan Devi</b>"; ?></h3>
+					<h3><?php  echo "<b>".$personal_details->name."</b>"; ?></h3>
 				</div>
 				<div class="col-lg-5 col-md-5">
 					<h3>
 					<?php  echo "<b>".trans('routes.phonenumber')."</b>: "; 
-							echo "12312312312";
+							echo $personal_details->phone_number;
 					?>
 					</h3>
 				</div>
 				<div class="col-lg-2 col-md-2">
 					<h3><b>
 					<span class="label label-success">
-						<?php 	echo trans('routes.callid')."534"; ?>
+						<?php 	echo trans('routes.callid').$personal_details->due_id; ?>
 					</span>
 					</b></h3>
 				</div>
@@ -51,24 +51,24 @@ smallfont{
 				<div class="col-lg-5 col-md-5">
 					<p>
 					<?php echo "<b>".trans('routes.expecteddate')."</b>: ";
-						echo "12 June 2017";
+						echo $personal_details->due_date;
 					?>
 					</p>
 					<p>
 					<?php  echo "<b>".trans('routes.husbandname')."</b>: ";
-							echo "Rammanohar Lohia Kumar"
+							echo $personal_details->husband_name;
 					?>
 					</p>
 				</div>
 				<div class="col-lg-7 col-md-7">
 					<p>
 					<?php  echo "<b>".trans('routes.village')."</b>: ";
-							echo "Musohri Tola Bhusola Danapur"
+							echo $personal_details->village_name;
 					?>
 					</p>
 					<p>
 					<?php  echo "<b>".trans('routes.fieldworkername')."</b>: ";
-							echo "Lohia Manohar Ram Kumar"
+							echo $personal_details->field_worker_name;
 					?>
 					</p>
 				</div>
@@ -131,7 +131,6 @@ smallfont{
 									{{trans('routes.actionitem')}}
 								</span>
 								</b></h4>
-								<br/>
 								<ul>
 									<li> Talk to me</li>
 									<li> Talk to you</li>
@@ -159,10 +158,114 @@ smallfont{
                         </div>
 							
 					<!-- BEGIN CODE FOR TAB "Action items" -->
-						<div class="tab-pane fade" id="t_actionitem">
-                           <p>
-                              ACTION ITEM dolor sit amet, consectetur adipisicing elit eserunt mollit anim id est laborum.
-                           </p>
+						<div class="tab-pane fade" id="t_previouscalls">
+                           <div class="col-lg-6 col-md-6">
+				<h3>{{ trans('routes.callsscheduled')}}</h3>
+				<table class="table table-striped table-bordered table-hover">
+                        <thead class="warning">
+							<th>{{ trans('routes.uniqueid') }}</th>
+							<th>{{ trans('routes.name') }}</th>
+							<th>{{ trans('routes.location') }}</th>
+							<th colspan="2">{{ trans('routes.interventionpoint') }}</th>
+						</thead>
+						<?php if(isset($due_list_scheduled) && count($due_list_scheduled) > 0) { ?>
+						<tbody>
+							<?php foreach ($due_list_scheduled as $value){ ?>
+							<tr>
+							<td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->due_id;?></a></td>
+							
+							<td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->name;?></a></td>
+							
+							<td data-title="{{ trans('routes.location') }}"><?php echo $value->village_name;?>
+							</td>
+							
+							<td data-title="{{ trans('routes.interventionpoint') }}">
+								<?php
+									echo(date("d M y", strtotime($value->action_date)));
+								?>
+								<br/>
+								<smallfont>
+								<?php
+									//Write the difference of the dates here instead of ..
+									echo "(.. ".trans('routes.weeks'). ")";
+								?>
+								</smallfont>
+							</td>
+							<td>
+								<?php //Should have a JS confirmation check on this button ?>
+								<a href="<?php echo url().'/admin/schedule/'.Hashids::encode($user_details['role_id']).'/'.Hashids::encode($value->due_id);?>" class="btn btn-danger">{{ trans('routes.cancel') }}</a>
+							</td>
+							<?php //@if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td></td> @endif
+							?>
+							</tr>  
+							<?php } ?>
+							<tr>
+								<td colspan="6"><center>{!! $due_list_scheduled->appends(['two'=>Request::query('two')])->render() !!}</center></td>
+							</tr>
+						</tbody>
+						<?php } else { ?>
+						<tbody>
+							  <tr>
+								<td colspan="5"><center><em><?php echo trans('routes.norecord'); ?></em></center></td>
+							  </tr>
+					  </tbody>
+						  <?php } ?>
+				</table>
+			</div>
+			
+			<div class="col-lg-6 col-md-6">
+				<h3>{{ trans('routes.callscompleted') }}  </h3>
+				<table class="table table-striped table-bordered table-hover">
+                        <thead class="warning">
+							<th>{{ trans('routes.uniqueid') }}</th>
+							<th>{{ trans('routes.name') }}</th>
+							<th>{{ trans('routes.location') }}</th>
+							<th colspan="2">{{ trans('routes.interventionpoint') }}</th>
+						</thead>
+						<?php if(isset($due_list_completed) && count($due_list_completed) > 0) { ?>
+						<tbody>
+							<?php foreach ($due_list_completed as $value){ ?>
+							<tr>
+							<td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->due_id;?></a></td>
+							
+							<td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->name;?></a></td>
+							
+							<td data-title="{{ trans('routes.location') }}"><?php echo $value->village_name;?>
+							</td>
+							
+							<td data-title="{{ trans('routes.interventionpoint') }}">
+								<?php
+									echo(date("d M y", strtotime($value->action_date)));
+								?>
+								<br/>
+								<smallfont>
+								<?php
+									//Write the difference of the dates here.
+									echo "(.. weeks to go)";
+								?>
+								</smallfont>
+							</td>
+							<td>
+								<?php //Should have a confirmation check on this button ?>
+								<a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" class="btn btn-success"><?php echo trans('routes.edit'); ?></a>
+							</td>
+							<?php //@if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td></td> @endif
+							?>
+							</tr>  
+							<?php } ?>
+							<tr>
+								<td colspan="6"><center>{!! $due_list_completed->appends(['one'=>Request::query('one')])->render() !!}</center></td>
+							</tr>
+						</tbody>
+						<?php } else { ?>
+						<tbody>
+							  <tr>
+								<td colspan="10"><center><em><?php echo trans('routes.norecord'); ?></em></center></td>
+							  </tr>
+					  </tbody>
+						  <?php } ?>
+				</table>
+			</div>
                         </div>
 					 </div>
 					 
