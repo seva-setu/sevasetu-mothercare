@@ -10,7 +10,6 @@
         <script src="<?php echo Config::get('constant.SITEURL'); ?>external/js/function.js"></script> 
         <script type="application/javascript" language="javascript">
 		</script>
-	@include('template/script_multilanguage')	
     </head>
     <body>
     <form style="float: right;padding:5px;margin:0px;" class="form-horizontal" accept-charset="utf-8" method="POST" id="frmchangeLanguage" name="frmchangeLanguage" action="<?php echo Config::get('app.url').'language/chooser'; ?>">

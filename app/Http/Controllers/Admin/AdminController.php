@@ -20,8 +20,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Http\Response;
 
-
-
 use Mail;
 use Hash;
 use Auth;

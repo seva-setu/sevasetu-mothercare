@@ -16,7 +16,6 @@ smallfont{
 <body>
 @include('template/admin_header')
 @include('template/admin_sidebar')
-@include('template/script_multilanguage')
 
 <div id="page-wrapper" >
 	<div id="page-inner">

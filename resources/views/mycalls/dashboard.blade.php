@@ -16,16 +16,11 @@ smallfont{
 <body>
 @include('template/admin_header')
 @include('template/admin_sidebar')
-@include('template/script_multilanguage')
-
 <div id="page-wrapper" >
 	<div id="page-inner">
 	   <div class="row">
 			<div class="col-lg-6 col-md-6">
 				<h2><?php  echo trans('routes.callsthisweek'); ?></h2>
-			</div>
-			<div class="col-lg-6 col-md-6"> 
-			
 			</div>
 	   </div>
 		<div class = "row">
@@ -37,10 +32,15 @@ smallfont{
 					if($difference_from_today_in_weeks <= 1){ ?>
 						<span class="badge">{{ trans('routes.close') }}</span>
 			<?php 	}
+				for($i = 0; $i<2; $i++){
+					echo "<p>";
+					echo "<i class=\"fa fa-volume-control-phone\"></i>";
 					echo trans('routes.nextcall');
 					echo "<b>".date("d M y", strtotime($due_list_scheduled[0]->action_date))."</b>. ";
 					
 					echo "Call <b>".$due_list_scheduled[0]->name."</b> from <b>". $due_list_scheduled[0]->village_name."</b> on <b>".$due_list_scheduled[0]->phone_number."</b>";
+					echo "</p>";
+				}
 			?>
 					<a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($due_list_scheduled[0]->due_id);?>" class="btn btn-info">{{ trans('routes.details') }}</a>
 			<?php
