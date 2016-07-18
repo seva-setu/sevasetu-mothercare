@@ -127,7 +127,8 @@ smallfont{
 					 </ul>
 					 <!-- BEGIN CODE FOR TABBED CONTENT -->
 					 <div class="tab-content">
-					 
+					
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					 <!-- BEGIN CODE FOR TAB "Notes from call" -->
                         <div class="tab-pane fade active in" id="t_notes">
 							<!-- Begin section for action items -->
@@ -171,12 +172,11 @@ smallfont{
 								  <label for="general_note">{{ trans('routes.notes_general') }} {{ $personal_details->name }}</label>
 								  <textarea class="form-control" rows="5" id="general_note">{{ trim($personal_details->mother_notes) }}</textarea>
 								</div>
-								
-								<a href="#" class="btn btn-primary">{{trans('routes.submitnote')}}</a>
+								<button type="submit">{{trans('routes.submitnote')}}</button>
 							</div>
 							<!-- End section for textarea -->
                         </div>
-							
+					</form> 
 					<!-- BEGIN CODE FOR TAB "Action items" -->
 						<div class="tab-pane fade" id="t_previouscalls">
                            @include('template/mycalls_calldetails')

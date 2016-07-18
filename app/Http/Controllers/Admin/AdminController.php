@@ -125,7 +125,7 @@ class AdminController extends Controller{
     }else{
       	$validlogin = $users->validate_login($userdata);
        	if($validlogin){
-    		return Redirect::to('/admin/dashboard/');
+    		return Redirect::to('/admin/mothers');
     	}else{
     		Session::flash('message', trans("routes.loginerror"));
     		return Redirect::to('admin');
@@ -185,7 +185,7 @@ class AdminController extends Controller{
   			//success message
   			Session::flash('message', '<div class="alert alert-success" style="clear:both;">
               <button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.changepassmsg").'</div>');
-  			return Redirect::to('/admin/dashboard');
+  			return Redirect::to('/admin/mothers');
   		}else {
   			Session::flash('message', '<div class="alert alert-error" style="clear:both;">
               <button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.passwordnmtc").'</div>');
@@ -262,85 +262,12 @@ class AdminController extends Controller{
   		->where('mct_admin.bi_user_login_id',$this->userid)
   		->get();
   	}else{
-  		return Redirect::to('/admin/dashboard/');
+  		return Redirect::to('/admin/mothers');
   	}	
   	$data['result']=$data['result'][0];
   	return view('admin/userprofile',$data);
   }
   
-  //load inversion poin view
-  public function manageInterventionPoint(){
-  	
-  	if(!isset($this->userid)){
-  		Redirect::to('/admin/')->send();
-  	}
-  	
-  	if($this->role_permissions['manageintervention']){
-  		$data['title']="Intervention Point" . SITENAME;
-  		$data['result']=DB::table('mct_intervention_point')->where('e_status','Active')->orderBy('i_week', 'ASC')->get();	
-  		return view('admin/interventionpoint',$data);
-  	}else{
-  		Redirect::to('/admin/')->send();
-  	}
-  }
-  
-  //update intervation view
-  public function updateInterventionPoint(){
-  	if(!isset($this->userid)){
-  		Redirect::to('/admin/')->send();
-  	}
-  	$datetime = date("Y-m-d H:i:s");
-  	$checkedRowArray = Input::get('txtInterventionPoint');
-  	$idArray = Input::get('hdnInverationId');
-  	$titleArray = Input::get('txtTitle');
-  	$descArray = Input::get('txtDescritpion');
-  	$i=0;
-  	foreach($checkedRowArray as $value){
-  		$data=array(
-  				'i_week' => $value,
-  				'v_name'=>trim($titleArray[$i]),
-  				't_description'=>trim($descArray[$i]),
-  				'dt_create_date'=>$datetime,
-	  			'dt_modify_date'=>$datetime,
-	  			'e_status'=>"Active",
-	  			'v_ip'=>$_SERVER['REMOTE_ADDR']
-  		);
-  		$update=array(
-  				'v_name'=>trim($titleArray[$i]),
-  				't_description'=>trim($descArray[$i]),
-  				'e_status'=>"Active",
-  				'v_ip'=>$_SERVER['REMOTE_ADDR']
-  		);
-  		$result=DB::table('mct_intervention_point')->where('e_status','Active')->where('i_week',$value)->get();
-  		if(!empty($result)){
-			$id=$result[0]->i_week;
-			$ids[]=$id;
-			if($i < count($idArray))
-				DB::table('mct_intervention_point')->where('bi_id', $idArray[$i])->update($update);
-  		}else{
-  			if(isset($idArray[$i])){
-  				$res=DB::table('mct_intervention_point')->where('bi_id', $idArray[$i])->update($data);
-  			}else{
-  				DB::table('mct_intervention_point')->insert($data);
-  			}
-  		}
-  	$i++;
-  	}
-  	Session::flash('message', '<div class="alert alert-success" style="clear:both;">
-              <button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.interventionpoint").' '.trans("routes.updatemessage").'</div>');
-  	return Redirect::to('admin/manageInterventionPoint');
-  }
-  //delete intervation poin
-  public function intervation_delete(){
-  	if(!isset($this->userid)){
-  		Redirect::to('/admin/')->send();
-  	}
-  	$res=DB::table('mct_intervention_point')->where('bi_id', Input::get('id'))->update(array('e_status' => 'Inactive'));
-  	if($res)
-  		return '<div class="alert alert-success" style="clear:both;"><button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.interventionpoint").' '.trans("routes.deletemessage").'</div>';
-  	else
-  		return '<div class="alert alert-success" style="clear:both;"><button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.interventionpoint").' '.trans("routes.notdeletemessage").'</div>';
-  }
   
   //update user profile
   public function editprofile(){
@@ -385,7 +312,7 @@ class AdminController extends Controller{
   		$inputData['gender'] = Input::get('txtGenderStatus');
   		$result = $fieldworkers->updateProfileTable($inputData);
   	}else{
-  		return Redirect::to('/admin/dashboard/');
+  		return Redirect::to('/admin/mothers');
   	}	
   	
   	if($result){
@@ -399,67 +326,6 @@ class AdminController extends Controller{
 	}
   }
   
-  //load add address view
-  public function addlocation(){
-  	if($this->role_permissions['canaddlocation']){
-		  	$data['title']=$this->title;
-		  	$data['city']="";
-		  	$data['state']="";
-		  	$data['taluka']="";
-		  	$data['result']=array();
-		  	$data['title'] = "Location" . SITENAME;
-		  	return view('admin/addlocation',$data);
-  	}else{
-  			Redirect::to('/admin/')->send();
-  	}
-  }
-  //edit address 
-  public function editlocation(){
-  	if($this->role_permissions['canaddlocation']){
-	  	$id=Input::get('hdnAddId');
-	  	if($id!=""){ 
-		  	$data=array(
-		  			'v_pincode' =>Input::get('txtZipcode'),
-		  			'v_taluka'=>Input::get('txtTaluka'),
-		  			'v_district'=>Input::get('txtDistrict'),
-		  			'v_state'=>Input::get('txtState'),
-		  			'v_country'=>Input::get('txtCountry'),
-		  	);
-		  	//edit address query
-		  	$result = DB::table('mct_address')->where('bi_id', $id)->update($data);
-		  	if($result){
-		  		Session::flash('message', '<div class="alert alert-success" style="clear:both;">
-		              <button data-dismiss="alert" class="close" type="button">&times;</button>'.trans("routes.location").' '.trans("routes.updatemessage").'</div>');
-		  		return Redirect::to('/admin/addlocation/');
-		  	}
-		  	else{
-		  		Session::flash('message', '<div class="alert alert-success" style="clear:both;">
-		              <button data-dismiss="alert" class="close" type="button">&times;</button>'.trans("routes.location").' '.trans("routes.updatemessage").'</div>');
-		  		return Redirect::to('/admin/addlocation/');
-		  	}
-	  	}else{ 
-		  	$data=array(
-		  			'v_pincode' =>Input::get('txtZipcode'),
-		  			'v_taluka'=>Input::get('txtTaluka'),
-		  			'v_district'=>Input::get('txtDistrict'),
-		  			'v_state'=>Input::get('txtState'),
-		  			'v_country'=>Input::get('txtCountry'),
-		  			);
-		  	//print_r($product); exit;
-		  	//insert address 
-		  	$res=DB::table('mct_address')->insert($data);
-		  	if($res){
-		  		Session::flash('message', '<div class="alert alert-success" style="clear:both;">
-		              <button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.location").' '.trans("routes.addmessage").'</div>');
-		  		return Redirect::to('/admin/addlocation/');
-		  	}else{
-		  		Session::flash('message', '<div class="alert alert-error" style="clear:both;">
-		              <button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.location").' '.trans("routes.notaddmessage").'</div>');
-		  		return Redirect::to('/admin/addlocation/');
-		  	}
-	  	}
-  	}	
-  }
   //forgot password methode
   public function forgotPassword(){
   		$email=Input::get('txtForgotEmailId');
@@ -594,44 +460,9 @@ class AdminController extends Controller{
   	}
   }
   
-  //search address by state or city or taluka 
-  public function searchdataaddress($state="",$city="",$taluka=""){
-  	$extr="";
-  	$data['state']="";
-  	$data['city']="";
-  	$data['taluka']="";
-  	$where=array();
-  	$data['talukaarr']=array();
-  	$data['cityarr']=array();
-  	if($taluka!="all"){
-  		$where=array("mct_address.v_taluka",$taluka);
-  	}else if($city!="all"){
-  		$where=array("mct_address.v_district",$city);
-  	}else{
-  		$where=array("mct_address.v_state",$state);
-  	}
-  	$data['talukaarr']= DB::table('mct_address')->distinct()->select('v_taluka')->where('v_district', 'LIKE', '%'.$city.'%')->get();
-  	$data['cityarr']= DB::table('mct_address')->distinct()->select('v_district')->where('v_state', 'LIKE', '%'.$state.'%')->get();
-  	$data['city']=$city;
-  	$data['state']=$state;
-  	$data['taluka']=$taluka;
-  	$data['result'] = DB::table('mct_address')->where("$where[0]","=",$where[1])->groupBy('v_pincode')->get();
-  	//print_r($data); exit;
-  	$data['title'] = "Location" . SITENAME;
-  	return view('admin/addlocation',$data);
-  
-  }
-  //edit address by ajax
-  public function editaddress(){
-  	$id=$this->decode(Input::get('id'));
-  	$data['result'] = DB::table('mct_address')->where("bi_id",$id)->get();
-  	$result =$data['result'][0];
-  	echo json_encode($result);
-  }
-  
-  ///////////////////////////////////////////////////////////////
-  /////// SHOULD IDEALLY GO INTO A REGISTRATION CONTROLLER //////
-  ///////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////
+  /////// SHOULD IDEALLY GO INTO A REGISTRATION CONTROLLER BUT UNABLE TO CREATE ONE!//////
+  ////////////////////////////////////////////////////////////////////////////////////////
   
     public function getRegister()
     {
@@ -711,7 +542,7 @@ class AdminController extends Controller{
 		
 		$ret = $user->log_in_user($userdet);
 		if($ret)
-			return Redirect::to('/admin/dashboard/');
+			return Redirect::to('/admin/mothers/');
 		else{
 			Session::flash('message', trans("routes.loginerror"));
 			return Redirect::to('admin');

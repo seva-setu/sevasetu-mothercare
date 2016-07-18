@@ -135,7 +135,6 @@ class DueList extends Eloquent {
 								$this->table.'.due_id',
 								$this->table.'.fk_b_id as b_id',
 								$this->table.'.dt_intervention_date as action_date',
-								$join_table_name1.'.has_called',
 								$join_table_name1.'.e_call_status as status',
 								$join_table_name2.'.i_action_id as action_id',
 								$join_table_name2.'.i_reference_week as ref_week',
@@ -150,12 +149,18 @@ class DueList extends Eloquent {
 			$select = $select->where($this->table.'.fk_b_id','=',$beneficiary_id);
 		
 		$select_has_called_not  = clone $select;	
-		$select_has_called 		= $select->where($join_table_name1.'.has_called','=',1);
-		$select_has_called_not  = $select_has_called_not->where($join_table_name1.'.has_called','=',0);
+		$select_has_called_pending = clone $select;
 		
-		$selected['due_list_scheduled'] 		= $select_has_called_not->simplepaginate(5,['*'],'one');
+		$select_has_called 		= $select->where($join_table_name1.'.e_call_status','like','Received');
+		$select_has_called_not  = $select_has_called_not->where($join_table_name1.'.e_call_status','like','Not called');
+		$select_has_called_pending = $select_has_called_pending->wherein($join_table_name1.'.e_call_status',array('Not received', 'Not reachable', 'Incorrect number'));
+		
+		$selected['due_list_scheduled'] 		= $select_has_called_not->simplepaginate(15,['*'],'one');
 		
 		$selected['due_list_completed'] 		= $select_has_called->simplepaginate(5,['*'],'two');
+		
+		$selected['due_list_pending'] 			= $select_has_called_pending->simplepaginate(5,['*'],'three');
+		
 		return $selected;
 	}
 		

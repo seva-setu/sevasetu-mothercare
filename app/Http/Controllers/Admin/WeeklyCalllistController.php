@@ -102,6 +102,10 @@ class WeeklyCalllistController extends Controller{
 			return(view('mycalls.details',$data));
 	}
 	
+	public function submit_data(){
+		print_r(Input::all());
+	}
+	
 	public function decode($id=0){
   		if($id){
   			$hashids = new Hashids();
@@ -112,59 +116,6 @@ class WeeklyCalllistController extends Controller{
   			return 0;
   	}
 	
-	
-	public function searchbenificiarydata($startdate){
-		$data['title'] = "Weekly Call List" . SITENAME;
-		//Check permission of user
-		if($this->role_permissions['canweeklyreport']){
-		
-			$userinfo=Session::get('user_logged');
-			$callchampion_id = $userinfo['v_role'];
-				
-			if($userinfo['v_role']==2){
-				$callchampion_id =  $userinfo['user_id'];
-			}else{
-				$callchampion_id = 0;
-			}
-			
-			$startdate=date("Y-m-d",strtotime($startdate));
-			$custom_date = strtotime( date('d-m-Y', strtotime($startdate)) );
-			$devdate = date('d-m-Y', strtotime('this saturday', $custom_date));
-			$enddate=date("Y-m-d",strtotime($devdate));
-	
-			$data['startdate']	=	$startdate;
-			$data['enddate']	=	$enddate;
-			
-			$beneficiary = new Beneficiary;
-			
-			
-			//Get Min Max intervation numbers
-			$data['intervations'] = $beneficiary->getInterventionPoints();
-			$data['assigned_beneficiary'] = $beneficiary->getAssignedBeneficiary($callchampion_id);
-
-			$ben_data =  $beneficiary->checkBetween($data['assigned_beneficiary'],$data['intervations'],$startdate,$enddate);
-			$data['count'] = count($ben_data);
-			$data['perPage'] = 15; //Change this for number of records retrived at one time
-		
-			Cache::forever('ben_data', array_chunk($ben_data , $data['perPage']));
-			Cache::forever('count',$data['count']);
-
-			if($data['count']>$data['perPage']){
-				$data['morebutton'] = "block";
-			}else{
-				$data['morebutton'] = "none";
-			}
-	
-			if(!empty($ben_data)){
-				return view('weeklyreport.manage',$data)->with('result', Cache::get('ben_data')[0]);
-			}else{
-				return view('weeklyreport.manage',$data);
-			}
-		}else{
-			return Redirect::to('/admin/');
-		}
-		
-	}
 	
 	public function showMoreCallList()
 	{

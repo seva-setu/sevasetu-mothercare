@@ -207,7 +207,7 @@ return array(
 		'assigncallchampionto' => 'Assign Call Champion to',
 		'searchbynameorcity' => 'Search by Name or City',
 		'callchampionsname' => 'Call Champion Name',
-		'mycalls' => 'My calls',
+		'callsthisweek' => 'Calls this week',
 		'loadmore' => 'Load More',
 		'noload' => 'No More Results',
 		'alternateno' => 'Alternate Phone',
@@ -262,7 +262,7 @@ return array(
 		'info' => 'You can be a change to another mother. Schedule another one',
 		
 		'masterchecklist' => 'Check List',
-		'masterchecklist_descrip' => 'Refer to this check list to talk your way through a phone call. Very important information here',
+		'masterchecklist_descrip' => 'Refer to this check list while talking to a mother. These contain important dates with reference to the mother\'s expected date of delivery. Each date has a set of actions associated with it. Make sure that these actions are checked up on',
 		
 		'num' => '#',
 		'weekofpregnancy' => 'Week of pregnancy to intervene in',
