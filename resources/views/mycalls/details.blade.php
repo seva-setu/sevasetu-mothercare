@@ -42,7 +42,7 @@ smallfont{
 				<div class="col-lg-2 col-md-2">
 					<h3><b>
 					<span class="label label-success">
-						<?php 	echo trans('routes.callid').$personal_details->due_id; ?>
+						<?php 	echo trans('routes.callid').$call_details['due_id']; ?>
 					</span>
 					</b></h3>
 				</div>
@@ -84,7 +84,7 @@ smallfont{
 					<?php 
 							if(isset($due_list_scheduled) && count($due_list_scheduled) > 0){
 								echo " ".trans('routes.thiscallscheduled')." ";
-								echo date("d M y", strtotime($due_list_scheduled[0]->action_date));
+								echo date("d M y", strtotime($call_details['action_date']));
 							}
 					?>
 					</span>

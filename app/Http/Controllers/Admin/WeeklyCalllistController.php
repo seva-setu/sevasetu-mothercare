@@ -83,7 +83,6 @@ class WeeklyCalllistController extends Controller{
 		$b_obj = new Beneficiary;
 		$beneficiary_details = $b_obj->get_beneficiary_details($beneficiary_id);
 		$beneficiary_details = $beneficiary_details[0];
-		$beneficiary_details->due_id = $due_id;
 		
 		$call_details = $due_list_obj->get_due_list_callchamp($due_id_obj['attributes']['fk_cc_id'], $beneficiary_id);
 		
@@ -91,15 +90,14 @@ class WeeklyCalllistController extends Controller{
 		$action_items = $due_list_obj->get_checklist_items($action_item_id);
 		
 		
-		$data['personal_details'] = $beneficiary_details;
-		$data['due_list_completed'] = $call_details['due_list_completed'];
-		$data['due_list_scheduled'] = $call_details['due_list_scheduled'];
-		$data['action_items'] = $action_items;
+		$call_details['personal_details'] 	= $beneficiary_details;
+		$call_details['action_items'] 		= $action_items;
+		$call_details['call_details'] 		= array('due_id'=>$due_id, 'action_date'=>$due_id_obj['attributes']['dt_intervention_date']);
 		
 		if(false)
-			return(view('mycalls.details',$data));
+			return(view('mycalls.details',$call_details));
 		else
-			return(view('mycalls.details',$data));
+			return(view('mycalls.details',$call_details));
 	}
 	
 	public function submit_data(){

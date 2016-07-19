@@ -191,7 +191,7 @@ class DueList extends Eloquent {
 		$selected['due_list_thisweek'] 			= $select_has_called_thisweek->simplepaginate(5,['*'],'four');
 		
 		$selected['due_list_thismonth']			= $select_has_called_thismonth->simplepaginate(5,['*'],'five');
-				
+		
 		return $selected;
 	}
 		
