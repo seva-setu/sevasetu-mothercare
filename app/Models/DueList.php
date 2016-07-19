@@ -139,7 +139,8 @@ class DueList extends Eloquent {
 								$join_table_name2.'.i_reference_week as ref_week',
 								$join_table_name3.'.v_name as name',
 								$join_table_name3.'.v_village_name as village_name',
-								$join_table_name3.'.v_phone_number as phone_number'
+								$join_table_name3.'.v_phone_number as phone_number',
+								$join_table_name3.'.i_age as age'
 							)
 					->distinct()
 					->orderBy($this->table.'.dt_intervention_date','asc')

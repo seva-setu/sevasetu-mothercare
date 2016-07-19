@@ -275,12 +275,19 @@ return array(
 		
 		'whatismct' => 'What is the Mother Care program?',
 		'sevasetuinmedia' => 'Other stories from Seva Setu',
-		'textareadefaulttext'=>'[[Mention only notes on which action items need to be taken. Place all general notes related to the call in the textbox below]]',
+		'textareadefaulttext'=>'[[Mention only those notes on which Seva Setu needs to act on. Place all other general notes related to the call in the textbox below]]',
 		'callsmissed' => 'Calls missed and pending',
 		
 		'nocalls_thisweek' =>'No calls scheduled in this week.',
 		'callspending' => 'Calls pending',
 		'important' => 'Important',
 		'status' => 'Status',
-		
+		'yearsold' => 'years old',
+		'callstatus' => 'Call status',
+		'recordcallstatus' => 'Please record the status of the call',
+		'nc' => 'Not called',
+		're' => 'Received',
+		'nr' => 'Not received',
+		'nr2' =>'Not reachable',
+		'in'=>'Incorrect number',
 );

@@ -73,7 +73,8 @@ class WeeklyCalllistController extends Controller{
 	}
 	
 	public function list_specific_call_details($due_id_encoded){
-		$due_id = $this->decode($due_id_encoded);
+		$helper_obj = new Helpers;
+		$due_id = $helper_obj->decode($due_id_encoded);
 		$due_list_obj = new DueList;
 		$due_id_obj = $due_list_obj->find($due_id);
 		
@@ -103,16 +104,6 @@ class WeeklyCalllistController extends Controller{
 	public function submit_data(){
 		print_r(Input::all());
 	}
-	
-	public function decode($id=0){
-  		if($id){
-  			$hashids = new Hashids();
-  			$arr = $hashids->decode($id);
-  			return (!empty($arr)) ? $id=$arr[0] : 0;
-  			//return $id=$arr[0];
-  		}else
-  			return 0;
-  	}
 	
 	
 	public function showMoreCallList()

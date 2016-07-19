@@ -66,6 +66,17 @@ class CallchampionsController extends Controller{
 			return view('mothers/dashboard',$data);
 		}
 	}
+	
+	public function update_call($due_id_encrypted){
+		$helper_obj = new Helpers;
+		$dueid = $helper_obj->decode($due_id_encrypted);
+		$action_items = Input::get('action_item');
+		$call_stats = Input::get('callstats');
+		$general_note = Input::get('general_note');
+		$cc = new CallChampion;
+		$cc->update_cc_report($dueid, $call_stats, $general_note, $action_items);
+	}
+	
 ////////////////////////////////////////////////
 
 }

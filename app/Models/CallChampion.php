@@ -85,5 +85,9 @@ class CallChampion extends Eloquent {
 		else
 			die("pop");
 	} 
+	
+	public function update_cc_report($dueid, $call_stats, $general_note, $action_items){
+		return true;
+	}
 	 
 }

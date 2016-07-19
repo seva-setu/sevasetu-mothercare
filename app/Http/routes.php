@@ -36,7 +36,8 @@ Route::get('/admin/mothers', 'Admin\CallchampionsController@list_mothers');
 Route::get('/admin/mycalls', 'Admin\WeeklyCalllistController@list_all_calls');
 Route::get('/admin/mycalls/view/{id}', 'Admin\WeeklyCalllistController@list_specific_call_details');
 Route::get('/admin/checklist', 'Admin\WeeklyCalllistController@get_master_checklist');
-Route::post('/admin/submit', 'Admin\WeeklyCalllistController@submit_data');
+Route::post('/admin/mycalls/update/{id}', 'Admin\CallchampionsController@update_call');
+
 
 /////////////////////////////////////
 ?>

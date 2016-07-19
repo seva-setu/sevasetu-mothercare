@@ -381,20 +381,13 @@ class AdminController extends Controller{
   			return Redirect::to('/admin/');
   	}
   }
-  public function decode($id=0){
-  	if($id){
-  		$hashids = new Hashids();
-  		$arr = $hashids->decode($id);
-  		return (!empty($arr)) ? $id=$arr[0] : 0; 
-  	}else
-  		return 0;
-  }
   
   //change password methode for super admin
   public function changeuserpassword($id){
   	$data['title']="Change Password" . SITENAME;
   	$data['user_id']=$id;
-  	$userid=$this->decode($id);
+	$helper_obj = new Helpers;
+  	$userid=$helper_obj->decode($id);
   	if($userid>0){
   	$users=new Users;
   	$userdata = $users->where('bi_id', '=', $userid)->first();
