@@ -229,8 +229,11 @@ return array(
 		'next_scheduled' =>'Next scheduled call',
 		'weeklycalllist' => 'My calls',
 		'cancel' => 'Reschedule',
-		'weeks' => 'weeks to go',
-		'nextcall' => 'Your next call is on ',
+		'weekstogo' => 'weeks to go',
+		'nextweek' => 'Next week',
+		'weeksago' => 'weeks ago',
+		'thisweek' => 'This week',
+		'nextcall' => 'Your next call is in the week of ',
 		'close' => 'In less than a week!',
 		'nocall' => 'No calls scheduled so far. By clicking on the \'Mothers\' tab, select a mother you want to interact with.',
 		'info' => 'Get call information',
@@ -276,5 +279,9 @@ return array(
 		'textareadefaulttext'=>'[[Mention only notes on which action items need to be taken. Place all general notes related to the call in the textbox below]]',
 		'callsmissed' => 'Calls missed and pending',
 		
+		'nocalls_thisweek' =>'No calls scheduled in this week.',
+		'callspending' => 'Calls pending',
+		'important' => 'Important',
+		'status' => 'Status',
 		
 );
