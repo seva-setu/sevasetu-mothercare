@@ -27,6 +27,7 @@ class Beneficiary extends Eloquent {
 							$this->table.'.v_name as name',
 							$this->table.'.v_village_name as village_name',
 							$this->table.'.v_husband_name as husband_name',
+							$this->table.'.i_age as age',
 							$this->table.'.v_phone_number as phone_number',
 							$this->table.'.dt_due_date as due_date',
 							$this->table.'.t_notes as mother_notes',

@@ -243,7 +243,7 @@ return array(
 		'details' => 'Details',
 		'callscompleted' => 'Calls completed',
 		'callscompletedscheduled' => 'Calls completed and scheduled',
-		'callsscheduled' => 'Calls yet to happen',
+		'callsscheduled' => 'Calls ahead',
 		
 		'notes' => 'Notes from call',
 		'profile' => 'Notes on mother',
