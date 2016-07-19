@@ -22,7 +22,7 @@ class DueList extends Eloquent {
 								->distinct()
 								->where('fk_cc_id','=',$cc_id)
 								->get();
-		
+		$beneficiary_list = [];
 		foreach($beneficiary_objects as $obj)
 			$beneficiary_list []= $obj->fk_b_id;
 		
