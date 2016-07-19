@@ -34,7 +34,6 @@ smallfont{
 			<?php 	}
 				for($i = 0; $i<2; $i++){
 					echo "<p>";
-					echo "<i class=\"fa fa-volume-control-phone\"></i>";
 					echo trans('routes.nextcall');
 					echo "<b>".date("d M y", strtotime($due_list_scheduled[0]->action_date))."</b>. ";
 					

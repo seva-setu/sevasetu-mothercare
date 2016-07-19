@@ -240,7 +240,7 @@ return array(
 		'details' => 'Details',
 		'callscompleted' => 'Calls completed',
 		'callscompletedscheduled' => 'Calls completed and scheduled',
-		'callsscheduled' => 'All my scheduled calls',
+		'callsscheduled' => 'Calls yet to happen',
 		
 		'notes' => 'Notes from call',
 		'profile' => 'Notes on mother',

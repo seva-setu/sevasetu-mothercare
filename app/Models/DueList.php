@@ -121,7 +121,6 @@ class DueList extends Eloquent {
 	}
 	
 	public function get_due_list_callchamp($cc_id, $beneficiary_id = -1){
-		
 		//first get out the due list details
 		$join_table_name1 = 'mct_callchampion_report';
 		$join_table_name2 = 'mct_checklist_master';
@@ -141,6 +140,7 @@ class DueList extends Eloquent {
 								$join_table_name3.'.v_name as name',
 								$join_table_name3.'.v_village_name as village_name',
 								$join_table_name3.'.v_phone_number as phone_number'
+								
 							)
 					->distinct()
 					->orderBy($this->table.'.dt_intervention_date','asc')
@@ -148,18 +148,32 @@ class DueList extends Eloquent {
 		if($beneficiary_id > -1)
 			$select = $select->where($this->table.'.fk_b_id','=',$beneficiary_id);
 		
+		
 		$select_has_called_not  = clone $select;	
 		$select_has_called_pending = clone $select;
+		$select_has_called_thisweek = clone $select;
+		$select_has_called_thismonth = clone $select;
 		
-		$select_has_called 		= $select->where($join_table_name1.'.e_call_status','like','Received');
-		$select_has_called_not  = $select_has_called_not->where($join_table_name1.'.e_call_status','like','Not called');
-		$select_has_called_pending = $select_has_called_pending->wherein($join_table_name1.'.e_call_status',array('Not received', 'Not reachable', 'Incorrect number'));
+		$select_has_called 		= $select->where($join_table_name1.'.e_call_status','=','Received');
+		
+		$select_has_called_not  = $select_has_called_not->where($join_table_name1.'.e_call_status','=','Not called');
+		
+		$select_has_called_pending = $select_has_called_pending->where($join_table_name1.'.e_call_status',array('Not received', 'Not reachable', 'Incorrect number'));
+		
+		$select_has_called_thisweek = $select_has_called_thisweek->whereRaw(DB::raw($this->table.'.dt_intervention_date'." BETWEEN SYSDATE() + INTERVAL -10 DAY AND SYSDATE() + INTERVAL 10 DAY"))->whereNotIn($join_table_name1.'.e_call_status',array('Received'));
+		
+		$select_has_called_thismonth = $select_has_called_thismonth->whereRaw(DB::raw($this->table.'.dt_intervention_date'." BETWEEN SYSDATE() + INTERVAL -30 DAY AND SYSDATE() + INTERVAL 30 DAY"))->whereNotIn($join_table_name1.'.e_call_status',array('Received'));;
+		
 		
 		$selected['due_list_scheduled'] 		= $select_has_called_not->simplepaginate(15,['*'],'one');
 		
 		$selected['due_list_completed'] 		= $select_has_called->simplepaginate(5,['*'],'two');
 		
 		$selected['due_list_pending'] 			= $select_has_called_pending->simplepaginate(5,['*'],'three');
+		
+		$selected['due_list_thisweek'] 			= $select_has_called_thisweek->simplepaginate(5,['*'],'four');
+		
+		$selected['due_list_thismonth']			= $select_has_called_thismonth->simplepaginate(5,['*'],'five');
 		
 		return $selected;
 	}
