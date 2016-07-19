@@ -139,7 +139,6 @@ return array(
 	'personaldata'=>'Beneficiary Detail',
 	'contactdetail'=>'Address Detail',
 	'searchadd'=>'Search for address',
-	'birthlimit'=>'You must be 18 years old to join',
 	'languagevalid'=>'At least one language must be selected',
 	'imagelabel'=>'Profile Picture',
 	'selectimage'=>'Select Photo',
