@@ -244,7 +244,7 @@ return array(
 		'callscompletedscheduled' => 'Calls completed and scheduled',
 		'callsscheduled' => 'Calls ahead',
 		
-		'notes' => 'Notes from call',
+		'notes' => 'Record your notes',
 		'profile' => 'Notes on mother',
 		'expecteddate' => 'Expected date of delivery',
 		'callcompleted' => 'This call has been made',
@@ -290,4 +290,7 @@ return array(
 		'nr' => 'Not received',
 		'nr2' =>'Not reachable',
 		'in'=>'Incorrect number',
+		'success' => "Your entries have been in stored in our system. Thanks!",
+		'failure' => "There was a glitch in storing your information. Please a write a note in the Feedbacks tab. Mention your call ID. We will get back.",
+		'previousnotes' => 'View previous notes',
 );

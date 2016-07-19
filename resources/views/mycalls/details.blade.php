@@ -104,9 +104,29 @@ smallfont{
 			</div>
 			<hr/>
 			<div class ="row">
+				<?php $ret = Session::get('message');
+						if(isset($ret)){
+				?>
+						<div class="col-lg-12 col-md-12">
+				<?php
+						if(Session::get('message')){
+				?>			<h3><span class="label label-success"> {{trans('routes.success')}}</span></h3>
+				<?php	}
+						else{
+				?>			<h4><span class="label label-danger">{{trans('routes.failure')}}</span></h4>
+				<?php	}
+				?>
+						<hr/>
+						</div>
+			</div>
+			<div class="row">
+				<?php } ?>
 				<div class="col-lg-12 col-md-12">
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#t_notes" data-toggle="tab"> <b> {{ trans('routes.notes') }} </b></a>
+						</li>
+						<li class=""><a href="#t_previousnotes" data-toggle="tab"> <b>{{ trans('routes.previousnotes') }} </b> 
+						</a>
 						</li>
 						<li class=""><a href="#t_previouscalls" data-toggle="tab"> <b>{{ trans('routes.callscompletedscheduled') }} </b> 
 						</a>
@@ -122,7 +142,7 @@ smallfont{
 							<div class="col-lg-6 col-md-6">
 								<p>
 								<!-- Begin drop down -->
-								{{ trans('routes.status') }}
+								<b>{{ trans('routes.recordcallstatus') }}</b>
 								<div class="dropdown">
 								  <select name = "callstats" id = "callstat" class="form-control">
 									<option>{{ trans('routes.nc') }} </option>
@@ -181,6 +201,11 @@ smallfont{
 							<!-- End section for textarea -->
                         </div>
 					</form> 
+						
+						<div class="tab-pane fade" id="t_previousnotes">
+							
+						</div>
+						
 					<!-- BEGIN CODE FOR TAB "Action items" -->
 						<div class="tab-pane fade" id="t_previouscalls">
                            @include('template/mycalls_calldetails')

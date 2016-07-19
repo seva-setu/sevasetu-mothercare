@@ -74,7 +74,10 @@ class CallchampionsController extends Controller{
 		$call_stats = Input::get('callstats');
 		$general_note = Input::get('general_note');
 		$cc = new CallChampion;
-		$cc->update_cc_report($dueid, $call_stats, $general_note, $action_items);
+		$update_status = $cc->update_cc_report($dueid, $call_stats, $general_note, $action_items);
+		
+		// ideally should be using session flashing to be doing this i think.
+		return Redirect::back()->with('message',$update_status);
 	}
 	
 ////////////////////////////////////////////////
