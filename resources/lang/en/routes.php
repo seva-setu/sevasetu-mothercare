@@ -293,4 +293,7 @@ return array(
 		'success' => "Your entries have been in stored in our system. Thanks!",
 		'failure' => "There was a glitch in storing your information. Please a write a note in the Feedbacks tab. Mention your call ID. We will get back.",
 		'previousnotes' => 'View previous notes',
+		'callmadeon' => 'Call made on',
+		'generalnotes' => 'General notes',
+		'actionitemsnoted' => 'Action items noted during the call'
 );

@@ -203,7 +203,44 @@ smallfont{
 					</form> 
 						
 						<div class="tab-pane fade" id="t_previousnotes">
-							
+							<div class="col-lg-12 col-md-12">
+								<table class="table table-striped table-bordered table-hover">
+									<thead class="warning">
+										<th>{{ trans('routes.uniqueid') }}</th>
+										<th>{{ trans('routes.status') }}</th>
+										<th>{{ trans('routes.callmadeon') }}</th>
+										<th>{{ trans('routes.generalnotes') }}</th>
+										<th>{{ trans('routes.actionitemsnoted') }}</th>
+									</thead>
+									<?php if(isset($previous_notes) && count($previous_notes) > 0) { ?>
+									<tbody>
+										<?php foreach ($previous_notes as $value){ ?>
+										<tr>
+										<td><?php echo $value->call_id;?></td>
+										
+										<td><?php echo $value->status;?></td>
+										
+										<td><?php echo date('d M y',strtotime($value->modify_date));?></td>
+										
+										<td><?php echo $value->general_notes;?></td>
+										
+										<td><?php echo $value->action_items;?></td>
+										
+										</tr>  
+										<?php } ?>
+										<tr>
+											<td colspan="6"><center>{!! $previous_notes->appends(['three'=>Request::query('three')])->render() !!}</center></td>
+										</tr>
+									</tbody>
+									<?php } else { ?>
+									<tbody>
+										  <tr>
+											<td colspan="5"><center><em><?php echo trans('routes.norecord'); ?></em></center></td>
+										  </tr>
+								  </tbody>
+									  <?php } ?>
+							</table>
+							</div>
 						</div>
 						
 					<!-- BEGIN CODE FOR TAB "Action items" -->

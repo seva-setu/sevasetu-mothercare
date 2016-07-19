@@ -90,19 +90,17 @@ class WeeklyCalllistController extends Controller{
 		$action_item_id = $due_id_obj['attributes']['fk_action_id'];
 		$action_items = $due_list_obj->get_checklist_items($action_item_id);
 		
+		$previous_notes = $b_obj->get_previous_notes($beneficiary_id);
 		
 		$call_details['personal_details'] 	= $beneficiary_details;
 		$call_details['action_items'] 		= $action_items;
+		$call_details['previous_notes'] 	= $previous_notes;
 		$call_details['call_details'] 		= array('due_id'=>$due_id, 'action_date'=>$due_id_obj['attributes']['dt_intervention_date']);
 		
 		if(false)
 			return(view('mycalls.details',$call_details));
 		else
 			return(view('mycalls.details',$call_details));
-	}
-	
-	public function submit_data(){
-		print_r(Input::all());
 	}
 	
 	
