@@ -45,9 +45,11 @@ smallfont{
 								
 									<b>{{ trans('routes.name') }}</b>: {{ $value->name }}
 								<br/>
+									<b>{{ trans('routes.age') }}</b>: {{ $value->age }}
+								<br/>
 									<b>{{ trans('routes.village') }}</b>: {{ $value->village_name }}
 								<br/>
-									<b>{{ trans('routes.name') }}</b>: {{ $value->phone_number }}
+									<b>{{ trans('routes.phonenumber') }}</b>: {{ $value->phone_number }}
 								<br/>
 									<b>{{ trans('routes.fieldworkername') }}</b>: {{ $value->field_worker_name }} 
 								<br/>
