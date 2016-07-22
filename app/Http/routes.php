@@ -11,7 +11,7 @@
 */	
 
 Route::get('/test','Admin\BeneficiaryController@tester_method');
-
+Route::get('/','Admin\AdminController@landing');
 ///////////// Havent tested many of these routes ///////////
 Route::get('/auth/register','Admin\AdminController@getRegister');
 Route::post('/auth/register','Admin\AdminController@postRegister');

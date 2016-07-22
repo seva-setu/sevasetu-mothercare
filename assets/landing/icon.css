@@ -1,0 +1,77 @@
+[class^="icon-"],
+[class*=" icon-"] {
+    display: inline-block;
+    line-height: 1;
+    background: url("../images/icons-lg.png") no-repeat top left;
+    background-size: 480px auto;
+    width: 1em; height: 1em;
+    max-width: 60px; max-height: 60px;
+}
+
+.icon-calendar {
+    width: 37px; height: 37px;
+    background-position: 0 0;
+}
+.icon-map-marker {
+    width: 37px; height: 37px;
+    background-position: -300px 0;
+}
+.icon-angle-right {
+    width: 8px; height: 13px;
+    background-position: -60px -60px;
+    margin-left: 8px;
+}
+.icon-angle-left {
+    width: 8px; height: 13px;
+    background-position: -60px -90px;
+    margin-right: 8px;
+}
+.icon-envelope {
+    background-position: -240px 0;
+}
+.icon-rss {
+    background-position: -360px 0;
+}
+.icon-facebook {
+    background-position: -180px -120px;
+}
+.icon-twitter {
+    background-position: -300px -120px;
+}
+.icon-googleplus{
+    background-position: -120px -172px;
+}
+.icon-instagram {
+    background-position: -180px -172px;
+}
+.icon-flickr {
+    background-position: -420px -120px;
+}
+.icon-linkedin {
+    background-position: -180px -60px;
+}
+.icon-pinterest {
+    background-position: -120px -120px;
+}
+.icon-thumbs-up {
+    background-position: -60px 0;
+}
+.icon-pause {
+    background-position: -180px 0;
+}
+.icon-thumbs-down {
+    background-position: -120px 0;
+}
+.icon-facebook-alt {
+    background-position: -240px -120px;
+}
+.icon-twitter-alt {
+    background-position: -60px -120px;
+}
+.icon-th-large {
+    background-position: -300px -60px;
+}
+.icon-header {
+    background-position: -60px -180px;
+    width: 17px; height: 17px;
+}

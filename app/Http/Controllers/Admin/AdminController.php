@@ -81,6 +81,18 @@ class AdminController extends Controller{
 		}
 	}
 	
+	public function landing(){
+		$mothers = DB::table('mct_beneficiary')->count('b_id');
+		$cc = DB::table('mct_call_champions')->count('cc_id');
+		$calls = DB::table('mct_due_list')->count('due_id');
+		
+		$data['calls'] = 24+$calls;
+		$data['mothers'] = 36+$mothers;
+		$data['cc'] = 48+$cc;
+		
+		return view('welcome',$data);
+	}
+	
 	public function index(){
 		if(isset($this->user_id)){
 			Redirect::to('/admin/mothers')->send();
