@@ -1,0 +1,12 @@
+select.error {
+	color:red;
+	border:1px solid #F00 !important
+}
+input.error {
+	color:red;
+	border:1px solid #F00 !important
+}
+textarea.error {
+	color:red;
+	border:1px solid #F00 !important
+}

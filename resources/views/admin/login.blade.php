@@ -1,27 +1,23 @@
 @include('template/admin_title')
-		<link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>external/css_admin/bootstrap.min.css" />
-		<link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>external/css_admin/bootstrap-responsive.min.css" />
-        <link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>external/css_admin/unicorn.login.css" />
-        <link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>external/css_admin/style.css" />
-        <link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>external/css_admin/custom.css" />
-        <script src="<?php echo Config::get('constant.SITEURL'); ?>external/js_admin/jquery.min.js"></script>  
-        <script src="<?php echo Config::get('constant.SITEURL'); ?>external/js_admin/unicorn.login.js"></script> 
-        <script src="<?php echo Config::get('constant.SITEURL'); ?>external/js_admin/jquery.validate.js"></script>
-        <script src="<?php echo Config::get('constant.SITEURL'); ?>external/js/function.js"></script> 
+		<link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>assets//css_admin/bootstrap.min.css" />
+		<link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>assets//css_admin/bootstrap-responsive.min.css" />
+        <link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>assets//css_admin/unicorn.login.css" />
+        <link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>assets//css_admin/style.css" />
+        <link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>assets//css_admin/custom.css" />
+        <script src="<?php echo Config::get('constant.SITEURL'); ?>assets//js_admin/jquery.min.js"></script>  
+        <script src="<?php echo Config::get('constant.SITEURL'); ?>assets//js_admin/unicorn.login.js"></script> 
+        <script src="<?php echo Config::get('constant.SITEURL'); ?>assets//js_admin/jquery.validate.js"></script>
+        <script src="<?php echo Config::get('constant.SITEURL'); ?>assets//js/function.js"></script> 
         <script type="application/javascript" language="javascript">
 		</script>
     </head>
     <body>
     <form style="float: right;padding:5px;margin:0px;" class="form-horizontal" accept-charset="utf-8" method="POST" id="frmchangeLanguage" name="frmchangeLanguage" action="<?php echo Config::get('app.url').'language/chooser'; ?>">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-		<select name="locale" onchange="changeLanguage()">
-    	<option	value="en">English</option>
-    	<option	value="hi" {{ Lang::locale()==='hi' ? 'selected' :'' }}>Hindi</option>
-    	</select>
-    	
+		
 </form>
         <div id="logo">
-            <!--<img src="<?php //echo SITEURL; ?>external/img/logo.png" alt="" />-->
+            <!--<img src="<?php //echo SITEURL; ?>assets//img/logo.png" alt="" />-->
         </div>
         	@if (count($errors) > 0)
 						<div class="alert alert-danger">
@@ -85,7 +81,7 @@
         </div>
     </body>
 </html>
-<script src="<?php echo Config::get('constant.SITEURL'); ?>external/js/customevalidation.js"></script>
+<script src="<?php echo Config::get('constant.SITEURL'); ?>assets//js_admin/customevalidation.js"></script>
 <script type="application/javascript">
 $(document).ready(function(){
 		$("#loginform").validate({

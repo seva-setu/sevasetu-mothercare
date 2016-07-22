@@ -182,9 +182,8 @@ margin-top:25px !important;
 		</div>
 		<div class="col-xs-4"></div>
 		<div class="col-xs-3">
-			<button type="button" class="btn btn-primary">
-				Login
-			</button>
+			<a href="{{url()}}/admin/login" class="btn btn-primary">Login</a>
+			
 		</div>
 </header>
 

@@ -60,7 +60,6 @@
 				</div>
 			</div>
 		</div>
-		@extends('footer')
 	</div>
 </div>
 @endsection
