@@ -2,6 +2,7 @@
 /*use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 */
+
 use Hashids\Hashids;
 use Torann\Hashids\HashidsServiceProvider;
 use Cache;
@@ -81,7 +82,6 @@ class Helpers {
   		}else
   			return 0;
   	}
-
    /* public function makeLengthAware($collection, $total, $perPage,$currpage){
       		$paginator = new LengthAwarePaginator(
     				$collection,

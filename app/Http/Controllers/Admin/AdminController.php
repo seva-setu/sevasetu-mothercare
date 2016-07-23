@@ -133,6 +133,9 @@ class AdminController extends Controller{
     if ($validator->fails()){
     	return Redirect::to('/admin')->withErrors($validator);
     }else{
+		// include(storage_path().'/mails.php');
+		// $ret = send_sms(1, 919910777393);
+		// die();
       	$validlogin = $users->validate_login($userdata);
        	if($validlogin){
     		return Redirect::to('/admin/mothers');
