@@ -15,11 +15,18 @@ class Registrar implements RegistrarContract {
 	public function validator(array $data)
 	{
 		return Validator::make($data, [
-			'name' => 'required|max:255',
+			'name' => 'required|max:255|alpha_num',
 			'email' => 'required|email|max:255|unique:mct_user,v_email',
-			//'email' => 'required|email|max:255',
+			'phonenumber' => 'required|min:10|numeric',
 			'password' => 'required|confirmed|min:6',
-			'password' => 'required|min:10',
+			'password' => 'required|min:6',
+		]);
+	}
+	
+	public function validate_sms_passkey(array $data)
+	{
+		return Validator::make($data, [
+			'passkey' => 'required|min:7|numeric',
 		]);
 	}
 

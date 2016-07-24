@@ -244,7 +244,7 @@ class AdminController extends Controller{
   //login out 
   public function logout() {
   	Session::forget('user_logged');
-  	return Redirect::to('admin')->with('message', '');
+  	return Redirect::to('')->with('message', '');
   }
   
   
@@ -503,7 +503,6 @@ class AdminController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request){
-		$ROLE = 2; //by default, those registering via the form are call champions
 		$reg = new Registrar();
         $validator = $reg->validator($request->all());
         if ($validator->fails()) {
@@ -511,17 +510,64 @@ class AdminController extends Controller{
                 $request, $validator
             );
         }
+		// Add this info in the session and wait for SMS auth
+		Session::put('name', $request->get('name'));
+		Session::put('email', $request->get('email'));
+		Session::put('phonenumber', $request->get('phonenumber'));
+		Session::put('password', $request->get('password'));
 		
-		// Create a new user		
+		//Generate a token for SMS verification
+		$token = mt_rand(1000000,9999999);
+		Session::put('phone_auth_token', $token);
+		
+		//Send SMS
+		include(storage_path().'/sms.php');
+		$result = send_sms(1, array(0=>$request->get('phonenumber'), 1=>$token));
+		
+		//Redirect to view
+		return view('auth.validate');
+		
+	}
+	
+	public function validate_phonenumber(Request $request){
+		$reg = new Registrar();
+		$validator = $reg->validate_sms_passkey($request->all());
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+		
+		$token_received = $request['passkey'];
+		$token_original = Session::get('phone_auth_token');
+		
+		if($token_original == $token_received){
+			$name = Session::get('name');
+			$email = Session::get('email');
+			$pn = Session::get('phonenumber');
+			$pass = Session::get('password');
+			
+			return $this->create_new_user(2, $name, $email, $pn, $pass);
+			//by default, those registering via the form are call champions
+		}
+		else{
+			Session::flash('message', trans("routes.loginerror"));
+			return Redirect::to('auth/register');
+		}
+	}
+	
+	public function create_new_user($role, $name, $email, $pn, $pass){
+		// Create a new user
 		$user = new User;
-		
 		$data_to_push = [
-			'v_name' => $request->get('name'),
-			'v_email' => $request->get('email'),
-			'i_phone_number' => $request->get('phonenumber'),
-			'v_password' => Hash::make($request->get('password')),
+			'v_name' => $name,
+			'v_email' => $email,
+			'i_phone_number' => $pn,
+			'v_password' => Hash::make($pass),
 		];
-		$usr_record = $user->mod_user($data_to_push, $ROLE);
+		
+		$usr_record = $user->mod_user($data_to_push, $role);
+		
 		if($usr_record === false){
 			// something wrong here. needs to be checked.
 			die("ohmyuser");
@@ -537,13 +583,11 @@ class AdminController extends Controller{
 		}
 		// Send a confirmation mail
 		
-		// Log the candidate in
-		//// create an entry in the session and redirect user to panel
 		$userdet=array(
 			'role_id' => $cc_record,
-			'v_name' => $request->get('name'),
-			'v_user_name' => $request->get('name'),
-			'v_role' => $ROLE,
+			'v_name' => $name,
+			'v_user_name' => $name,
+			'v_role' => $role,
 			'user_id'=>$usr_record 
 		);
 		
@@ -554,18 +598,9 @@ class AdminController extends Controller{
 			Session::flash('message', trans("routes.loginerror"));
 			return Redirect::to('admin');
 		}
-		
-		$validlogin = true;//$users->validate_login($userdata);
-       	if(!$validlogin){
-			Session::flash('message', trans("routes.loginerror"));
-    		return Redirect::to('admin');
-    	}
-		
-				
-    	//return Redirect::to('/admin/dashboard/');
-        //Auth::guard($this->getGuard())->login($this->create($request->all()));
-        //return redirect($this->redirectPath());
-    }
+	}
+	
+	
     /**
      * Get the guard to be used during registration.
      *

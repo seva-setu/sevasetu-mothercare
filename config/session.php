@@ -16,7 +16,7 @@ return [
 	|
 	*/
 
-	'driver' => env('SESSION_DRIVER', 'file'),
+	'driver' => $_ENV['SESSION_DRIVER'],
 
 	/*
 	|--------------------------------------------------------------------------

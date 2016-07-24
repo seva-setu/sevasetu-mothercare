@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
-				<div class="panel-heading">Welcome to Seva Setu's Mother Care program. Register to start off as a Call Champion</div>
+				<div class="panel-heading"><b>Welcome to Seva Setu's Mother Care program. Register to start off as a Call Champion</b></div>
 				<div class="panel-body">
 					@if (count($errors) > 0)
 						<div class="alert alert-danger">
@@ -41,8 +41,8 @@
 							<label class="col-md-4 control-label">Phone number
 							</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="phonenumber" value=" {{old('phonenumber')}} "  required>
-								A valid mobile number. We'll use it to track your call schedule.
+								<input type="text" class="form-control" name="phonenumber" required>
+								A valid mobile number. We'll validate it in the next step.
 							</div>
 						</div>
 
