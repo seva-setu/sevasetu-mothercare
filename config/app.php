@@ -148,6 +148,7 @@ return [
 		'Maatwebsite\Excel\ExcelServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
 		'Barryvdh\DomPDF\ServiceProvider',
+		
 
 	],
 

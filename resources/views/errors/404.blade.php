@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<link href='//fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
 
 		<style>
 			body {
@@ -29,17 +29,12 @@
 				font-size: 60px;
 				margin-bottom: 40px;
 			}
-
-			.quote {
-				font-size: 24px;
-			}
 		</style>
 	</head>
 	<body>
 		<div class="container">
 			<div class="content">
-				<div class="title">Welcome to Seva Setu's mother care app</div>
-				<div class="quote">The page you were looking for could not be found</div>
+				<div class="title">Oops! The page you're looking for does not exist. <br/><a href={{ url() }}>Go home</a></div>
 			</div>
 		</div>
 	</body>

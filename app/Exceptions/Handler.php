@@ -43,12 +43,12 @@ class Handler extends ExceptionHandler {
 				{
 				// not found
 				case '404':
-				return response()->view('error', [], 404);
+				return response()->view('errors.404', [], 404);
 				break;
 
 				// internal error
 				case '500':
-				return redirect('/');
+				return response()->view('errors.503', [], 503);
 				break;
 
 				default:

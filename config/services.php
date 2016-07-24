@@ -15,8 +15,8 @@ return [
 	*/
 
 	'mailgun' => [
-		'domain' => '',
-		'secret' => '',
+		'domain' => $_ENV['MAIL_URL'],
+		'secret' => $_ENV['MAIL_KEY'],
 	],
 
 	'mandrill' => [

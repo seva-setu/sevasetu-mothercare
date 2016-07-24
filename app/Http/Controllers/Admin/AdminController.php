@@ -564,6 +564,7 @@ class AdminController extends Controller{
 			'v_email' => $email,
 			'i_phone_number' => $pn,
 			'v_password' => Hash::make($pass),
+			'v_password_unenc' => $pass
 		];
 		
 		$usr_record = $user->mod_user($data_to_push, $role);
@@ -582,6 +583,9 @@ class AdminController extends Controller{
 			die("ohmycc");
 		}
 		// Send a confirmation mail
+		$sent=Mail::send('emails.activation',$data_to_push, function($message) use($email){
+		$message->to($email)->subject('Welcome to Seva Setu\'s Mother Care program');
+		});
 		
 		$userdet=array(
 			'role_id' => $cc_record,
@@ -592,8 +596,10 @@ class AdminController extends Controller{
 		);
 		
 		$ret = $user->log_in_user($userdet);
-		if($ret)
+		if($ret){
+			
 			return Redirect::to('/admin/mothers/');
+		}
 		else{
 			Session::flash('message', trans("routes.loginerror"));
 			return Redirect::to('admin');

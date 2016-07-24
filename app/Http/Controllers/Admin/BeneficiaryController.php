@@ -39,18 +39,26 @@ class BeneficiaryController extends Controller{
 	protected $role_permissions;
 	public function __construct(){
 		$userinfo=Session::get('user_logged');
-		//check for valid use
-		if(!isset($userinfo['role_id'])){
-			Redirect::to('/admin/')->send();
+		if(!isset($userinfo)){
+			return Redirect::to('/admin/');
 		}
-		$this->role_type=$userinfo['v_role'];
-		$this->user_id=$userinfo['user_id'];
-		$this->role_id = $userinfo['role_id'];
 		
-		$this->helper = new Helpers();
-		$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
+		if(isset($userinfo['user_id'])){
+			$this->user_id=$userinfo['user_id'];
+		}
 		
-		$this->helper->clearBen_Data();
+		if(isset($userinfo['role_id'])){
+			$this->role_id=$userinfo['role_id'];
+		}
+				
+		if(isset($userinfo['v_role'])){
+			$this->helper = new Helpers();
+			
+			$this->role_type=$userinfo['v_role'];
+			$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
+			
+			$this->helper->clearBen_Data();
+		}
 	}
 
 	// make the input to this function an excel
@@ -83,16 +91,18 @@ class BeneficiaryController extends Controller{
 	}
 	
 	public function tester_method(){
-		$bene_obj = Beneficiary::all();
-		foreach($bene_obj as $bene){
-			for($i=0;$i<10;$i++){
-				$duelist_obj = new DueList();
-				$due_list = $duelist_obj->get_duelist($bene->b_id);
-				$this->allocate_call_champion($due_list, $bene->b_id);
-			}
-		}
+			
 		
-		die("adone");
+		// $bene_obj = Beneficiary::all();
+		// foreach($bene_obj as $bene){
+			// for($i=0;$i<10;$i++){
+				// $duelist_obj = new DueList();
+				// $due_list = $duelist_obj->get_duelist($bene->b_id);
+				// $this->allocate_call_champion($due_list, $bene->b_id);
+			// }
+		// }
+		
+		 die("adone");
 	}
 	
 	public function add_due_list($beneficiary_id, $delivery_date){
