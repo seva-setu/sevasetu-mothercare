@@ -6,7 +6,7 @@ To know more about this program, visit the following pages -
 
 ## Webpage
 
-Seva Setu's official website hosts this web-app. [Seva Setu](sevasetu.org/mother_care/)
+Seva Setu's official website hosts this web-app. Visit [Seva Setu](http://sevasetu.org/mother_care/).
 
 ## Video demonstration of concept
 
