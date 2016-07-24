@@ -502,7 +502,7 @@ class AdminController extends Controller{
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function register(Request $request){	
+    public function register(Request $request){
 		$ROLE = 2; //by default, those registering via the form are call champions
 		$reg = new Registrar();
         $validator = $reg->validator($request->all());
@@ -518,7 +518,8 @@ class AdminController extends Controller{
 		$data_to_push = [
 			'v_name' => $request->get('name'),
 			'v_email' => $request->get('email'),
-			'password' => Hash::make($request->get('password')),
+			'i_phone_number' => $request->get('phonenumber'),
+			'v_password' => Hash::make($request->get('password')),
 		];
 		$usr_record = $user->mod_user($data_to_push, $ROLE);
 		if($usr_record === false){

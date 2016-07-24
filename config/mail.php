@@ -54,7 +54,7 @@ return [
 	|
 	*/
 
-	'from' => ['address' => 'noreply@mothercaretool.com', 'name' => 'Mother Care Tool'],
+	'from' => ['address' => 'mothercare@sevasetu.org', 'name' => 'Mother Care Tool'],
 
 	/*
 	|--------------------------------------------------------------------------

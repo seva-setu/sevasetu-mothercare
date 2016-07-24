@@ -24,11 +24,11 @@ class User extends Eloquent {
 			$this->v_email	=	$inputData['v_email'];
 		
 		
-		if(isset($inputData['i_phonenum']))
-			$this->i_phonenum	=	$inputData['i_phonenum'];
+		if(isset($inputData['i_phone_number']))
+			$this->i_phone_number	=	$inputData['i_phone_number'];
 		
-		if(isset($inputData['password']))
-			$this->v_password	=	$inputData['password'];
+		if(isset($inputData['v_password']))
+			$this->v_password	=	$inputData['v_password'];
 		
 		if(isset($inputData['ti_is_verified']))
 			$this->ti_is_verified	=	$inputData['ti_is_verified'];

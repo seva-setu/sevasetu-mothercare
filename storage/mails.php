@@ -18,7 +18,7 @@
 	
 	function send_sms($template_id, $data_arr){
 		$url = 'https://control.msg91.com/api/postsms.php';
-		$key = '119770ArC5iGknjIL5792d144';
+		$key = $_ENV['SMS_KEY'];
 		$name = 'SEVSTU';
 		
 		if($template_id == 1)
