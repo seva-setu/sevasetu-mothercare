@@ -542,6 +542,7 @@ class AdminController extends Controller{
 		$token_original = Session::get('phone_auth_token');
 		
 		if($token_original == $token_received){
+			Session::forget('phone_auth_token');
 			$name = Session::get('name');
 			$email = Session::get('email');
 			$pn = Session::get('phonenumber');
@@ -552,7 +553,7 @@ class AdminController extends Controller{
 		}
 		else{
 			Session::flash('message', trans("routes.loginerror"));
-			return Redirect::to('auth/register');
+			return Redirect::back();
 		}
 	}
 	
