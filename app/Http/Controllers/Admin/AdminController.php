@@ -133,11 +133,13 @@ class AdminController extends Controller{
     if ($validator->fails()){
     	return Redirect::to('/admin')->withErrors($validator);
     }else{
-		// include(storage_path().'/mails.php');
-		// $ret = send_sms(1, 919910777393);
-		// die();
       	$validlogin = $users->validate_login($userdata);
        	if($validlogin){
+			$user_details = Session::get('user_logged');
+			$user_id = $user_details['user_id'];
+			$inputData['dt_last_login'] = date("Y-m-d H:i:s");
+			$user_obj = new User;
+			$user_obj = $user_obj->mod_user($inputData, $user_id);
     		return Redirect::to('/admin/mothers');
     	}else{
     		Session::flash('message', trans("routes.loginerror"));
@@ -541,6 +543,7 @@ class AdminController extends Controller{
 		$token_received = $request['passkey'];
 		$token_original = Session::get('phone_auth_token');
 		
+		//if(true){
 		if($token_original == $token_received){
 			Session::forget('phone_auth_token');
 			$name = Session::get('name');
@@ -565,11 +568,13 @@ class AdminController extends Controller{
 			'v_email' => $email,
 			'i_phone_number' => $pn,
 			'v_password' => Hash::make($pass),
-			'v_password_unenc' => $pass
+			'v_password_unenc' => $pass,
+			'v_role' => 2,
+			'dt_create_date' => date("Y-m-d H:i:s"),
+			'dt_last_login' => date("Y-m-d H:i:s")
 		];
 		
-		$usr_record = $user->mod_user($data_to_push, $role);
-		
+		$usr_record = $user->mod_user($data_to_push);
 		if($usr_record === false){
 			// something wrong here. needs to be checked.
 			die("ohmyuser");

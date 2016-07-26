@@ -91,18 +91,17 @@ class BeneficiaryController extends Controller{
 	}
 	
 	public function tester_method(){
+		 die("test done");
+	}
+	public function upload_mother(){
+		$bene_obj = Beneficiary::all();
+		foreach($bene_obj as $bene){
+			$due_list = $this->add_due_list($bene->b_id, $bene->dt_due_date);
+			$this->allocate_call_champion($due_list, $bene->b_id);
 			
+		}
 		
-		// $bene_obj = Beneficiary::all();
-		// foreach($bene_obj as $bene){
-			// for($i=0;$i<10;$i++){
-				// $duelist_obj = new DueList();
-				// $due_list = $duelist_obj->get_duelist($bene->b_id);
-				// $this->allocate_call_champion($due_list, $bene->b_id);
-			// }
-		// }
-		
-		 die("adone");
+		 die("mother upload done");
 	}
 	
 	public function add_due_list($beneficiary_id, $delivery_date){

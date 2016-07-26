@@ -12,6 +12,7 @@
 */	
 
 Route::get('/test','Admin\BeneficiaryController@tester_method');
+Route::get('/uploadmothermagic','Admin\BeneficiaryController@upload_mother');
 Route::get('/','Admin\AdminController@landing');
 ///////////// Havent tested many of these routes ///////////
 Route::get('/auth/register','Admin\AdminController@getRegister');
