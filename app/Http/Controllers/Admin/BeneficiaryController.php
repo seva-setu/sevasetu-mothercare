@@ -85,8 +85,10 @@ class BeneficiaryController extends Controller{
 	public function upload_mother(){
 		$bene_obj = Beneficiary::all();
 		foreach($bene_obj as $bene){
+			// add a check - if mother doesnt exist in the DB, only then do the following -
 			$due_list = $this->add_due_list($bene->b_id, $bene->dt_due_date);
 			$this->allocate_call_champion($due_list, $bene->b_id);
+			$this->update_call_champion_report($due_list);
 			
 		}
 		
@@ -173,6 +175,19 @@ class BeneficiaryController extends Controller{
 	public function assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr){
 		$due_list_obj = new DueList;
 		return $due_list_obj->assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr);
+	}
+	
+	public function update_call_champion_report($due_list){
+		$table_name = 'mct_callchampion_report';
+		$insert_array = [];
+		foreach($due_list as $val)
+			$insert_arr []= array('fk_due_id'=>$val);
+		
+		DB::table($table_name)
+			->insert($insert_arr);
+		
+		// Needs exception handling here
+		return true;
 	}
 	
 	public function list_all_beneficiaries(){
