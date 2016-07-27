@@ -37,27 +37,16 @@ class BeneficiaryController extends Controller{
 	
 	protected $helper;
 	protected $role_permissions;
+	
 	public function __construct(){
-		$userinfo=Session::get('user_logged');
-		if(!isset($userinfo)){
-			return Redirect::to('/admin/');
+		if(!Session::has('user_logged')){
+			Redirect::to('/')->send();
 		}
-		
-		if(isset($userinfo['user_id'])){
+		else{
+			$userinfo=Session::get('user_logged');
 			$this->user_id=$userinfo['user_id'];
-		}
-		
-		if(isset($userinfo['role_id'])){
 			$this->role_id=$userinfo['role_id'];
-		}
-				
-		if(isset($userinfo['v_role'])){
-			$this->helper = new Helpers();
-			
 			$this->role_type=$userinfo['v_role'];
-			$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
-			
-			$this->helper->clearBen_Data();
 		}
 	}
 

@@ -33,22 +33,31 @@ class CallchampionsController extends Controller{
 	protected $role_permissions;
 	
 	public function __construct(){
-		$userinfo=Session::get('user_logged');
-		if(isset($userinfo['user_id'])){
+		if(!Session::has('user_logged')){
+			Redirect::to('/')->send();
+		}
+		else{
+			$userinfo=Session::get('user_logged');
 			$this->user_id=$userinfo['user_id'];
-		}
-		
-		if(isset($userinfo['role_id'])){
 			$this->role_id=$userinfo['role_id'];
-		}
-				
-		if(isset($userinfo['v_role'])){
-			$this->helper = new Helpers();
-			
 			$this->role_type=$userinfo['v_role'];
-			$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
 			
-			$this->helper->clearBen_Data();
+			$user_stats = Session::has('user_stats');
+			if(!$user_stats){
+				if($this->role_type == 2){
+					$callchamp = new CallChampion;
+					$dashboard_data = $callchamp->get_dashboard_data($this->role_id);
+				}
+			
+				// If its a fieldworker
+				elseif($this->role_type == 3){
+					$fieldworker = new Fieldworkers;
+					$dashboard_data = $fieldworker->get_dashboard_data($this->role_id);
+				}
+				//ideally should be hashed
+				$encoded_data 	= $dashboard_data;
+				Session::put('user_stats', $encoded_data);
+			}
 		}
 	}
 

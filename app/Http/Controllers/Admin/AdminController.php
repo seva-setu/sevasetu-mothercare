@@ -40,48 +40,13 @@ class AdminController extends Controller{
 	protected $role_permissions;
 	
 	public function __construct(){
-		$userinfo=Session::get('user_logged');
-		if(!isset($userinfo)){
-			return Redirect::to('/admin/');
-		}
-		
-		if(isset($userinfo['user_id'])){
-			$this->user_id=$userinfo['user_id'];
-		}
-		
-		if(isset($userinfo['role_id'])){
-			$this->role_id=$userinfo['role_id'];
-		}
-				
-		if(isset($userinfo['v_role'])){
-			$this->helper = new Helpers();
-			
-			$this->role_type=$userinfo['v_role'];
-			$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
-			
-			$this->helper->clearBen_Data();
-		}
-		
-		$user_stats = Session::get('user_stats');
-		if(!isset($user_stats)){// Generate dashboard landing data as per the role
-			// If its a call champion
-			if($this->role_type == 2){
-				$callchamp = new CallChampion;
-				$dashboard_data = $callchamp->get_dashboard_data($this->role_id);
-			}
-			
-			// If its a fieldworker
-			elseif($this->role_type == 3){
-				$fieldworker = new Fieldworkers;
-				$dashboard_data = $fieldworker->get_dashboard_data($this->role_id);
-			}
-			//ideally should be hashed
-			$encoded_data 	= $dashboard_data;
-			Session::put('user_stats', $encoded_data);
-		}
 	}
 	
 	public function landing(){
+		if(Session::has('user_logged')){
+			Redirect::to('/admin/mothers')->send();
+		}
+		
 		$mothers = DB::table('mct_beneficiary')->count('b_id');
 		$cc = DB::table('mct_call_champions')->count('cc_id');
 		$calls = DB::table('mct_due_list')->count('due_id');
@@ -94,7 +59,7 @@ class AdminController extends Controller{
 	}
 	
 	public function index(){
-		if(isset($this->user_id)){
+		if(Session::has('user_logged')){
 			Redirect::to('/admin/mothers')->send();
 		}
 		$data['title']= "Login";
@@ -102,51 +67,42 @@ class AdminController extends Controller{
 	}
 	
 	/*
-	 * Dashboard Page
-	 */
-	public function dashboard(){// defualt method
-		//security concern. there should be a middleware checking for this
-		if(!isset($this->user_id)){
-			Redirect::to('/admin/')->send();
-		}
-		Redired::to('/admin/mothers');
-	}
-	
-	
-	/*
 	 * User Login for Dashboard
 	 */
  	public function login() {
- 	// Getting all post data
- 	$users=new User;
- 	$userdata = array(
-		    'email' => Input::get('txtUserName'),
-		    'password' => Input::get('txtPassword')
-		  );
- 	// Applying validation rules.
-    $rules = array(
-		'email' => 'required|email',
-		'password' => 'required|min:6',
-	     );
-    
-    $validator = Validator::make($userdata, $rules);
-    if ($validator->fails()){
-    	return Redirect::to('/admin')->withErrors($validator);
-    }else{
-      	$validlogin = $users->validate_login($userdata);
-       	if($validlogin){
-			$user_details = Session::get('user_logged');
-			$user_id = $user_details['user_id'];
-			$inputData['dt_last_login'] = date("Y-m-d H:i:s");
-			$user_obj = new User;
-			$user_obj = $user_obj->mod_user($inputData, $user_id);
-    		return Redirect::to('/admin/mothers');
-    	}else{
-    		Session::flash('message', trans("routes.loginerror"));
-    		return Redirect::to('admin');
-    	}
-     }
-  }
+		if(Session::has('user_logged')){
+			Redirect::to('/admin/mothers')->send();
+		}
+		// Getting all post data
+		$users=new User;
+		$userdata = array(
+				'email' => Input::get('txtUserName'),
+				'password' => Input::get('txtPassword')
+			  );
+		// Applying validation rules.
+		$rules = array(
+			'email' => 'required|email',
+			'password' => 'required|min:6',
+			 );
+		
+		$validator = Validator::make($userdata, $rules);
+		if ($validator->fails()){
+			return Redirect::to('/admin/login')->withErrors($validator);
+		}else{
+			$validlogin = $users->validate_login($userdata);
+			if($validlogin){
+				$user_details = Session::get('user_logged');
+				$user_id = $user_details['user_id'];
+				$inputData['dt_last_login'] = date("Y-m-d H:i:s");
+				$user_obj = new User;
+				$user_obj = $user_obj->mod_user($inputData, $user_id);
+				return Redirect::to('/admin/mothers');
+			}else{
+				Session::flash('message', trans("routes.loginerror"));
+				return Redirect::to('admin/login');
+			}
+		}
+    }
 
   //change password view
   public function changepassword(){
@@ -245,8 +201,8 @@ class AdminController extends Controller{
   
   //login out 
   public function logout() {
-  	Session::forget('user_logged');
-  	return Redirect::to('')->with('message', '');
+  	Session::flush();
+  	return Redirect::to('/')->with('message', '');
   }
   
   
@@ -343,6 +299,7 @@ class AdminController extends Controller{
   
   //forgot password methode
   public function forgotPassword(){
+		die('Contact help@sevasetu.org');
   		$email=Input::get('txtForgotEmailId');
   		$users=new Users;
 		$data['result']= $users::where('v_status', 'Active')->where('v_email', Input::get('txtForgotEmailId'))->get()->toArray();
@@ -505,6 +462,9 @@ class AdminController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request){
+		if(Session::has('user_logged')){
+			Redirect::to('/admin/mothers')->send();
+		}
 		$reg = new Registrar();
         $validator = $reg->validator($request->all());
         if ($validator->fails()) {
