@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Register | Seva Setu</title>
 	
-	<link href="<?php echo Config::get('constant.SITEURL'); ?>css/app.css" rel="stylesheet">
+	<link href="{{ url() }}/css/app.css" rel="stylesheet">
 	@include('template/admin_cssscripta')
 	@include('template/admin_jsscript')
 	<!-- Fonts -->
@@ -24,7 +24,7 @@
 
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="<?php echo Config::get('constant.SITEURL'); ?>/js/Validator.js"></script>
+	<script src="{{ url() }}/js/Validator.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	
 </body>

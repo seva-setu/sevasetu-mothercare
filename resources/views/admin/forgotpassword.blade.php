@@ -3,15 +3,15 @@
         <title></title>
 		<meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>external/css_admin/bootstrap.min.css" />
-		<link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>external/css_admin/bootstrap-responsive.min.css" />
-        <link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>external/css_admin/unicorn.login.css" />
-        <link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>external/css_admin/style.css" />
-        <link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>external/css_admin/custom.css" />
-        <script src="<?php echo Config::get('constant.SITEURL'); ?>external/js_admin/jquery.min.js"></script>  
-        <script src="<?php echo Config::get('constant.SITEURL'); ?>external/js_admin/unicorn.login.js"></script> 
-        <script src="<?php echo Config::get('constant.SITEURL'); ?>external/js_admin/jquery.validate.js"></script>
-        <script src="<?php echo Config::get('constant.SITEURL'); ?>external/js/function.js"></script> 
+		<link rel="stylesheet" href="{{ url() }}/external/css_admin/bootstrap.min.css" />
+		<link rel="stylesheet" href="{{ url() }}/external/css_admin/bootstrap-responsive.min.css" />
+        <link rel="stylesheet" href="{{ url() }}/external/css_admin/unicorn.login.css" />
+        <link rel="stylesheet" href="{{ url() }}/external/css_admin/style.css" />
+        <link rel="stylesheet" href="{{ url() }}/external/css_admin/custom.css" />
+        <script src="{{ url() }}/external/js_admin/jquery.min.js"></script>  
+        <script src="{{ url() }}/external/js_admin/unicorn.login.js"></script> 
+        <script src="{{ url() }}/external/js_admin/jquery.validate.js"></script>
+        <script src="{{ url() }}/external/js/function.js"></script> 
         <script type="application/javascript" language="javascript">
 		</script>
 	@include('template/script_multilanguage')	
@@ -62,7 +62,7 @@
            </div>
 </body>
 </html>
-<script src="<?php echo Config::get('constant.SITEURL'); ?>external/js_admin/jquery.validate.js"></script> 
+<script src="{{ url() }}/external/js_admin/jquery.validate.js"></script> 
 <script>
 jQuery.validator.addMethod("notEqual", function(value, element, param) {
 	 return this.optional(element) || value != $(param).val();

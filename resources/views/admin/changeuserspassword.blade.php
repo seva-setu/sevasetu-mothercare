@@ -59,7 +59,7 @@
 @include('template/admin_jsscript')
 </body>
 </html>
-<script src="<?php echo Config::get('constant.SITEURL'); ?>external/js_admin/jquery.validate.js"></script> 
+<script src="{{ url() }}/external/js_admin/jquery.validate.js"></script> 
 <script>
 jQuery.validator.addMethod("notEqual", function(value, element, param) {
 	 return this.optional(element) || value != $(param).val();

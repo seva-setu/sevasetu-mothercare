@@ -224,8 +224,8 @@ var siteurl="<?php echo Config::get('app.url')?>";
 @include('template/admin_jsscript')
 </body>
 </html>
-<script src="<?php echo Config::get('constant.SITEURL'); ?>external/js_admin/jquery.validate.js"></script> 
-<script src="<?php echo Config::get('constant.SITEURL'); ?>external/js/customevalidation.js"></script> 
+<script src="{{ url() }}/external/js_admin/jquery.validate.js"></script> 
+<script src="{{ url() }}/external/js/customevalidation.js"></script> 
 <script>
 function showDatePicker(){ 
 	 $("#txtBirthDate").datepicker("show");
