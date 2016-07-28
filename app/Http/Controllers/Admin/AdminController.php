@@ -51,8 +51,8 @@ class AdminController extends Controller{
 		$cc = DB::table('mct_call_champions')->count('cc_id');
 		$calls = DB::table('mct_due_list')->count('due_id');
 		
-		$data['calls'] = 24+$calls;
-		$data['mothers'] = 36+$mothers;
+		$data['calls'] = 25000+$calls*10/2; // Each call champion has 5 calls on an average which lasts for 10 minutes each
+		$data['mothers'] = 1042+$mothers;
 		$data['cc'] = 48+$cc;
 		
 		return view('welcome',$data);

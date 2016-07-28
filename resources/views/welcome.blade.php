@@ -212,7 +212,7 @@ margin-top:25px !important;
 				<span class="fa fa-phone fa-stack-1x fa-inverse"></span> </span>
                 </p>
                 <h2><span data-to="{{ $calls }}" data-from="0" class="timer"> {{$calls}} </span> </h2>
-                <h3>calls scheduled</h3>
+                <h3>minutes of phone conversation</h3>
                 <hr>
                 <p class="text-center"> A fully automated system to track and manage phone calls</p>
             </div>

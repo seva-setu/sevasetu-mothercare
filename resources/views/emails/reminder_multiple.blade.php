@@ -2,15 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+<title></title>
 </head>
 <body>
-
-<p>Hi <?php echo $v_name; ?>,</p>
-<p>Welcome to Seva Setu&#39;s Mother Care program. We&#39;re so happy to have you onboard!</p>
-<p>Your credentials on our <a href="http://sevasetu.org/mother_care"> web app</a> are:</p>
-<p><b>EMail</b>: <?php echo $v_email; ?><br/>
-<b>Password</b> : <?php echo $v_password_unenc; ?></p>
+<p>Hi {{$cc_name}}</p>
+<p>You have {{$count}} calls scheduled this week. Please login to the <a href="http://sevasetu.org/mother_care">Mother Care portal</a> with your credentials to view the full list.
 
 <p><p>For any queries, please free to get in touch with us. Write to us on mothercare@sevasetu.org. We&#39;ll make sure to get back in touch with you!</p></p>
 <p>Thanks<br />
