@@ -189,12 +189,18 @@ smallfont{
 								  <label for="action_note">{{ trans('routes.notes_field')}}
 								  <span class="label label-danger">Important</span>
 								  </label>
-								  <textarea name="action_note" class="form-control" rows="5" id="action_note" onfocus="if(this.value == '<?php echo trans('routes.textareadefaulttext');?>') this.value='';" onblur="if(this.value == '') this.value='<?php echo trans('routes.textareadefaulttext');?>';"><?php echo trans('routes.textareadefaulttext');?></textarea>
+								  <textarea name="action_note" class="form-control" rows="5" id="action_note" onfocus="if(this.value == '<?php echo trans('routes.textareadefaulttext');?>') this.value='';" onblur="if(this.value == '') this.value='<?php echo trans('routes.textareadefaulttext');?>';"><?php 
+								  if($current_notes->action_items == "")
+									  echo trans('routes.textareadefaulttext');
+								  else
+									  echo $current_notes->action_items;
+								  ?>
+								  </textarea>
 								</div>
 								
 							   <div class="form-group">
 								  <label for="general_note">{{ trans('routes.notes_general') }} {{ $personal_details->name }}</label>
-								  <textarea name="general_note" class="form-control" rows="5" id="general_note">{{ trim($personal_details->mother_notes) }}</textarea>
+								  <textarea name="general_note" class="form-control" rows="5" id="general_note">{{ $current_notes->conversation_notes }}</textarea>
 								</div>
 								<button type="submit">{{trans('routes.submitnote')}}</button>
 							</div>

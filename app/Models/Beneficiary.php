@@ -64,5 +64,21 @@ class Beneficiary extends Eloquent {
 						->simplepaginate(15);
 		return $select;
 	}
+	
+	public function get_current_notes($due_id){
+		$table_name = 'mct_callchampion_report';
+		$join_table = 'mct_due_list';
+		$select  	= DB::table($table_name)
+						->join($join_table, $join_table.'.due_id', '=', $table_name.'.fk_due_id')
+						->select(
+							$table_name.'.t_conversation as conversation_notes',
+							$table_name.'.t_action_items as action_items'
+						)
+						->where($join_table.'.due_id', '=' , $due_id)
+						->orderBy($table_name.'.report_id','desc')
+						->get();
+		//ACTION ITEM: Needs proper exception handling
+		return $select[0];
+	}
 
 }

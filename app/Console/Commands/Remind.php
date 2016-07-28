@@ -99,8 +99,8 @@ class Remind extends Command {
 			}
 			
 			//Send SMS to mother
-			foreach($callchamp as $details)
-				send_sms(6, array($details->mother_phonenumber));
+			//foreach($callchamp as $details)
+				//send_sms(6, array($details->mother_phonenumber));
 		}
 		
 	}

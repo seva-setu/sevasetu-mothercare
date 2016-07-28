@@ -88,15 +88,16 @@ class WeeklyCalllistController extends Controller{
 		
 		$previous_notes = $b_obj->get_previous_notes($beneficiary_id);
 		
+		$current_notes = $b_obj->get_current_notes($due_id);
+		
 		$call_details['personal_details'] 	= $beneficiary_details;
 		$call_details['action_items'] 		= $action_items;
 		$call_details['previous_notes'] 	= $previous_notes;
 		$call_details['call_details'] 		= array('due_id'=>$due_id, 'action_date'=>$due_id_obj['attributes']['dt_intervention_date']);
+		$call_details['current_notes'] 		=  $current_notes;
 		
-		if(false)
-			return(view('mycalls.details',$call_details));
-		else
-			return(view('mycalls.details',$call_details));
+		
+		return(view('mycalls.details',$call_details));
 	}
 	
 	
