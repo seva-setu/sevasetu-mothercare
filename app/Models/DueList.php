@@ -179,9 +179,9 @@ class DueList extends Eloquent {
 									);
 		
 		
-		$select_has_called_thisweek = $select_has_called_thisweek->whereRaw(DB::raw($this->table.'.dt_intervention_date'." BETWEEN SYSDATE() + INTERVAL -7 DAY AND SYSDATE() + INTERVAL 7 DAY"))->whereNotIn($join_table_name1.'.e_call_status',array('Received'));
+		$select_has_called_thisweek = $select_has_called_thisweek->whereRaw(DB::raw($this->table.'.dt_intervention_date'." BETWEEN SYSDATE() + INTERVAL -7 DAY AND SYSDATE() + INTERVAL 7 DAY"))->whereNotIn($join_table_name1.'.e_call_status',array('Received','Incorrect number'));
 		
-		$select_has_called_thismonth = $select_has_called_thismonth->whereRaw(DB::raw($this->table.'.dt_intervention_date'." BETWEEN SYSDATE() + INTERVAL -30 DAY AND SYSDATE() + INTERVAL 30 DAY"))->whereNotIn($join_table_name1.'.e_call_status',array('Received'));
+		$select_has_called_thismonth = $select_has_called_thismonth->whereRaw(DB::raw($this->table.'.dt_intervention_date'." BETWEEN SYSDATE() + INTERVAL -30 DAY AND SYSDATE() + INTERVAL 30 DAY"))->whereNotIn($join_table_name1.'.e_call_status',array('Received', 'Incorrect number'));
 		
 		
 		$selected['due_list_scheduled'] 		= $select_has_called_not->simplepaginate(5,['*'],'one');
@@ -246,22 +246,22 @@ class DueList extends Eloquent {
 		$select_postweek = clone $select;
 		
 		$select_beginweek = $select->where($this->table.'.reminder_status','=',0)
-							->where($join_table_name4.'.e_call_status','=',"Not called")
+							->whereNotIn($join_table_name4.'.e_call_status',array('Received','Incorrect number'))
 							->whereRaw(DB::raw($this->table.'.dt_intervention_date'." BETWEEN SYSDATE() + INTERVAL 6 DAY AND SYSDATE() + INTERVAL 7 DAY"))
 							->get();
 							
 		$select_midweek = $select_midweek->where($this->table.'.reminder_status','=',1)
-							->where($join_table_name4.'.e_call_status','=',"Not called")
+							->whereNotIn($join_table_name4.'.e_call_status',array('Received','Incorrect number'))
 							->whereRaw(DB::raw($this->table.'.dt_intervention_date'." BETWEEN SYSDATE() + INTERVAL 3 DAY AND SYSDATE() + INTERVAL 4 DAY"))
 							->get();
 		
 		$select_endweek = $select_endweek->where($this->table.'.reminder_status','=',2)
-							->where($join_table_name4.'.e_call_status','=',"Not called")
+							->whereNotIn($join_table_name4.'.e_call_status',array('Received','Incorrect number'))
 							->whereRaw(DB::raw($this->table.'.dt_intervention_date'." BETWEEN SYSDATE() + INTERVAL 1 DAY AND SYSDATE() + INTERVAL 0 DAY"))
 							->get();
 		
 		$select_postweek = $select_postweek->where($this->table.'.reminder_status','=',3)
-							->where($join_table_name4.'.e_call_status','=',"Not called")
+							->whereNotIn($join_table_name4.'.e_call_status',array('Received','Incorrect number'))
 							->whereRaw(DB::raw($this->table.'.dt_intervention_date'." BETWEEN SYSDATE() + INTERVAL -2 DAY AND SYSDATE() + INTERVAL -3 DAY"))
 							->get();
 		

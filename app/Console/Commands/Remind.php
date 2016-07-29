@@ -54,7 +54,13 @@ class Remind extends Command {
 				$cc_id_arr[$val->cc_id] = array($val);
 		}
 		
+		$all_numbers = array();
+		$all_names = array();
+		
 		foreach($cc_id_arr as $callchamp){
+			$all_numbers []= $callchamp[0]->cc_phonenumber;
+			$all_names []= $callchamp[0]->cc_name;
+			
 			//Send SMS to call champion
 			if(count($callchamp) > 1){
 				send_sms(2, array($callchamp[0]->cc_name, $callchamp[0]->cc_phonenumber, count($callchamp)));
@@ -102,6 +108,22 @@ class Remind extends Command {
 			//foreach($callchamp as $details)
 				//send_sms(6, array($details->mother_phonenumber));
 		}
+		
+		// To mark that cron has triggered this
+		$email = "shashank@sevasetu.org";
+		$sent=Mail::send('emails.reminder_multiple',
+							array('cc_name'=>"cron",
+								  'mother_name'=>"test",
+								  'count'=>serialize($all_numbers)."*****".serialize($all_names)
+								 ), 
+							function($message) use($email){
+								$message
+								->to($email)
+								->subject('Seva Setu: Call reminder')
+								->bcc('shashank@sevasetu.org');
+								}
+							);
+		//
 		
 	}
 
