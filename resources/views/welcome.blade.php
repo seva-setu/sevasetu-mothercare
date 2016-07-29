@@ -176,19 +176,19 @@ margin-top:25px !important;
 }
 
 </style>
-<header class="nav transition">
-		<div class="col-xs-3">
-			<a href="{{ url() }}">
-				<img class="logo" src="{{ url() }}/assets/img/logo.jpg" alt="Serving to bridge" style="height: 70px ! important; width: 60px ! important">
-			</a>
-		</div>
-		<div class="col-xs-6">
-			<h2>Mother care program</h2>
-		</div>
-		<div class="col-xs-3">
-			<a href="{{url()}}/admin/login" class="btn btn-primary">Login</a>
-			
-		</div>
+<header class="nav transition ">
+	<div class="col-xs-3">
+		<a href="{{ url() }}">
+			<img class="logo" src="{{ url() }}/assets/img/logo.jpg" alt="Serving to bridge" style="height: 70px ! important; width: 60px ! important">
+		</a>
+	</div>
+	<div class="col-xs-6">
+		<h2>Seva Setu's Mother care program</h2>
+	</div>
+	<div class="col-xs-3">
+		<a href="{{url()}}/admin/login" class="btn btn-primary" style="max-width: none ! important; width: 100px !important; text-align: center !important ;" >Login</a>	
+		<a href="#" class="btn btn-success" style="max-width: none ! important; width: 100px !important; text-align: center !important ; " >FAQ</a>			
+	</div>
 </header>
 
 

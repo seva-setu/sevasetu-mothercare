@@ -508,7 +508,7 @@ input.placeholder, textarea.placeholder {
 .btn {
     border-radius: 0;
     font-size: 16px; font-weight: 500;
-    padding: 12px 30px; margin: 0 0 0.15em;
+    padding: 10px 20px; margin: 0 0 0.5em;
     transition: background .8s ease, opacity .8s ease;
 }
 .btn:active, .btn.active {
