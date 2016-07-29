@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	@include('template/admin_cssscripta')
-	<link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>external/css_admin/dashboard.css" />
+	<link rel="stylesheet" href="{{ url() }}/external/css_admin/dashboard.css" />
 </head>
 
 <body>

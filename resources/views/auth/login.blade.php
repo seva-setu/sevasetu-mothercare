@@ -18,7 +18,7 @@
 						</div>
 					@endif
 
-					<form class="form-horizontal" role="form" method="POST" action="<?php echo Config::get('constant.SITEURL'); ?>auth/login">
+					<form class="form-horizontal" role="form" method="POST" action="{{ url() }}/auth/login">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 						<div class="form-group">
@@ -51,7 +51,7 @@
 									Login
 								</button>
 
-								<a href="<?php echo Config::get('constant.SITEURL'); ?>/password/email">Forgot Your Password?</a>
+								<a href="{{ url() }}/password/email">Forgot Your Password?</a>
 							</div>
 						</div>
 					</form>

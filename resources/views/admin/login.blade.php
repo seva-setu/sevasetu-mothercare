@@ -1,13 +1,13 @@
 @include('template/admin_title')
-		<link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>assets//css_admin/bootstrap.min.css" />
-		<link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>assets//css_admin/bootstrap-responsive.min.css" />
-        <link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>assets//css_admin/unicorn.login.css" />
-        <link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>assets//css_admin/style.css" />
-        <link rel="stylesheet" href="<?php echo Config::get('constant.SITEURL'); ?>assets//css_admin/custom.css" />
-        <script src="<?php echo Config::get('constant.SITEURL'); ?>assets//js_admin/jquery.min.js"></script>  
-        <script src="<?php echo Config::get('constant.SITEURL'); ?>assets//js_admin/unicorn.login.js"></script> 
-        <script src="<?php echo Config::get('constant.SITEURL'); ?>assets//js_admin/jquery.validate.js"></script>
-        <script src="<?php echo Config::get('constant.SITEURL'); ?>assets//js/function.js"></script> 
+		<link rel="stylesheet" href="{{ url() }}/assets//css_admin/bootstrap.min.css" />
+		<link rel="stylesheet" href="{{ url() }}/assets//css_admin/bootstrap-responsive.min.css" />
+        <link rel="stylesheet" href="{{ url() }}/assets//css_admin/unicorn.login.css" />
+        <link rel="stylesheet" href="{{ url() }}/assets//css_admin/style.css" />
+        <link rel="stylesheet" href="{{ url() }}/assets//css_admin/custom.css" />
+        <script src="{{ url() }}/assets//js_admin/jquery.min.js"></script>  
+        <script src="{{ url() }}/assets//js_admin/unicorn.login.js"></script> 
+        <script src="{{ url() }}/assets//js_admin/jquery.validate.js"></script>
+        <script src="{{ url() }}/assets//js/function.js"></script> 
         <script type="application/javascript" language="javascript">
 		</script>
     </head>
@@ -34,7 +34,7 @@
         
          	<div style="color:#468847;text-align:center">{{ Session::get('sucmessage') }}</div>
          	<div class="error" style="color:#b94a48;text-align:center">{{ Session::get('message') }}</div>
-			<form class="form-horizontal" role="form" method="POST" action="<?php echo Config::get('constant.SITEURL'); ?>admin/login" accept-charset="utf-8" name="loginform" id="loginform">
+			<form class="form-horizontal" role="form" method="POST" action="{{ url() }}/admin/login" accept-charset="utf-8" name="loginform" id="loginform">
 			<p><?php echo trans('routes.loginlabel'); ?></p>
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
         		<div>
@@ -57,13 +57,13 @@
                 <div class="form-actions loginbuttondiv">
                     <span class="pull-left"><a href="#" class="flip-link" id="to-recover"><?php echo trans('routes.lostpassword'); ?></a></span>
 					<span class="pull-right"><input name="action" type="submit" class="btn btn-inverse" value="<?php echo trans('routes.login'); ?>" /></span>
-					<span class="pull-right"><a href="<?php echo Config::get('constant.SITEURL');?>auth/register" class="flip-link" id="to-recover"><?php echo trans('routes.new_user'); ?></a></span>
+					<span class="pull-right"><a href="{{ url() }}/auth/register" class="flip-link" id="to-recover"><?php echo trans('routes.new_user'); ?></a></span>
 					
                 </div>
                 </div>
              <!--</form>-->
              </form>  
-            <form class="form-horizontal" role="form" method="POST" action="<?php echo Config::get('constant.SITEURL'); ?>admin/forgotPassword" id="recoverform" name="recoverform" >
+            <form class="form-horizontal" role="form" method="POST" action="{{ url() }}/admin/forgotPassword" id="recoverform" name="recoverform" >
 						<input type="hidden" name="_token" id="_token"  value="{{ csrf_token() }}">
                <p><?php echo trans('routes.lostpass_label'); ?></p>
                <div class="control-group">
@@ -81,7 +81,7 @@
         </div>
     </body>
 </html>
-<script src="<?php echo Config::get('constant.SITEURL'); ?>assets//js_admin/customevalidation.js"></script>
+<script src="{{ url() }}/assets//js_admin/customevalidation.js"></script>
 <script type="application/javascript">
 $(document).ready(function(){
 		$("#loginform").validate({
