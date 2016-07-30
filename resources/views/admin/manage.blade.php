@@ -8,7 +8,7 @@
 				</div>
 				<div class="panel-body">
 					<div>
-						<a class="btn btn-info" href="<?php echo Config::get('app.url').'admin/prod_edit/' ?>">Add Record</a>
+						<a class="btn btn-info" href="<?php echo '{{ url() }}/admin/prod_edit/' ?>">Add Record</a>
 					</div>
 					@if (count($errors) > 0)
 					<div class="alert alert-danger">
@@ -35,9 +35,9 @@
 									<td>{{{ $value->v_category_name }}}</td>
 									<td>{{{ $value->v_status }}}</td>
 									<td><a class="btn btn-info"
-										href="<?php echo Config::get('app.url').'admin/prod_edit/'.$value->b_id ?>">Edit</a>
+										href="<?php echo '{{ url() }}/admin/prod_edit/'.$value->b_id ?>">Edit</a>
 										<a class="btn btn-info"
-										href="<?php echo Config::get('app.url').'admin/prod_delete/'.$value->b_id ?>">Delete</a>
+										href="<?php echo '{{ url() }}/admin/prod_delete/'.$value->b_id ?>">Delete</a>
 									</td>
 								</tr>
 								<?php }?>
@@ -51,7 +51,7 @@
 	</div>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 	<script>
-	var siteurl="<?php echo Config::get('app.url')?>";
+	var siteurl="{{ url() }}";
     $(window).on('hashchange', function() {
         if (window.location.hash) {
             var page = window.location.hash.replace('#', '');

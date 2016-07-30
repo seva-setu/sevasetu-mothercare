@@ -17,7 +17,7 @@
 	@include('template/script_multilanguage')	
     </head>
 <body>
-<form style="float: right;padding:5px;margin:0px;" class="form-horizontal" accept-charset="utf-8" method="POST" id="frmchangeLanguage" name="frmchangeLanguage" action="<?php echo Config::get('app.url').'language/chooser'; ?>">
+<form style="float: right;padding:5px;margin:0px;" class="form-horizontal" accept-charset="utf-8" method="POST" id="frmchangeLanguage" name="frmchangeLanguage" action="{{ url() }}/language/chooser">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 		<select name="locale" onchange="changeLanguage()">
     	<option	value="en">English</option>
@@ -37,7 +37,7 @@
 				</ul>
 			</div>
 		 @endif
-            <form class="form-horizontal" role="form" method="POST" id="frmChangePassword" name="frmChangePassword" action="<?php echo Config::get('app.url').'admin/changeforgotpassword'; ?>">
+            <form class="form-horizontal" role="form" method="POST" id="frmChangePassword" name="frmChangePassword" action="{{ url() }}/admin/changeforgotpassword">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="hdnUserId" id="hdnUserId" value="<?php echo $user_id; ?>">
 				<p><?php echo trans('routes.forgotpass'); ?></p>

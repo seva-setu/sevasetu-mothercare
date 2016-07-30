@@ -1,8 +1,8 @@
 <?php 
 if($result->v_profile_pic=="")
-	$profile_pic=Config::get('app.url')."external/profile_picture/mother_care.jpg";
+	$profile_pic="{{ url() }}/external/profile_picture/mother_care.jpg";
 else
-	$profile_pic=Config::get('app.url')."external/profile_picture/".$result->v_profile_pic;
+	$profile_pic="{{ url() }}/external/profile_picture/".$result->v_profile_pic;
 $birthdata=strtotime($result->dt_birthdate) != 0?date('d/m/Y',strtotime($result->dt_birthdate)):"";
 
 $village=array();
@@ -26,7 +26,7 @@ if($result->v_pincode!="")
   <div id="content-header">
     <h1><?php echo trans('routes.profile'); ?></h1>
   </div>
-  <div id="breadcrumb"> <a href="<?php echo Config::get('app.url'); ?>admin/dashboard" title="<?php echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i> <?php echo trans('routes.home'); ?></a><a class="current"><?php echo trans('routes.profile'); ?></a></div>
+  <div id="breadcrumb"> <a href="{{ url() }}/admin/dashboard" title="<?php echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i> <?php echo trans('routes.home'); ?></a><a class="current"><?php echo trans('routes.profile'); ?></a></div>
   <div class="container-fluid">
   <div id="errorInsertion"></div>
     <div class="row-fluid">
@@ -45,7 +45,7 @@ if($result->v_pincode!="")
 				</ul>
 			</div>
 		 @endif
-            <form class="form-horizontal" role="form" method="POST" id="frmEditProfile" name="frmEditProfile" enctype="multipart/form-data" action="<?php echo Config::get('app.url').'admin/editprofile'; ?>">
+            <form class="form-horizontal" role="form" method="POST" id="frmEditProfile" name="frmEditProfile" enctype="multipart/form-data" action="{{ url() }}/admin/editprofile">
 				<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="hdnId" id="hdnId" value="<?php echo $result->bi_id; ?>" >
 				<input type="hidden" id="hdUserId" name="hdUserId" value="<?php echo $result->bi_user_login_id; ?>" >
@@ -207,7 +207,7 @@ if($result->v_pincode!="")
                 <div class="form-actions">
                   <div class="splitFormSubmitButton">
                     <button type="submit" class="btn btn-primary"><?php echo trans('routes.submit'); ?></button>
-                    <a href="<?php echo Config::get('app.url'); ?>admin" onClick="btnCancel();" class="btn btn-danger"><?php echo trans('routes.cancel'); ?></a>
+                    <a href="{{ url() }}/admin" onClick="btnCancel();" class="btn btn-danger"><?php echo trans('routes.cancel'); ?></a>
                   </div>
                 </div>
            </form>
@@ -219,7 +219,7 @@ if($result->v_pincode!="")
 </div>
 <script type="text/javascript">
 var token=document.getElementById('_token').value;
-var siteurl="<?php echo Config::get('app.url')?>";
+var siteurl="{{ url() }}";
 </script>
 @include('template/admin_jsscript')
 </body>
@@ -271,7 +271,7 @@ $(document).ready(function(){
 				validEmail: true,
 				remote: {
 					data: {'_token' : token,'action':'update','hdUserId':$("#hdUserId").val()},
-					url : '<?php echo Config::get('app.url'); ?>admin/checkEmail',
+					url : '{{ url() }}/admin/checkEmail',
 					type : 'post'
 				}
 			},
@@ -356,7 +356,7 @@ $("#MotherhoodStatus").change(function(){
 });
 
 $("#txtZipcode").coolautosuggest({
-	url:"<?php echo Config::get('app.url'); ?>admin/beneficiary/autocompleteaddress?chars=",
+	url:"{{ url() }}admin/beneficiary/autocompleteaddress?chars=",
 	idField:$("#hdnZipcode"),
 	//submitOnSelect:true,
 	onSelected:function(result){
