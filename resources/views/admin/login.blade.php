@@ -4,6 +4,7 @@
         <link rel="stylesheet" href="{{ url() }}/assets//css_admin/unicorn.login.css" />
         <link rel="stylesheet" href="{{ url() }}/assets//css_admin/style.css" />
         <link rel="stylesheet" href="{{ url() }}/assets//css_admin/custom.css" />
+        <link rel="stylesheet" id="tyler-icons-css" href="{{ url() }}/assets/landing/icon.css" type="text/css" media="all">
         <script src="{{ url() }}/assets//js_admin/jquery.min.js"></script>  
         <script src="{{ url() }}/assets//js_admin/unicorn.login.js"></script> 
         <script src="{{ url() }}/assets//js_admin/jquery.validate.js"></script>
@@ -12,13 +13,12 @@
 		</script>
     </head>
     <body>
-    <form style="float: right;padding:5px;margin:0px;" class="form-horizontal" accept-charset="utf-8" method="POST" id="frmchangeLanguage" name="frmchangeLanguage" action="<?php echo Config::get('app.url').'language/chooser'; ?>">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-		
-</form>
-        <div id="logo">
-            <!--<img src="<?php //echo SITEURL; ?>assets//img/logo.png" alt="" />-->
-        </div>
+	    <form style="float: right;padding:5px;margin:0px;" class="form-horizontal" accept-charset="utf-8" method="POST" id="frmchangeLanguage" name="frmchangeLanguage" action="{{ url() }}/language/chooser">
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">		
+		</form>
+        <!-- <div id="logo">
+            <img src="<?php //echo SITEURL; ?>assets//img/logo.png" alt="" />
+        </div> -->
         	@if (count($errors) > 0)
 						<div class="alert alert-danger">
 							<strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -29,6 +29,12 @@
 							</ul>
 						</div>
 					@endif
+		
+	    <div class="navbar">
+	      	<div class="navbar-inner">
+	        	<a class="brand" href="{{ url() }}"><span><i class="icon-large icon-home"></i> Home</span></a>
+	      	</div>
+	    </div>
         
         <div id="loginbox">
         
@@ -41,14 +47,14 @@
                 <div class="control-group">
                     <div class="controls">
                         <div class="input-prepend">
-                            <span class="add-on"><i class="icon-user"></i></span><input type="text" name="txtUserName" id="txtUserName" placeholder="<?php echo trans('routes.email'); ?>" class="required" />
+                            <span class="add-on"><i class="icon-large icon-user"></i></span><input type="text" name="txtUserName" id="txtUserName" placeholder="<?php echo trans('routes.email'); ?>" class="required" />
 							</div>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="controls">
                         <div class="input-prepend">
-                            <span class="add-on"><i class="icon-lock"></i></span><input type="password" name="txtPassword" id="txtPassword" placeholder="<?php echo trans('routes.password'); ?>" class="required" />
+                            <span class="add-on"><i class="icon-large icon-lock" ></i></span><input type="password" name="txtPassword" id="txtPassword" placeholder="<?php echo trans('routes.password'); ?>" class="required" />
                         </div>
                        		<div class="error" style="color:#FF0000;text-align:center">{{ $errors->first('v_password') }}</div> 
 							
@@ -57,7 +63,8 @@
                 <div class="form-actions loginbuttondiv">
                     <span class="pull-left"><a href="#" class="flip-link" id="to-recover"><?php echo trans('routes.lostpassword'); ?></a></span>
 					<span class="pull-right"><input name="action" type="submit" class="btn btn-inverse" value="<?php echo trans('routes.login'); ?>" /></span>
-					<span class="pull-right"><a href="{{ url() }}/auth/register" class="flip-link" id="to-recover"><?php echo trans('routes.new_user'); ?></a></span>
+					<span class="pull-right"><a href="{{ url() }}/auth/register" class="flip-link" id="to-recover" style="
+    margin-right: 10px;"><?php echo trans('routes.new_user'); ?></a></span>
 					
                 </div>
                 </div>
@@ -69,7 +76,7 @@
                <div class="control-group">
                     <div class="controls">
                         <div class="input-prepend">
-                            <span class="add-on"><i class="icon-envelope"></i></span><input type="text" name="txtForgotEmailId" id="txtForgotEmailId" placeholder="<?php echo trans('routes.email'); ?>" class="required" />
+                            <span class="add-on"><i class="icon-large icon-envelope"></i></span><input type="text" name="txtForgotEmailId" id="txtForgotEmailId" placeholder="<?php echo trans('routes.email'); ?>" class="required" />
                         </div>
                     </div>
                 </div>
@@ -106,7 +113,7 @@ $(document).ready(function(){
 			validEmail: true,
 			remote: {
 				data: {'_token' : token,'action':'add'},
-				url : '<?php echo Config::get('app.url'); ?>admin/checkEmailLogin',
+				url : '{{ url() }}/admin/checkEmailLogin',
 				type : 'post'
 				}
 			}
