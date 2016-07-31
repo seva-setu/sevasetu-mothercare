@@ -33,6 +33,7 @@ Route::get('/admin/changeuserpassword/{id}', 'Admin\AdminController@changeuserpa
 Route::post('/admin/dochangeuserpassword', 'Admin\AdminController@dochangeuserpassword');
 Route::get('/admin/searchdataaddress/{name}/{name1}/{name2}', 'Admin\AdminController@searchdataaddress');
 Route::post('/admin/editaddress', 'Admin\AdminController@editaddress');
+Route::get('/admin/FAQ', 'Admin\AdminController@faq');
 
 /////////// core application ///////////////////
 Route::get('/admin/mothers', 'Admin\CallchampionsController@list_mothers');

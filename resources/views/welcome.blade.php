@@ -187,11 +187,11 @@ margin-top:25px !important;
 	</div>
 	<div class="col-xs-3">
 		<a href="{{url()}}/admin/login" class="btn btn-primary" style="max-width: none ! important; width: 100px !important; text-align: center !important ;" >Login</a>	
-		<a href="#" class="btn btn-success" style="max-width: none ! important; width: 100px !important; text-align: center !important ; " >FAQ</a>			
+		<a href="{{url()}}/admin/FAQ" class="btn btn-success" style="max-width: none ! important; width: 100px !important; text-align: center !important ; " >FAQ</a>			
 	</div>
 </header>
 
-
+<br/>
 <div class="container widget" id="tile_textcolumns">		
 	    <div class="row row-xs counter">
             <div class="col-xs-3">
@@ -231,10 +231,16 @@ margin-top:25px !important;
         </div>
 </div>
 
+
 <div class="container widget" id="tile_textcolumns">	
-	 <div class="resp-video-center resp-num-1">
+	 <div class="resp-video-left resp-num-2">
 		<div class="resp-video-wrapper size-16-9">
 		<iframe src="https://www.youtube.com/embed/VeohOCDw2bc" frameborder="0" allowfullscreen=""></iframe>
+		</div>
+	</div>
+	<div class="resp-video-right resp-num-2">
+		<div class="resp-video-wrapper size-16-9">
+		<iframe width="100%" height="300" style="background-color:transparent; display:block; max-width: 700px;" frameborder="0" allowtransparency="allowtransparency" scrolling="no" src="//embeds.audioboom.com/boos/2441188-mother-care-calls/embed/v4?eid=AQAAAJSVnVfkPyUA" title="audioBoom player"></iframe>
 		</div>
 	</div>
 </div>

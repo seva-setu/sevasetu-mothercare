@@ -367,7 +367,7 @@ header.sticky {
     top:0; left: 0; right: 0;
     max-width: 100%;
     z-index: 1000;
-    height: 46px;
+    height: auto;
 }
 header.sticky #logo {
     display: none;
