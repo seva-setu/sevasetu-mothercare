@@ -582,4 +582,10 @@ class AdminController extends Controller{
     {
         return property_exists($this, 'guard') ? $this->guard : null;
     }
+
+    public function faq()
+    {
+        return view('admin/faq');
+    }
 }
+
