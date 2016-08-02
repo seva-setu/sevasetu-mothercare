@@ -11,8 +11,10 @@ smallfont{
 }
 </style>
 <body>
-@include('template/admin_header')
-@include('template/admin_sidebar')
+@if(Session::has('user_logged'))
+	@include('template/admin_header')
+	@include('template/admin_sidebar')
+@endif
 
 <div id="page-wrapper" >
 	<div id="page-inner">

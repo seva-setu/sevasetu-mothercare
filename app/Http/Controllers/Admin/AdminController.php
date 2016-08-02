@@ -587,5 +587,14 @@ class AdminController extends Controller{
     {
         return view('admin/faq');
     }
+
+    public function faq_checklist()
+    {
+        $table_name = 'mct_checklist_master';
+        $select['checklist_master'] = DB::table($table_name)
+            ->select('*')
+            ->get();
+        return view('checklist/list',$select);
+    }
 }
 

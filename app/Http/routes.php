@@ -34,6 +34,7 @@ Route::post('/admin/dochangeuserpassword', 'Admin\AdminController@dochangeuserpa
 Route::get('/admin/searchdataaddress/{name}/{name1}/{name2}', 'Admin\AdminController@searchdataaddress');
 Route::post('/admin/editaddress', 'Admin\AdminController@editaddress');
 Route::get('/admin/FAQ', 'Admin\AdminController@faq');
+Route::get('/admin/FAQ/checklist', 'Admin\AdminController@faq_checklist');
 
 /////////// core application ///////////////////
 Route::get('/admin/mothers', 'Admin\CallchampionsController@list_mothers');
