@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8" />
     <title>Mother care tool</title>
-    <link rel="stylesheet" type="text/css" href="{{ url() }}/assets/faq/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="{{ url() }}/assets/faq/font-awesome/css/font-awesome.min.css" />
-    <script type="text/javascript" src="{{ url() }}/assets/faq/js/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="{{ url() }}/assets/faq/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url() }}/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ url() }}/assets/css/font-awesome.min.css" />
+    <script type="text/javascript" src="{{ url() }}/assets/js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="{{ url() }}/assets/js/bootstrap.min.js"></script>
 </head>
 <body>
 
