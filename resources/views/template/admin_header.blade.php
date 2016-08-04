@@ -24,7 +24,7 @@ $userinfo=Session::get('user_logged');
 	   <a href="<?php echo url(); ?>/admin/logout" style="color:#fff;font-size:20px">Logout</a>  
 	   </span>
 	   <span class="logout-spn" >
-	   <a href="#" style="color:#fff;font-size:20px">Welcome <?php echo $userinfo['v_user_name'] ?></a>
+	   <p htyle="color:#fff;font-size:20px">Welcome <?php echo $userinfo['v_user_name'] ?></p>
 	   </span>
 	   
 	</div>
