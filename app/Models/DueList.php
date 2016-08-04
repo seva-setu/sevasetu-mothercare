@@ -137,6 +137,7 @@ class DueList extends Eloquent {
 								$this->table.'.due_id',
 								$this->table.'.fk_b_id as b_id',
 								$this->table.'.dt_intervention_date as action_date',
+								$join_table_name1.'.dt_modify_date as last_call_date',
 								$join_table_name1.'.e_call_status as status',
 								$join_table_name2.'.i_action_id as action_id',
 								$join_table_name2.'.i_reference_week as ref_week',

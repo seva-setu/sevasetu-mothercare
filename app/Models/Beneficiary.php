@@ -72,7 +72,8 @@ class Beneficiary extends Eloquent {
 						->join($join_table, $join_table.'.due_id', '=', $table_name.'.fk_due_id')
 						->select(
 							$table_name.'.t_conversation as conversation_notes',
-							$table_name.'.t_action_items as action_items'
+							$table_name.'.t_action_items as action_items',
+							$table_name.'.e_call_status as status'
 						)
 						->where($join_table.'.due_id', '=' , $due_id)
 						->orderBy($table_name.'.report_id','desc')

@@ -24,13 +24,18 @@
 				
 				<td data-title="{{ trans('routes.interventionpoint') }}">
 					<?php
-						echo(date("d M y", strtotime($value->action_date)));
+						if($value->status == 'Not called')
+							echo(date("d M y", strtotime($value->action_date)));
+						else
+							echo(date("d M y", strtotime($value->last_call_date)));
 					?>
 					<br/>
 					<smallfont>
 					<?php
-						
-						echo datediff("ww",date("d M y"), $value->action_date, false);
+						if($value->status == 'Not called')
+							echo datediff("ww",date("d M y"), $value->action_date, false);
+						else
+							echo datediff("ww",date("d M y"), $value->last_call_date, false);
 					?>
 					</smallfont>
 				</td>
@@ -133,12 +138,12 @@
 				
 				<td data-title="{{ trans('routes.interventionpoint') }}">
 					<?php
-						echo(date("d M y", strtotime($value->action_date)));
+						echo(date("d M y", strtotime($value->last_call_date)));
 					?>
 					<br/>
 					<smallfont>
 					<?php
-						echo datediff("ww",date("d M y"), $value->action_date, false);
+						echo datediff("ww",date("d M y"), $value->last_call_date, false);
 					?>
 					</smallfont>
 				</td>
