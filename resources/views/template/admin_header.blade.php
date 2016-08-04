@@ -13,14 +13,6 @@ $userinfo=Session::get('user_logged');
 				<a href="#" style="color:#fff;font-size:20px">Seva Setu's Mother care tool</a>  
 		    </span>
 		</div>
-	   <!-- <div class="navbar-header">
-		  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-		  <span class="icon-bar"></span>
-		  <span class="icon-bar"></span>
-		  <span class="icon-bar"></span>
-		  </button>
-		  
-	   </div> -->
 	   <span class="logout-spn" >
 	   <a href="<?php echo url(); ?>/admin/logout" style="color:#fff;font-size:15px;">Logout</a>  
 	   </span>
