@@ -3,7 +3,13 @@ $userinfo=Session::get('user_logged');
 ?>
 <div id="wrapper">
 <div class="navbar navbar-inverse navbar-fixed-top">
+	
 	<div class="adjust-nav">
+		<div class="navbar-header" style="margin-left:10px;">
+			<a target="#" href="#">
+				<img class="logo" src="{{ url() }}/assets/img/logo1.jpg" alt="Sevasetu" width="60" height="80">
+			</a>
+		</div>
 	   <div class="navbar-header">
 		  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
 		  <span class="icon-bar"></span>
