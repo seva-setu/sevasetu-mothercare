@@ -145,11 +145,11 @@ smallfont{
 								<b>{{ trans('routes.recordcallstatus') }}</b>
 								<div class="dropdown">
 								  <select name = "callstats" id = "callstat" class="form-control">
-									<option>{{ trans('routes.nc') }} </option>
-									<option> {{ trans('routes.re') }} </option>
-									<option> {{ trans('routes.nr') }} </option>
-									<option> {{ trans('routes.nr2') }} </option>
-									<option> {{ trans('routes.in') }} </option>
+									<option <?php if ($current_notes->status == 'Not called') echo ' selected="selected"'; ?> >{{ trans('routes.nc') }} </option>
+									<option <?php if ($current_notes->status == 'Received') echo ' selected="selected"'; ?>> {{ trans('routes.re') }} </option>
+									<option <?php if ($current_notes->status == 'Not received') echo ' selected="selected"'; ?>> {{ trans('routes.nr') }} </option>
+									<option <?php if ($current_notes->status == 'Not reachable') echo ' selected="selected"'; ?>> {{ trans('routes.nr2') }} </option>
+									<option <?php if ($current_notes->status == 'Incorrect number') echo ' selected="selected"'; ?>> {{ trans('routes.in') }} </option>
 								  </select>
 								</div>
 								</p>
@@ -202,7 +202,7 @@ smallfont{
 								  <label for="general_note">{{ trans('routes.notes_general') }} {{ $personal_details->name }}</label>
 								  <textarea name="general_note" class="form-control" rows="5" id="general_note">{{ $current_notes->conversation_notes }}</textarea>
 								</div>
-								<button type="submit">{{trans('routes.submitnote')}}</button>
+								<button onclick="return confirm('Are you sure you want to submit with status  \'' + document.getElementById('callstat').value + '\' ?')" type="submit">{{trans('routes.submitnote')}}</button>
 							</div>
 							<!-- End section for textarea -->
                         </div>
