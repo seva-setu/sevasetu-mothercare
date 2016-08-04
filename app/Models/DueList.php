@@ -127,7 +127,10 @@ class DueList extends Eloquent {
 		$join_table_name3 = 'mct_beneficiary';
 		
 		$select = DB::table($this->table)
-					->join($join_table_name1, $join_table_name1.'.fk_due_id','=',$this->table.'.due_id')
+					->join(DB::Raw('(select r.* from (select * from mct_callchampion_report order by report_id desc) as r 
+    								 group by r.fk_due_id) as mct_callchampion_report', 'mct_callchampion_report'), function ($join) {
+        								$join->on('mct_due_list.due_id', '=', 'mct_callchampion_report.fk_due_id');
+   									 }, null, null, 'left')
 					->join($join_table_name2, $join_table_name2.'.i_action_id', '=', $this->table.'.fk_action_id')
 					->join($join_table_name3, $join_table_name3.'.b_id','=', $this->table.'.fk_b_id')
 					->select(
