@@ -1,6 +1,5 @@
 <?php 
 $userinfo=Session::get('user_logged');
-//$username= DB::table('mct_users')->where('user_id', $userinfo['user_id'])->value('v_name');
 ?>
 <div id="wrapper">
 <div class="navbar navbar-inverse navbar-fixed-top">
@@ -14,7 +13,7 @@ $userinfo=Session::get('user_logged');
 		    
 		</div>
 	   <span class="logout-spn" style="margin-left:5%;margin-right:5%;">
-	   <a href="<?php echo url(); ?>/admin/logout" style="color:#fff;font-size:15px;">Logout</a>  
+	   <a href="<?php echo url(); ?>/logout" style="color:#fff;font-size:15px;">Logout</a>  
 	   </span>
 	   
 	   <div class="navbar-header">
