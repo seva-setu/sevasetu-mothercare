@@ -44,7 +44,13 @@ class AdminController extends Controller{
 	
 	public function landing(){
 		if(Session::has('user_logged')){
-			Redirect::to('/admin/mothers')->send();
+      $user_details = Session::get('user_logged');
+      $user_role_type = $user_details['v_role'];
+
+      if($user_role_type == 1)
+        return Redirect::to('/admin/admins')->send();
+      elseif($user_role_type == 2)
+        Redirect::to('/admin/mothers')->send();
 		}
 		
 		$mothers = DB::table('mct_beneficiary')->count('b_id');
@@ -59,9 +65,16 @@ class AdminController extends Controller{
 	}
 	
 	public function index(){
-		if(Session::has('user_logged')){
-			Redirect::to('/admin/mothers')->send();
+		if(Session::has('user_logged')){			          
+      $user_details = Session::get('user_logged');
+      $user_role_type = $user_details['v_role'];
+
+    if($user_role_type == 1)
+      return Redirect::to('/admin/admins')->send();
+    elseif($user_role_type == 2)
+      Redirect::to('/admin/mothers')->send();
 		}
+
 		$data['title']= "Login";
 		return view('admin/login',$data);
 	}
@@ -71,7 +84,13 @@ class AdminController extends Controller{
 	 */
  	public function login() {
 		if(Session::has('user_logged')){
-			Redirect::to('/admin/mothers')->send();
+			$user_details = Session::get('user_logged');
+      $user_role_type = $user_details['v_role'];
+   
+      if($user_role_type == 1)
+        return Redirect::to('/admin/admins')->send();
+      elseif($user_role_type == 2)
+        Redirect::to('/admin/mothers')->send();
 		}
 		// Getting all post data
 		$users=new User;
@@ -93,10 +112,14 @@ class AdminController extends Controller{
 			if($validlogin){
 				$user_details = Session::get('user_logged');
 				$user_id = $user_details['user_id'];
+        $user_role_type = $user_details['v_role'];
 				$inputData['dt_last_login'] = date("Y-m-d H:i:s");
 				$user_obj = new User;
 				$user_obj = $user_obj->mod_user($inputData, $user_id);
-				return Redirect::to('/admin/mothers');
+				if($user_role_type == 1)
+          return Redirect::to('/admin/admins');
+        elseif($user_role_type == 2)
+          return Redirect::to('/admin/mothers');
 			}else{
 				Session::flash('message', trans("routes.loginerror"));
 				return Redirect::to('admin/login');
