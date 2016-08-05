@@ -8,7 +8,7 @@
   <div id="content-header">
     <h1><?php  echo trans('routes.beneficiary'); ?></h1>
   </div>
-  <div id="breadcrumb"> <a href="{{ url() }}/admin/dashboard" title="<?php  echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i> <?php  echo trans('routes.home'); ?></a><a href="{{ url() }}/admin/checklist">{{ trans('routes.checklists') }}</a><a class="current">{{ trans('routes.add') }}</a></div>
+  <div id="breadcrumb"> <a href="{{ url() }}/dashboard" title="<?php  echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i> <?php  echo trans('routes.home'); ?></a><a href="{{ url() }}/checklist">{{ trans('routes.checklists') }}</a><a class="current">{{ trans('routes.add') }}</a></div>
  
  
   <div class="container-fluid"> 
@@ -35,7 +35,7 @@
          	   <h5>{{ trans('routes.addchecklist') }}</h5>
          	 </div>
          	 
-         	<form class="form-horizontal" role="form" method="POST" id="frmChecklist" name="frmChecklist" action="{{ url() }}/admin/checklist/{{ $action or '' }}">
+         	<form class="form-horizontal" role="form" method="POST" id="frmChecklist" name="frmChecklist" action="{{ url() }}/checklist/{{ $action or '' }}">
 				<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 			 	 	
 		 	 	 <div class="row-fluid">
@@ -133,7 +133,7 @@
                <div class="form-actions">
                   <div class="splitFormSubmitButton">
                     <input type="submit" value="Submit" name="save" class="btn btn-primary">
-                                        <a class="btn btn-danger" href="{{ url() }}/admin/dashboard">Cancel</a>
+                                        <a class="btn btn-danger" href="{{ url() }}/dashboard">Cancel</a>
                   </div>
                 </div>
         	</form>
@@ -204,7 +204,7 @@
 			if($("#frmAddCategory").valid()){
 				
 				$.ajax({
-					url: siteurl + "/admin/checklist/addcategory",
+					url: siteurl + "/checklist/addcategory",
 					type:"POST",
 					data: {'_token':token,'category_name':$("#txtCategoryName").val()},
 					beforeSend:function(){

@@ -16,7 +16,7 @@
 							</ul>
 						</div>
 					@endif	
-					<form class="form-horizontal" role="form" method="POST" action="<?php echo '{{ url() }}/admin/'.$action; ?>">
+					<form class="form-horizontal" role="form" method="POST" action="<?php echo '{{ url() }}/'.$action; ?>">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<div class="form-group">
 							<label class="col-md-4 control-label">Product Name</label>

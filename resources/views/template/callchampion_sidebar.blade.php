@@ -17,16 +17,16 @@
 			<a href="{{url()}}/mothers"><i class="fa fa-female "></i>Mothers  <span class="badge">{{ $user_stats['number_mothers_assigned'] }} assigned</span></a>
 			</li>
 			<li <?php echo $mycalls; ?> >
-			<a href="{{url()}}/admin/mycalls"><i class="fa fa-phone	 "></i>My calls  <span class="badge">{{$user_stats['number_of_calls']}} scheduled</span></a>
+			<a href="{{url()}}/mycalls"><i class="fa fa-phone	 "></i>My calls  <span class="badge">{{$user_stats['number_of_calls']}} scheduled</span></a>
 			</li>
 			<li <?php echo $checklist; ?> >
-			<a href="{{url()}}/admin/checklist"><i class="fa fa-list-ol "></i>Check list</a>
+			<a href="{{url()}}/checklist"><i class="fa fa-list-ol "></i>Check list</a>
 			</li>
 			<li <?php echo $settings; ?> >
-			<a href="{{url()}}/admin/settings"><i class="fa fa-cogs "></i>Settings</a>
+			<a href="{{url()}}/settings"><i class="fa fa-cogs "></i>Settings</a>
 			</li>
 			<li <?php echo $feedback; ?> >
-			<a href="{{url()}}/admin/feedback"><i class="fa fa-volume-up"></i>Feedback and Bugs</a>
+			<a href="{{url()}}/feedback"><i class="fa fa-volume-up"></i>Feedback and Bugs</a>
 			</li>
 		</ul>
 	</div>

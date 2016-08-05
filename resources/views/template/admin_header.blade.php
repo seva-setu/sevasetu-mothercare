@@ -1,3 +1,4 @@
+
 <?php 
 $userinfo=Session::get('user_logged');
 ?>
@@ -14,7 +15,7 @@ $userinfo=Session::get('user_logged');
 		    </span>
 		</div>
 	   <span class="logout-spn" >
-	   <a href="<?php echo url(); ?>/admin/logout" style="color:#fff;font-size:15px;">Logout</a>  
+	   <a href="<?php echo url(); ?>/logout" style="color:#fff;font-size:15px;">Logout</a>  
 	   </span>
 	   <span class="logout-spn" >
 	   <p style="color:#fff;font-size:15px;width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Welcome <?php echo $userinfo['v_user_name'] ?></p>

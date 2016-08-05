@@ -38,7 +38,7 @@ smallfont{
 			?>
 						</div>
 						<div class=\"col-lg-5 col-md-5\">
-						<a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($due->due_id);?>" class="btn btn-info">{{ trans('routes.details') }}</a>
+						<a href="<?php echo url().'/mycalls/view/'.Hashids::encode($due->due_id);?>" class="btn btn-info">{{ trans('routes.details') }}</a>
 						
 						</div>
 						</p>
