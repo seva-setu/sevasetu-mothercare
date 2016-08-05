@@ -44,7 +44,13 @@ class AdminController extends Controller{
 	
 	public function landing(){
 		if(Session::has('user_logged')){
-			Redirect::to('/admin/mothers')->send();
+      $user_details = Session::get('user_logged');
+      $user_role_type = $user_details['v_role'];
+
+      if($user_role_type == 1)
+        return Redirect::to('/admins')->send();
+      elseif($user_role_type == 2)
+        Redirect::to('/mothers')->send();
 		}
 		
 		$mothers = DB::table('mct_beneficiary')->count('b_id');
@@ -59,9 +65,16 @@ class AdminController extends Controller{
 	}
 	
 	public function index(){
-		if(Session::has('user_logged')){
-			Redirect::to('/admin/mothers')->send();
+		if(Session::has('user_logged')){			          
+      $user_details = Session::get('user_logged');
+      $user_role_type = $user_details['v_role'];
+
+    if($user_role_type == 1)
+      return Redirect::to('/admins')->send();
+    elseif($user_role_type == 2)
+      Redirect::to('/mothers')->send();
 		}
+
 		$data['title']= "Login";
 		return view('admin/login',$data);
 	}
@@ -71,7 +84,13 @@ class AdminController extends Controller{
 	 */
  	public function login() {
 		if(Session::has('user_logged')){
-			Redirect::to('/admin/mothers')->send();
+			$user_details = Session::get('user_logged');
+      $user_role_type = $user_details['v_role'];
+   
+      if($user_role_type == 1)
+        return Redirect::to('/admins')->send();
+      elseif($user_role_type == 2)
+        Redirect::to('/mothers')->send();
 		}
 		// Getting all post data
 		$users=new User;
@@ -93,10 +112,14 @@ class AdminController extends Controller{
 			if($validlogin){
 				$user_details = Session::get('user_logged');
 				$user_id = $user_details['user_id'];
+        $user_role_type = $user_details['v_role'];
 				$inputData['dt_last_login'] = date("Y-m-d H:i:s");
 				$user_obj = new User;
 				$user_obj = $user_obj->mod_user($inputData, $user_id);
-				return Redirect::to('/admin/mothers');
+				if($user_role_type == 1)
+          return Redirect::to('/admins');
+        elseif($user_role_type == 2)
+          return Redirect::to('/mothers');
 			}else{
 				Session::flash('message', trans("routes.loginerror"));
 				return Redirect::to('admin/login');
@@ -156,7 +179,7 @@ class AdminController extends Controller{
   			//success message
   			Session::flash('message', '<div class="alert alert-success" style="clear:both;">
               <button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.changepassmsg").'</div>');
-  			return Redirect::to('/admin/mothers');
+  			return Redirect::to('/mothers');
   		}else {
   			Session::flash('message', '<div class="alert alert-error" style="clear:both;">
               <button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.passwordnmtc").'</div>');
@@ -233,7 +256,7 @@ class AdminController extends Controller{
   		->where('mct_admin.bi_user_login_id',$this->userid)
   		->get();
   	}else{
-  		return Redirect::to('/admin/mothers');
+  		return Redirect::to('/mothers');
   	}	
   	$data['result']=$data['result'][0];
   	return view('admin/userprofile',$data);
@@ -283,7 +306,7 @@ class AdminController extends Controller{
   		$inputData['gender'] = Input::get('txtGenderStatus');
   		$result = $fieldworkers->updateProfileTable($inputData);
   	}else{
-  		return Redirect::to('/admin/mothers');
+  		return Redirect::to('/mothers');
   	}	
   	
   	if($result){
@@ -463,7 +486,7 @@ class AdminController extends Controller{
      */
     public function register(Request $request){
 		if(Session::has('user_logged')){
-			Redirect::to('/admin/mothers')->send();
+			Redirect::to('/mothers')->send();
 		}
 		$reg = new Registrar();
         $validator = $reg->validator($request->all());
@@ -564,7 +587,7 @@ class AdminController extends Controller{
 		$ret = $user->log_in_user($userdet);
 		if($ret){
 			
-			return Redirect::to('/admin/mothers/');
+			return Redirect::to('/mothers/');
 		}
 		else{
 			Session::flash('message', trans("routes.loginerror"));

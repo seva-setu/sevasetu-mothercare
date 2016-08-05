@@ -3,7 +3,7 @@
 </head>
 <body>
 @include('template/admin_header')
-@include('template/admin_sidebar')
+@include('template/callchampion_sidebar')
 <div id="content">
   <div id="content-header">
     <h1><?php  echo trans('routes.beneficiary'); ?></h1>

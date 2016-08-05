@@ -11,7 +11,7 @@
 
 <body>
 @include('template/admin_header')
-@include('template/admin_sidebar')
+@include('template/callchampion_sidebar')
  <div id="page-wrapper" >
 	<div id="page-inner">
 	   <div class="row">
