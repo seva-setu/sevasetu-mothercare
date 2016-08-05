@@ -7,14 +7,14 @@
 </style>
 </head><body>
 @include('template/admin_header')
-@include('template/admin_sidebar')
+@include('template/callchampion_sidebar')
 <div id="content">
   <div id="content-header">
     <h1>
       <?php  echo trans('routes.interventionpoint'); ?>
     </h1>
   </div>
-  <div id="breadcrumb"> <a href="{{ url() }}/admin/dashboard" title="<?php  echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i>
+  <div id="breadcrumb"> <a href="{{ url() }}/dashboard" title="<?php  echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i>
     <?php  echo trans('routes.home'); ?>
     </a><a class="current">
     <?php  echo trans('routes.interventionpoint'); ?>
@@ -25,7 +25,7 @@
 			//$attributes = array('class' => 'form-horizontal', 'id' => 'frmList', 'name' => 'frmList');
 			//echo form_open(SITEURLADM.$cntrlName.'/deleteSelected',$attributes);?>
     <?php //echo $this->session->flashdata('dispMessage');?>
-    <form class="form-horizontal" accept-charset="utf-8" role="form" method="POST" id="frmList" name="frmList" action="{{ url() }}/admin/updateInterventionPoint">
+    <form class="form-horizontal" accept-charset="utf-8" role="form" method="POST" id="frmList" name="frmList" action="{{ url() }}/updateInterventionPoint">
       <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
       <input type="hidden" name="txtHdn" id="txtHdn" value="<?php echo count($result); ?>" />
       <div class="row-fluid">

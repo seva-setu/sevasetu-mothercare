@@ -15,9 +15,9 @@
 			<tbody>
 				<?php foreach ($due_list_pending as $value){ ?>
 				<tr>
-				<td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->due_id;?></a></td>
+				<td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->due_id;?></a></td>
 				
-				<td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->name;?></a></td>
+				<td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->name;?></a></td>
 				
 				<td data-title="{{ trans('routes.stats') }}"><?php echo $value->status;?>
 				</td>
@@ -41,7 +41,7 @@
 				</td>
 				<td>
 					<?php //Should have a JS confirmation check on this button ?>
-					<a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" class="btn btn-warning">{{ trans('routes.details') }}</a>
+					<a href="<?php echo url().'/mycalls/view/'.Hashids::encode($value->due_id); ?>" class="btn btn-warning">{{ trans('routes.details') }}</a>
 				</td>
 				<?php //@if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td></td> @endif
 				?>
@@ -74,9 +74,9 @@
 			<tbody>
 				<?php foreach ($due_list_scheduled as $value){ ?>
 				<tr>
-				<td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->due_id;?></a></td>
+				<td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->due_id;?></a></td>
 				
-				<td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->name;?></a></td>
+				<td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->name;?></a></td>
 				
 				<td data-title="{{ trans('routes.location') }}"><?php echo $value->village_name;?>
 				</td>
@@ -94,7 +94,7 @@
 				</td>
 				<td>
 					<?php //Should have a JS confirmation check on this button ?>
-					<a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" class="btn btn-warning">{{ trans('routes.details') }}</a>
+					<a href="<?php echo url().'/mycalls/view/'.Hashids::encode($value->due_id); ?>" class="btn btn-warning">{{ trans('routes.details') }}</a>
 				</td>
 				<?php //@if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td></td> @endif
 				?>
@@ -129,9 +129,9 @@
 			<tbody>
 				<?php foreach ($due_list_completed as $value){ ?>
 				<tr>
-				<td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->due_id;?></a></td>
+				<td data-title="{{ trans('routes.uniqueid') }}"><a href="<?php echo url().'/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->due_id;?></a></td>
 				
-				<td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->name;?></a></td>
+				<td data-title="{{ trans('routes.name') }}"><a href="<?php echo url().'/mycalls/view/'.Hashids::encode($value->due_id); ?>" ><?php echo $value->name;?></a></td>
 				
 				<td data-title="{{ trans('routes.location') }}"><?php echo $value->village_name;?>
 				</td>
@@ -149,7 +149,7 @@
 				</td>
 				<td>
 					<?php //Should have a confirmation check on this button ?>
-					<a href="<?php echo url().'/admin/mycalls/view/'.Hashids::encode($value->due_id); ?>" class="btn btn-success"><?php echo trans('routes.edit'); ?></a>
+					<a href="<?php echo url().'/mycalls/view/'.Hashids::encode($value->due_id); ?>" class="btn btn-success"><?php echo trans('routes.edit'); ?></a>
 				</td>
 				<?php //@if(session('user_logged')['v_role']==0 || session('user_logged')['v_role']==1)    <td></td> @endif
 				?>

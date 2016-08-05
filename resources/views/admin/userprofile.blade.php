@@ -20,13 +20,13 @@ if($result->v_pincode!="")
 </head>
 <body>
 @include('template/admin_header')
-@include('template/admin_sidebar')
+@include('template/callchampion_sidebar')
 @include('template/script_multilanguage')
 <div id="content">
   <div id="content-header">
     <h1><?php echo trans('routes.profile'); ?></h1>
   </div>
-  <div id="breadcrumb"> <a href="{{ url() }}/admin/dashboard" title="<?php echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i> <?php echo trans('routes.home'); ?></a><a class="current"><?php echo trans('routes.profile'); ?></a></div>
+  <div id="breadcrumb"> <a href="{{ url() }}/dashboard" title="<?php echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i> <?php echo trans('routes.home'); ?></a><a class="current"><?php echo trans('routes.profile'); ?></a></div>
   <div class="container-fluid">
   <div id="errorInsertion"></div>
     <div class="row-fluid">
@@ -45,7 +45,7 @@ if($result->v_pincode!="")
 				</ul>
 			</div>
 		 @endif
-            <form class="form-horizontal" role="form" method="POST" id="frmEditProfile" name="frmEditProfile" enctype="multipart/form-data" action="{{ url() }}/admin/editprofile">
+            <form class="form-horizontal" role="form" method="POST" id="frmEditProfile" name="frmEditProfile" enctype="multipart/form-data" action="{{ url() }}/editprofile">
 				<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="hdnId" id="hdnId" value="<?php echo $result->bi_id; ?>" >
 				<input type="hidden" id="hdUserId" name="hdUserId" value="<?php echo $result->bi_user_login_id; ?>" >
@@ -271,7 +271,7 @@ $(document).ready(function(){
 				validEmail: true,
 				remote: {
 					data: {'_token' : token,'action':'update','hdUserId':$("#hdUserId").val()},
-					url : '{{ url() }}/admin/checkEmail',
+					url : '{{ url() }}/checkEmail',
 					type : 'post'
 				}
 			},

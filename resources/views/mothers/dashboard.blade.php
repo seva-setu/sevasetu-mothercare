@@ -15,7 +15,7 @@ smallfont{
 </style>
 <body>
 @include('template/admin_header')
-@include('template/admin_sidebar')
+@include('template/callchampion_sidebar')
 
 <div id="page-wrapper" >
 	<div id="page-inner">
@@ -72,7 +72,7 @@ smallfont{
 							echo "<h4>".trans('routes.getstarted')."</h4>";
 					?>
 				<h4>
-					<a href="<?php echo url().'/admin/schedule/'.Hashids::encode($userinfo['role_id']);?>" class="btn btn-primary"> 
+					<a href="<?php echo url().'/schedule/'.Hashids::encode($userinfo['role_id']);?>" class="btn btn-primary"> 
 					<b>{{trans('routes.addmother')}}</b>
 					</a>
 				</h4>

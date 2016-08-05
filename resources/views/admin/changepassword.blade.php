@@ -3,13 +3,13 @@
 </head>
 <body>
 @include('template/admin_header')
-@include('template/admin_sidebar')
+@include('template/callchampion_sidebar')
 @include('template/script_multilanguage')
 <div id="content">
   <div id="content-header">
     <h1><?php echo trans('routes.changepassword'); ?></h1>
   </div>
-  <div id="breadcrumb"> <a href="{{ url() }}/admin/dashboard" title="<?php echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i><?php echo trans('routes.home'); ?></a><a class="current"><?php echo trans('routes.changepassword'); ?></a></div>
+  <div id="breadcrumb"> <a href="{{ url() }}/dashboard" title="<?php echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i><?php echo trans('routes.home'); ?></a><a class="current"><?php echo trans('routes.changepassword'); ?></a></div>
   <div class="container-fluid">
   <div id="errorInsertion"></div>
     <div class="row-fluid">
@@ -28,7 +28,7 @@
 				</ul>
 			</div>
 		 @endif
-            <form class="form-horizontal" role="form" method="POST" id="frmChangePassword" name="frmChangePassword" action="{{ url() }}/admin/dochangepassword">
+            <form class="form-horizontal" role="form" method="POST" id="frmChangePassword" name="frmChangePassword" action="{{ url() }}/dochangepassword">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 			        <div class="control-group">
                       <label class="control-label"><?php echo trans('routes.currentpassword'); ?><font color="#FF0000"> *</font></label>

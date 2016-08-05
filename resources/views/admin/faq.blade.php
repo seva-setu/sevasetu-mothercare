@@ -101,7 +101,7 @@
             <div id="collapseThreei" class="panel-collapse collapse">
                 <div class="panel-body">
                      Good question. Yes, these calls follow a particular schedule. We gather from the field the expected date of delivery of a mother. Based on this date, we calculate 10 interventions spread over a course of 50 weeks - roughly half of them which intervene pre-pregnancy and half which intervene post-pregnancy. These interventions also have specific follow-up items which we expect the Call Champions to bring up on their calls. This is just the minimum number of interventions we recommend. Again, more the merrier as long it's convenient to your rural peer.<br/>
-                     Take a look at the interventions we recommend <a href="{{ url() }}/admin/FAQ/checklist" target="_blank">here </a>.
+                     Take a look at the interventions we recommend <a href="{{ url() }}/FAQ/checklist" target="_blank">here </a>.
                 </div>
             </div>
         </div>

@@ -40,7 +40,7 @@
         
          	<div style="color:#468847;text-align:center">{{ Session::get('sucmessage') }}</div>
          	<div class="error" style="color:#b94a48;text-align:center">{{ Session::get('message') }}</div>
-			<form class="form-horizontal" role="form" method="POST" action="{{ url() }}/admin/login" accept-charset="utf-8" name="loginform" id="loginform">
+			<form class="form-horizontal" role="form" method="POST" action="{{ url() }}/login" accept-charset="utf-8" name="loginform" id="loginform">
 			<p><?php echo trans('routes.loginlabel'); ?></p>
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
         		<div>
@@ -70,7 +70,7 @@
                 </div>
              <!--</form>-->
              </form>  
-            <form class="form-horizontal" role="form" method="POST" action="{{ url() }}/admin/forgotPassword" id="recoverform" name="recoverform" >
+            <form class="form-horizontal" role="form" method="POST" action="{{ url() }}/forgotPassword" id="recoverform" name="recoverform" >
 						<input type="hidden" name="_token" id="_token"  value="{{ csrf_token() }}">
                <p><?php echo trans('routes.lostpass_label'); ?></p>
                <div class="control-group">
@@ -113,7 +113,7 @@ $(document).ready(function(){
 			validEmail: true,
 			remote: {
 				data: {'_token' : token,'action':'add'},
-				url : '{{ url() }}/admin/checkEmailLogin',
+				url : '{{ url() }}/checkEmailLogin',
 				type : 'post'
 				}
 			}

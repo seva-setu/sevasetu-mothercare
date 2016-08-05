@@ -14,13 +14,13 @@ if($taluka!="")
 </head>
 <body>
 @include('template/admin_header')
-@include('template/admin_sidebar')
+@include('template/callchampion_sidebar')
 @include('template/script_multilanguage')
 <div id="content">
   <div id="content-header">
     <h1><?php  echo trans('routes.location'); ?></h1>
   </div>
-  <div id="breadcrumb"> <a href="{{ url() }}/admin/dashboard" title="<?php  echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i> <?php  echo trans('routes.home'); ?></a><a href="{{ url() }}admin/addlocation"><?php  echo trans('routes.location'); ?></a><a class="current"><?php  echo trans('routes.add'); ?></a></div>
+  <div id="breadcrumb"> <a href="{{ url() }}/dashboard" title="<?php  echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i> <?php  echo trans('routes.home'); ?></a><a href="{{ url() }}admin/addlocation"><?php  echo trans('routes.location'); ?></a><a class="current"><?php  echo trans('routes.add'); ?></a></div>
   <div class="container-fluid">
   <div id="errorInsertion"></div>
     <div class="row-fluid">
@@ -333,7 +333,7 @@ function searchAddress(){
 	var dist=$("#city").val()!=""?$("#city").val():"all";
 	var taluka=$("#taluka").val()!=""?$("#taluka").val():"all";
 	if(state!="all" || dist!="all" || taluka!="all"){
-		window.location="{{ url() }}/admin/searchdataaddress/"+state+'/'+dist+'/'+taluka;
+		window.location="{{ url() }}/searchdataaddress/"+state+'/'+dist+'/'+taluka;
 	}else{
 		alert(js_validadrress);
 	}

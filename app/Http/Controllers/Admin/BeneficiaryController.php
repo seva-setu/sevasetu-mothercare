@@ -225,7 +225,7 @@ class BeneficiaryController extends Controller{
     		}else{
     			Session::flash('message', '<div class="alert alert-error" style="clear:both;">
               <button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.excelvalid").'</div>');
-    			return Redirect::to('/admin/beneficiary/');
+    			return Redirect::to('/beneficiary/');
     		}
     		foreach($arr as $key=>$val){
     			$datetime = date("Y-m-d H:i:s");
@@ -301,7 +301,7 @@ class BeneficiaryController extends Controller{
     			}
     		}
     		Session::flash('errormessage',$mess);
-    		return Redirect::to('/admin/beneficiary/');
+    		return Redirect::to('/beneficiary/');
     	}
  	}
  	

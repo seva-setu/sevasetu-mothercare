@@ -50,7 +50,7 @@ class WeeklyCalllistController extends Controller{
 		if($this->role_permissions['canweeklyreport']){
 			return $this->list_all_calls();
 		}else{
-			return Redirect::to('/admin/');
+			return Redirect::to('/');
 		}
 	}
 	

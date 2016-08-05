@@ -1,11 +1,10 @@
 <?php 
 	$active = Request::segment(2);
 	$string = "class=\"active-link\"";
-	if($active=='dashboard' or $active=='mothers'){ $dashboard=$string; } else { $dashboard=""; }
-	if($active=='mycalls'){ $mycalls=$string; } else { $mycalls=""; }
-	if($active=='checklist'){ $checklist=$string; } else { $checklist=""; }
-	if($active=='settings'){ $settings=$string; } else { $settings=""; }
-	if($active=='feedback'){ $feedback=$string; } else { $feedback="";}
+	if($active=='dashboard' or $active=='upload'){ $dashboard=$string; } else { $dashboard=""; }
+	if($active=='callChampions'){ $callChampions=$string; } else { $callChampions=""; }
+	if($active=='actions'){ $actions=$string; } else { $actions=""; }
+	if($active=='analysis'){ $analysis=$string; } else { $analysis=""; }
 	
 	$user_stats = Session::get('user_stats');
 ?>
@@ -14,19 +13,16 @@
 	<div class="sidebar-collapse">
 		<ul class="nav" id="main-menu">
 			<li <?php echo $dashboard; ?> >
-			<a href="{{url()}}/admin/mothers"><i class="fa fa-female "></i>Mothers  <span class="badge">{{ $user_stats['number_mothers_assigned'] }} assigned</span></a>
+			<a href="{{url()}}/data/upload"><i class="fa fa-upload "></i>Upload data  <span class="badge"></span></a>
 			</li>
-			<li <?php echo $mycalls; ?> >
-			<a href="{{url()}}/admin/mycalls"><i class="fa fa-phone	 "></i>My calls  <span class="badge">{{$user_stats['number_of_calls']}} scheduled</span></a>
+			<li <?php echo $callChampions; ?> >
+			<a href="{{url()}}/callChampions"><i class="fa fa-phone	 "></i>Call Champions  <span class="badge"></span></a>
 			</li>
-			<li <?php echo $checklist; ?> >
-			<a href="{{url()}}/admin/checklist"><i class="fa fa-list-ol "></i>Check list</a>
+			<li <?php echo $actions; ?> >
+			<a href="{{url()}}/actions"><i class="fa fa-list-ol "></i>Action items</a>
 			</li>
-			<li <?php echo $settings; ?> >
-			<a href="{{url()}}/admin/settings"><i class="fa fa-cogs "></i>Settings</a>
-			</li>
-			<li <?php echo $feedback; ?> >
-			<a href="{{url()}}/admin/feedback"><i class="fa fa-volume-up"></i>Feedback and Bugs</a>
+			<li <?php echo $analysis; ?> >
+			<a href="{{url()}}/analysis"><i class="fa fa-cogs "></i>Analysis</a>
 			</li>
 		</ul>
 	</div>
