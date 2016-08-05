@@ -15,7 +15,7 @@ smallfont{
 </style>
 <body>
 @include('template/admin_header')
-@include('template/admin_sidebar_new')
+@include('template/admin_sidebar')
 helloddo
 </body>
 </html>

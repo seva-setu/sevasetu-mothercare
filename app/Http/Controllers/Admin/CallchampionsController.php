@@ -80,7 +80,7 @@ class CallchampionsController extends Controller{
 	}
 	
 	public function list_admins($cc_id = -1){		
-		return view('admin/dashboard1');
+		return view('admin/admin_dashboard');
 	}
 	
 	public function update_call($due_id_encrypted){

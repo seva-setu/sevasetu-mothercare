@@ -13,7 +13,7 @@ smallfont{
 <body>
 @if(Session::has('user_logged'))
 	@include('template/admin_header')
-	@include('template/admin_sidebar')
+	@include('template/callchampion_sidebar')
 @endif
 
 <div id="page-wrapper" >
