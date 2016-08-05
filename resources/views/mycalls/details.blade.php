@@ -15,7 +15,7 @@ smallfont{
 </style>
 <body>
 @include('template/admin_header')
-@include('template/admin_sidebar')
+@include('template/callchampion_sidebar')
 
 <div id="page-wrapper" >
 	<div id="page-inner">
@@ -133,7 +133,7 @@ smallfont{
 						</li>
 					 </ul>
 					 <!-- BEGIN CODE FOR TABBED CONTENT -->
-					 <form name = "update_due" method = "POST" action = <?php echo url().'/admin/mycalls/update/'.Hashids::encode($call_details['due_id']); ?> >
+					 <form name = "update_due" method = "POST" action = <?php echo url().'/mycalls/update/'.Hashids::encode($call_details['due_id']); ?> >
 					 <div class="tab-content">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					 <!-- BEGIN CODE FOR TAB "Notes from call" -->

@@ -1,16 +1,17 @@
+
 @include('template/admin_title')
 @include('template/admin_cssscripta')
 </head>
 <body>
 @include('template/admin_header')
-@include('template/admin_sidebar')
+@include('template/callchampion_sidebar')
 <div id="content">
 <div id="content-header">
   <h1>
     <?php  echo trans('routes.beneficiary'); ?>
   </h1>
 </div>
-<div id="breadcrumb"> <a href="{{ url() }}/admin/dashboard" title="<?php  echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i>
+<div id="breadcrumb"> <a href="{{ url() }}/dashboard" title="<?php  echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i>
   <?php  echo trans('routes.home'); ?>
   </a><a class="current">{{ trans('routes.checklists') }}</a></div>
 <div class="container-fluid">
@@ -47,7 +48,7 @@
             <!-- Loop Check list -->
             
             <tr>
-              <td colspan="6"><a href="{{ url() }}/admin/checklist/add" class="btn btn-primary"><i class="icon-plus-sign icon-white"></i> {{ trans('routes.addchecklist') }} </a></td>
+              <td colspan="6"><a href="{{ url() }}/checklist/add" class="btn btn-primary"><i class="icon-plus-sign icon-white"></i> {{ trans('routes.addchecklist') }} </a></td>
               
               <!-- Loop Check list --> 
               
@@ -95,10 +96,10 @@
               		@endfor
               	
                         </select></td>
-                      <td style="min-width:110px;"><!-- <a class="btn btn-info" href="{{url() }}/admin/checklist/edit/{{ $desc->bi_id or '' }}"><i class="icon-edit icon-white"></i> {{ trans('routes.edit') }}</a> -->
+                      <td style="min-width:110px;"><!-- <a class="btn btn-info" href="{{url() }}/checklist/edit/{{ $desc->bi_id or '' }}"><i class="icon-edit icon-white"></i> {{ trans('routes.edit') }}</a> -->
                         
                         <ul class="nav nav-pills">
-                          <li> <a href="{{ url() }}/admin/checklist/edit/{{ $desc->bi_id or '' }}"> <img id="detail-icon-img" src="{{ url() }}/external/img/edit.png" alt="ceditimg" height="12" width="16"> {{ trans('routes.edit') }}</a> </li>
+                          <li> <a href="{{ url() }}/checklist/edit/{{ $desc->bi_id or '' }}"> <img id="detail-icon-img" src="{{ url() }}/external/img/edit.png" alt="ceditimg" height="12" width="16"> {{ trans('routes.edit') }}</a> </li>
                         </ul></td>
                     </tr>
                     @endif
@@ -157,10 +158,10 @@
 		              		@endfor
 		              	
                         </select></td>
-                      <td style="min-width:110px;"><!-- <a class="btn btn-info" href="{{url() }}/admin/checklist/edit/{{ $desc->bi_id or '' }}"><i class="icon-edit icon-white"></i> {{ trans('routes.edit') }} </a>-->
+                      <td style="min-width:110px;"><!-- <a class="btn btn-info" href="{{url() }}/checklist/edit/{{ $desc->bi_id or '' }}"><i class="icon-edit icon-white"></i> {{ trans('routes.edit') }} </a>-->
                         
                         <ul class="nav nav-pills">
-                          <li> <a href="{{ url() }}/admin/checklist/edit/{{ $desc->bi_id or '' }}"> <img id="detail-icon-img" src="{{ url() }}/external/img/edit.png" alt="ceditimg" height="12" width="16"> {{ trans('routes.edit') }}</a> </li>
+                          <li> <a href="{{ url() }}/checklist/edit/{{ $desc->bi_id or '' }}"> <img id="detail-icon-img" src="{{ url() }}/external/img/edit.png" alt="ceditimg" height="12" width="16"> {{ trans('routes.edit') }}</a> </li>
                         </ul></td>
                     </tr>
                     @endif

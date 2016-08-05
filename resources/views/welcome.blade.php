@@ -181,8 +181,8 @@ margin-top:25px !important;
 		<h2>Each One Reach One program</h2>
 	</div>
 	<div class="col-xs-3">
-		<a href="{{url()}}/admin/login" class="btn btn-primary" style="max-width: none ! important; width: 100px !important; text-align: center !important ;" >Login</a>	
-		<a href="{{url()}}/admin/FAQ" class="btn btn-success" style="max-width: none ! important; width: 100px !important; text-align: center !important ; " >FAQ</a>			
+		<a href="{{url()}}/login" class="btn btn-primary" style="max-width: none ! important; width: 100px !important; text-align: center !important ;" >Login</a>	
+		<a href="{{url()}}/FAQ" class="btn btn-success" style="max-width: none ! important; width: 100px !important; text-align: center !important ; " >FAQ</a>			
 	</div>
 </header>
 

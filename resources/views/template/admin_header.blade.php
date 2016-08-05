@@ -1,3 +1,4 @@
+
 <?php 
 $userinfo=Session::get('user_logged');
 //$username= DB::table('mct_users')->where('user_id', $userinfo['user_id'])->value('v_name');
@@ -14,8 +15,10 @@ $userinfo=Session::get('user_logged');
 				<a href="#" style="color:#fff;font-size:18px">Seva Setu's Mother care tool</a>  
 		    </span>
 		</div>
+
 	   <span class="logout-spn" style="margin-left:5%;margin-right:5%;">
-	   <a href="<?php echo url(); ?>/admin/logout" style="color:#fff;font-size:15px;">Logout</a>  
+	   <a href="<?php echo url(); ?>/logout" style="color:#fff;font-size:15px;">Logout</a>
+	   
 	   </span>
 	   <span class="logout-spn" style="margin-left:0%;margin-right:5%;">
 	   <p style="color:#fff;font-size:15px;width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-top:1.8%;">Welcome <?php echo $userinfo['v_user_name'] ?></p>

@@ -37,7 +37,7 @@
 				</ul>
 			</div>
 		 @endif
-            <form class="form-horizontal" role="form" method="POST" id="frmChangePassword" name="frmChangePassword" action="{{ url() }}/admin/changeforgotpassword">
+            <form class="form-horizontal" role="form" method="POST" id="frmChangePassword" name="frmChangePassword" action="{{ url() }}/changeforgotpassword">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="hdnUserId" id="hdnUserId" value="<?php echo $user_id; ?>">
 				<p><?php echo trans('routes.forgotpass'); ?></p>
