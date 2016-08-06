@@ -1,6 +1,6 @@
 Options -MultiViews
 RewriteEngine On
-RewriteBase /mother_care/
+RewriteBase /
 
 # Redirect Trailing Slashes...
 RewriteRule ^(.*)/$ $1 [L,R=301]
