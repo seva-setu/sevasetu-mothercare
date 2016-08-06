@@ -35,21 +35,22 @@ class AdminController extends Controller{
 	public $title="Admin Login";
 	public $user_id;
 	public $role_id;
-	public $role_type;
+	public $user_role_type;
 	protected $helper;
 	protected $role_permissions;
 	
 	public function __construct(){
+    if(Session::has('user_logged')){
+      $userinfo=Session::get('user_logged');
+      $this->user_role_type=$userinfo['v_role'];}
+
 	}
 	
 	public function landing(){
 		if(Session::has('user_logged')){
-      $user_details = Session::get('user_logged');
-      $user_role_type = $user_details['v_role'];
-
-      if($user_role_type == 1)
+      if($this->user_role_type == 1)
         return Redirect::to('/admins')->send();
-      elseif($user_role_type == 2)
+      elseif($this->user_role_type == 2)
         Redirect::to('/mothers')->send();
 		}
 		
@@ -65,13 +66,10 @@ class AdminController extends Controller{
 	}
 	
 	public function index(){
-		if(Session::has('user_logged')){			          
-      $user_details = Session::get('user_logged');
-      $user_role_type = $user_details['v_role'];
-
-    if($user_role_type == 1)
+		if(Session::has('user_logged')){			       
+    if($this->user_role_type == 1)
       return Redirect::to('/admins')->send();
-    elseif($user_role_type == 2)
+    elseif($this->user_role_type == 2)
       Redirect::to('/mothers')->send();
 		}
 
@@ -84,12 +82,9 @@ class AdminController extends Controller{
 	 */
  	public function login() {
 		if(Session::has('user_logged')){
-			$user_details = Session::get('user_logged');
-      $user_role_type = $user_details['v_role'];
-   
-      if($user_role_type == 1)
+      if($this->user_role_type == 1)
         return Redirect::to('/admins')->send();
-      elseif($user_role_type == 2)
+      elseif($this->user_role_type == 2)
         Redirect::to('/mothers')->send();
 		}
 		// Getting all post data
@@ -126,6 +121,14 @@ class AdminController extends Controller{
 			}
 		}
     }
+
+
+  public function admin_dashboard(){
+    if($this->user_role_type == 2)
+          return Redirect::to('/mothers');   
+    return view('admin/admin_dashboard');
+  }
+  
 
   //change password view
   public function changepassword(){

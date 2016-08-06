@@ -38,7 +38,7 @@ Route::get('/FAQ/checklist', 'Admin\AdminController@faq_checklist');
 
 /////////// core application ///////////////////
 Route::get('/mothers', 'Admin\CallchampionsController@list_mothers');
-Route::get('/admins', 'Admin\CallchampionsController@list_admins');
+Route::get('/admins', 'Admin\AdminController@admin_dashboard');
 Route::get('/mycalls', 'Admin\WeeklyCalllistController@list_all_calls');
 Route::get('/mycalls/view/{id}', 'Admin\WeeklyCalllistController@list_specific_call_details');
 Route::get('/checklist', 'Admin\WeeklyCalllistController@get_master_checklist');

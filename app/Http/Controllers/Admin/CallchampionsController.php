@@ -55,7 +55,7 @@ class CallchampionsController extends Controller{
 					$dashboard_data = $fieldworker->get_dashboard_data($this->role_id);
 				}
 				elseif($this->role_type == 1){
-					$dashboard_data = "";
+					return Redirect::to('/admins')->send();
 				}
 				//ideally should be hashed
 				$encoded_data 	= $dashboard_data;
@@ -77,10 +77,6 @@ class CallchampionsController extends Controller{
 			
 			return view('mothers/dashboard',$data);
 		}
-	}
-	
-	public function list_admins($cc_id = -1){		
-		return view('admin/admin_dashboard');
 	}
 	
 	public function update_call($due_id_encrypted){
