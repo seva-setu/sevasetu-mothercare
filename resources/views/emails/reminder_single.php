@@ -6,7 +6,7 @@
 </head>
 <body>
 <p>Hi <?php echo $cc_name; ?></p>
-<p>You have one call scheduled this week. Your call has been scheduled with
+<p>You have one call scheduled this week. Your call has been scheduled with <?php echo $mother_name; ?> from <?php echo $village; ?> village. Please call her on <?php echo $number; ?>.
 
 For taking down notes from the call and for other related details, please login to the <a href="http://sevasetu.org/mother_care">Mother Care portal</a> with your credentials.
 
