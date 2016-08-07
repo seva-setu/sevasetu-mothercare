@@ -38,6 +38,9 @@ class WeeklyCalllistController extends Controller{
 			$this->user_id=$userinfo['user_id'];
 			$this->role_id=$userinfo['role_id'];
 			$this->role_type=$userinfo['v_role'];
+			if($this->role_type == 1){
+				return Redirect::to('/admins')->send();
+			}
 		}
 	}
 
