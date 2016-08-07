@@ -94,7 +94,7 @@ class CallchampionsController extends Controller{
 		$b_obj = new Beneficiary();
 		$data['beneficiary'] = $b_obj->get_beneficiary_details($b_id);
 
-		$email = 'kaushikyogesh.95@gmail.com';
+		$email = 'mothercare@sevasetu.org';
 		if($call_stats == 'Incorrect number')
 		{
 			$data['action'] = " has marked an Incorrect number status.";
