@@ -194,8 +194,7 @@ smallfont{
 									  echo trans('routes.textareadefaulttext');
 								  else
 									  echo $current_notes->action_items;
-								  ?>
-								  </textarea>
+								  ?></textarea>
 								</div>
 								
 							   <div class="form-group">
