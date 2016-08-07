@@ -186,7 +186,7 @@ smallfont{
 							<!-- Begin section for textarea -->
 							<div class="col-lg-6 col-md-6">
 							   <div class="form-group">
-								  <label for="action_note">{{ trans('routes.notes_field')}}
+								  <label for="action_item">{{ trans('routes.notes_field')}}
 								  <span class="label label-danger">Important</span>
 								  </label>
 								  <textarea name="action_note" class="form-control" rows="5" id="action_note" onfocus="if(this.value == '<?php echo trans('routes.textareadefaulttext');?>') this.value='';" onblur="if(this.value == '') this.value='<?php echo trans('routes.textareadefaulttext');?>';"><?php 
