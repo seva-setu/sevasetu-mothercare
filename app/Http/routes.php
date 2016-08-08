@@ -45,4 +45,9 @@ Route::get('/checklist', 'Admin\WeeklyCalllistController@get_master_checklist');
 Route::post('/mycalls/update/{id}', 'Admin\CallchampionsController@update_call');
 
 /////////////////////////////////////
+
+////////// For testing ///////////////////
+Route::get('/admins/test','Admin\AdminDashboardController@actionitems_lastweek');
+Route::get('/analysis','Admin\AdminDashboardController@get_data');
+
 ?>
