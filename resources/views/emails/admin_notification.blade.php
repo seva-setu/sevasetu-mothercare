@@ -5,9 +5,17 @@
 <title></title>
 </head>
 <body>
-<p>Hi, Callchampion  <?php foreach($callchampion as $value){
-		echo $value->v_name." (Contact: ".$value->i_phone_number.") ";
-		} echo $action; ?> </p>
+<p>Hi, Callchampion
+ 	<?php
+		foreach($callchampion as $value){
+			echo $value->v_name." (Contact: ".$value->i_phone_number.") ";
+		}
+		if($action == trans('routes.in'))
+			echo trans('routes.incorrectstatus');
+		elseif($action == trans('routes.action'))
+			echo trans('routes.actionadded');
+	?>
+ </p>
 <p><u>Details of Mother:</u></p>
 <?php foreach($beneficiary as $value){ ?>
 <ul>
@@ -20,7 +28,7 @@
 <?php
 	}
 ?>
-<?php if($action == ' has added an action item.') {
+<?php if($action == trans('routes.action')) {
 	echo "Action item: ".$action_items;
 } 
 ?>

@@ -295,5 +295,7 @@ return array(
 		'previousnotes' => 'View previous notes',
 		'callmadeon' => 'Call made on',
 		'generalnotes' => 'General notes',
-		'actionitemsnoted' => 'Action items noted during the call'
+		'actionitemsnoted' => 'Action items noted during the call',
+		'incorrectstatus' => ' has marked an Incorrect status.',
+		'actionadded' => ' has added an action item.'
 );
