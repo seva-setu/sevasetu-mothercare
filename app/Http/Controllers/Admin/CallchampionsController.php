@@ -108,6 +108,7 @@ class CallchampionsController extends Controller{
 							}
 						  );
 			}
+
 			if($action_items != trans('routes.textareadefaulttext') && strlen($action_items)>0)
 			{
 				$data['action'] = trans('routes.action');
@@ -119,26 +120,24 @@ class CallchampionsController extends Controller{
 								->subject('Seva Setu: Admin Notifications');
 							}
 						  );
+			}		
+
+			if($duedate_stats == trans('routes.incorrect'))
+			{
+				$data['action'] = $duedate_stats;
+				$data['expected_date'] = Input::get('duedate');
+
+				Beneficiary::where('b_id', $b_id)
+	            	->update(['reported _delivery_date' => $data['expected_date'] ]);
+
+				Mail::send('emails.admin_notification',$data, 
+							function($message) use($email){
+								$message
+								->to($email)
+								->subject('Seva Setu: Admin Notifications');
+							}
+						  );
 			}
-		}
-
-		if($duedate_stats == trans('routes.incorrect'))
-		{
-			$b_id = $duelist[0]['fk_b_id'];
-			$data['callchampion'] = User::where('user_id',$this->user_id)->get();
-			$b_obj = new Beneficiary();
-			$data['beneficiary'] = $b_obj->get_beneficiary_details($b_id);
-			$email = $_ENV['MAIL_LOGIN'];
-			$data['action'] = $duedate_stats;
-			$data['expected_date'] = Input::get('duedate');
-
-			Mail::send('emails.admin_notification',$data, 
-						function($message) use($email){
-							$message
-							->to($email)
-							->subject('Seva Setu: Admin Notifications');
-						}
-					  );
 		}
 
 		$update_status = $cc->update_cc_report($dueid, $call_stats, $general_note, $action_items);		
