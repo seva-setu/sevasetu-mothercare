@@ -297,5 +297,10 @@ return array(
 		'generalnotes' => 'General notes',
 		'actionitemsnoted' => 'Action items noted during the call',
 		'incorrectstatus' => ' has marked an Incorrect status.',
-		'actionadded' => ' has added an action item.'
+		'actionadded' => ' has added an action item.',
+		'expecteddatestatus' => 'Please record the status of expected date of delivery',
+		'correct' => 'Correct',
+		'incorrect' => 'Incorrect',
+		'incorrectduedate' => ' has marked an Incorrect expected date of delivery.',
+		'correctduedate' => 'Correct expected date of delivery: '
 );

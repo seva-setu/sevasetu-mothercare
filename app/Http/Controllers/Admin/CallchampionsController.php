@@ -86,8 +86,8 @@ class CallchampionsController extends Controller{
 		$action_items = Input::get('action_item');
 		$call_stats = Input::get('callstats');
 		$general_note = Input::get('general_note');
+		$duedate_stats = Input::get('duedatestat');
 		$cc = new CallChampion;
-
 
 		if(sizeof($duelist))
 		{
@@ -120,6 +120,25 @@ class CallchampionsController extends Controller{
 							}
 						  );
 			}
+		}
+
+		if($duedate_stats == trans('routes.incorrect'))
+		{
+			$b_id = $duelist[0]['fk_b_id'];
+			$data['callchampion'] = User::where('user_id',$this->user_id)->get();
+			$b_obj = new Beneficiary();
+			$data['beneficiary'] = $b_obj->get_beneficiary_details($b_id);
+			$email = $_ENV['MAIL_LOGIN'];
+			$data['action'] = $duedate_stats;
+			$data['expected_date'] = Input::get('duedate');
+
+			Mail::send('emails.admin_notification',$data, 
+						function($message) use($email){
+							$message
+							->to($email)
+							->subject('Seva Setu: Admin Notifications');
+						}
+					  );
 		}
 
 		$update_status = $cc->update_cc_report($dueid, $call_stats, $general_note, $action_items);		

@@ -43,6 +43,7 @@ Route::get('/mycalls', 'Admin\WeeklyCalllistController@list_all_calls');
 Route::get('/mycalls/view/{id}', 'Admin\WeeklyCalllistController@list_specific_call_details');
 Route::get('/checklist', 'Admin\WeeklyCalllistController@get_master_checklist');
 Route::post('/mycalls/update/{id}', 'Admin\CallchampionsController@update_call');
+Route::get('/callchampions', 'Admin\AdminController@callchampions');
 
 /////////////////////////////////////
 ?>

@@ -14,6 +14,8 @@
 			echo trans('routes.incorrectstatus');
 		elseif($action == trans('routes.action'))
 			echo trans('routes.actionadded');
+		elseif($action == trans('routes.incorrect'))
+			echo trans('routes.incorrectduedate');
 	?>
  </p>
 <p><u>Details of Mother:</u></p>
@@ -30,7 +32,10 @@
 ?>
 <?php if($action == trans('routes.action')) {
 	echo "Action item: ".$action_items;
-} 
+}
+elseif ($action == trans('routes.incorrect')) {
+ 	echo trans('routes.correctduedate').date("d M Y", strtotime($expected_date));
+ } 
 ?>
 <p><b>
 <p>Thanks<br />
