@@ -155,6 +155,7 @@ smallfont{
 								</p>
 								<!-- End drop down -->
 						<hr/>
+
 						<b>{{ trans('routes.expecteddatestatus') }}</b>	
 						<script>
 						function fun()
@@ -171,16 +172,17 @@ smallfont{
 						</script>
 						<div class="dropdown">				
 						  <select name = "duedatestat" id = "duedatestat" onchange="fun()" class="form-control">
-							<option <?php if ($current_notes->status == 'Not called') echo ' selected="selected"'; ?> >{{ trans('routes.correct') }} </option>
-							<option <?php if ($current_notes->status == 'Received') echo ' selected="selected"'; ?> >{{ trans('routes.incorrect') }} </option>
+								<option>{{ trans('routes.correct') }}</option>
+								<option>{{ trans('routes.incorrect') }}</option>
 							</select>
 
 							<div class="hidden" id="date">
-							<br/>
-							<label>Please fill correct date of delivery : <input type="date" name="duedate" id="duedate" required /></label>
+								<br/>
+								<label>Please fill correct date of delivery : <input type="date" name="duedate" id="duedate" required /></label>
 							</div>
 						</div>
 						<hr/>	
+						
 								<h5><b>
 									{{trans('routes.actionitem')}}
 								</b></h5>
