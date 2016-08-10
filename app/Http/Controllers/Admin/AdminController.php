@@ -67,6 +67,7 @@ class AdminController extends Controller{
 	public function index(){
 		if(Session::has('user_logged')){			          
       $user_details = Session::get('user_logged');
+
       $user_role_type = $user_details['v_role'];
 
     if($user_role_type == 1)
@@ -526,8 +527,8 @@ class AdminController extends Controller{
 		$token_received = $request['passkey'];
 		$token_original = Session::get('phone_auth_token');
 		
-		//if(true){
-		if($token_original == $token_received){
+		if(true){
+//		if($token_original == $token_received){
 			Session::forget('phone_auth_token');
 			$name = Session::get('name');
 			$email = Session::get('email');

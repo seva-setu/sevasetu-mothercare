@@ -82,6 +82,20 @@ class CallchampionsController extends Controller{
 	public function list_admins($cc_id = -1){		
 		return view('admin/admin_dashboard');
 	}
+
+  public function upload_data(){
+    if(!Session::has('user_logged')){
+      Redirect::to('/')->send();
+    }
+    $session_data=Session::get('user_logged');
+    if($session_data['v_role']==1)
+      return view('admin/upload_data');
+    else
+      return 'User is not admin';
+
+  }
+
+
 	
 	public function update_call($due_id_encrypted){
 		$helper_obj = new Helpers;
