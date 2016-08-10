@@ -158,17 +158,19 @@ smallfont{
 
 						<b>{{ trans('routes.expecteddatestatus') }}</b>	
 						<script>
-						function fun()
-						{
-							if(document.getElementById("duedatestat").value == '{{ trans('routes.incorrect') }}' )
+							function fun()
 							{
-								document.getElementById("date").classList.remove("hidden");
+								if(document.getElementById("duedatestat").value == '{{ trans('routes.incorrect') }}' )
+								{
+									document.getElementById("date").classList.remove("hidden");
+									document.getElementById("duedate").setAttribute("required", "");
+								}
+								if(document.getElementById("duedatestat").value == '{{ trans('routes.correct') }}' )
+								{
+									document.getElementById("date").classList.add("hidden");
+									document.getElementById("duedate").removeAttribute("required");
+								}
 							}
-							if(document.getElementById("duedatestat").value == '{{ trans('routes.correct') }}' )
-							{
-								document.getElementById("date").classList.add("hidden");
-							}
-						}
 						</script>
 						<div class="dropdown">				
 						  <select name = "duedatestat" id = "duedatestat" onchange="fun()" class="form-control">
@@ -178,7 +180,7 @@ smallfont{
 
 							<div class="hidden" id="date">
 								<br/>
-								<label>Please fill correct date of delivery : <input type="date" name="duedate" id="duedate" required /></label>
+								<label>Please fill correct date of delivery : <input type="date" name="duedate" id="duedate"/></label>
 							</div>
 						</div>
 						<hr/>	

@@ -82,14 +82,14 @@ class CallchampionsController extends Controller{
 	public function update_call($due_id_encrypted){
 		$helper_obj = new Helpers;
 		$dueid = $helper_obj->decode($due_id_encrypted);
-		$duelist = DueList::where('due_id',$dueid)->get();
+		$duelist = DueList::where('due_id',$dueid)->get()->toArray();
 		$action_items = Input::get('action_item');
 		$call_stats = Input::get('callstats');
 		$general_note = Input::get('general_note');
 		$duedate_stats = Input::get('duedatestat');
 		$cc = new CallChampion;
 
-		if(sizeof($duelist))
+		if(is_array($duelist) && !empty($duelist))
 		{
 			$b_id = $duelist[0]['fk_b_id'];
 			$data['callchampion'] = User::where('user_id',$this->user_id)->get();
@@ -107,6 +107,7 @@ class CallchampionsController extends Controller{
 								->subject('Seva Setu: Admin Notifications');
 							}
 						  );
+
 			}
 
 			if($action_items != trans('routes.textareadefaulttext') && strlen($action_items)>0)
@@ -137,6 +138,7 @@ class CallchampionsController extends Controller{
 								->subject('Seva Setu: Admin Notifications');
 							}
 						  );
+
 			}
 		}
 
