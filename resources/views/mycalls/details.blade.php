@@ -154,7 +154,37 @@ smallfont{
 								</div>
 								</p>
 								<!-- End drop down -->
+						<hr/>
+
+						<b>{{ trans('routes.expecteddatestatus') }}</b>	
+						<script>
+							function fun()
+							{
+								if(document.getElementById("duedatestat").value == '{{ trans('routes.incorrect') }}' )
+								{
+									document.getElementById("date").classList.remove("hidden");
+									document.getElementById("duedate").setAttribute("required", "");
+								}
+								if(document.getElementById("duedatestat").value == '{{ trans('routes.correct') }}' )
+								{
+									document.getElementById("date").classList.add("hidden");
+									document.getElementById("duedate").removeAttribute("required");
+								}
+							}
+						</script>
+						<div class="dropdown">				
+						  <select name = "duedatestat" id = "duedatestat" onchange="fun()" class="form-control">
+								<option>{{ trans('routes.correct') }}</option>
+								<option>{{ trans('routes.incorrect') }}</option>
+							</select>
+
+							<div class="hidden" id="date">
+								<br/>
+								<label>Please fill correct date of delivery : <input type="date" name="duedate" id="duedate"/></label>
+							</div>
+						</div>
 						<hr/>	
+						
 								<h5><b>
 									{{trans('routes.actionitem')}}
 								</b></h5>
@@ -186,16 +216,15 @@ smallfont{
 							<!-- Begin section for textarea -->
 							<div class="col-lg-6 col-md-6">
 							   <div class="form-group">
-								  <label for="action_note">{{ trans('routes.notes_field')}}
+								  <label for="action_item">{{ trans('routes.notes_field')}}
 								  <span class="label label-danger">Important</span>
 								  </label>
-								  <textarea name="action_note" class="form-control" rows="5" id="action_note" onfocus="if(this.value == '<?php echo trans('routes.textareadefaulttext');?>') this.value='';" onblur="if(this.value == '') this.value='<?php echo trans('routes.textareadefaulttext');?>';"><?php 
+								  <textarea name="action_item" class="form-control" rows="5" id="action_item" onfocus="if(this.value == '<?php echo trans('routes.textareadefaulttext');?>') this.value='';" onblur="if(this.value == '') this.value='<?php echo trans('routes.textareadefaulttext');?>';"><?php 
 								  if($current_notes->action_items == "")
 									  echo trans('routes.textareadefaulttext');
 								  else
 									  echo $current_notes->action_items;
-								  ?>
-								  </textarea>
+								  ?></textarea>
 								</div>
 								
 							   <div class="form-group">

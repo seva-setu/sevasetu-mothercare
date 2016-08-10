@@ -51,6 +51,8 @@ smallfont{
 								<br/>
 									<b>{{ trans('routes.phonenumber') }}</b>: {{ $value->phone_number }}
 								<br/>
+									<b>{{ trans('routes.expecteddate') }}</b>: {{ $value->due_date }}
+								<br/>
 									<b>{{ trans('routes.fieldworkername') }}</b>: {{ $value->field_worker_name }} 
 								<br/>
 									<b>{{ trans('routes.fieldworkernumber') }}</b>: {{ $value->field_worker_number }} 
