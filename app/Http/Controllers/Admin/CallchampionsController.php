@@ -41,7 +41,6 @@ class CallchampionsController extends Controller{
 			$this->user_id=$userinfo['user_id'];
 			$this->role_id=$userinfo['role_id'];
 			$this->role_type=$userinfo['v_role'];
-			$this->i_phone_number=$userinfo['i_phone_number'];
 			
 			$user_stats = Session::has('user_stats');
 			if(!$user_stats){
@@ -83,43 +82,66 @@ class CallchampionsController extends Controller{
 	public function update_call($due_id_encrypted){
 		$helper_obj = new Helpers;
 		$dueid = $helper_obj->decode($due_id_encrypted);
-		$duelist = DueList::where('due_id',$dueid)->get();
-		$b_id = $duelist[0]['fk_b_id'];
+		$duelist = DueList::where('due_id',$dueid)->get()->toArray();
 		$action_items = Input::get('action_item');
 		$call_stats = Input::get('callstats');
 		$general_note = Input::get('general_note');
+		$duedate_stats = Input::get('duedatestat');
 		$cc = new CallChampion;
 
-		$data['callchampion'] = User::where('user_id',$this->user_id)->get();
-		$b_obj = new Beneficiary();
-		$data['beneficiary'] = $b_obj->get_beneficiary_details($b_id);
-
-		$email = 'mothercare@sevasetu.org';
-		if($call_stats == 'Incorrect number')
+		if(is_array($duelist) && !empty($duelist))
 		{
-			$data['action'] = " has marked an Incorrect number status.";
-			Mail::send('emails.admin_notification',$data, 
-						function($message) use($email){
-							$message
-							->to($email)
-							->subject('Seva Setu: Admin Notifications');
-						}
-					  );
-		}
-		if($action_items != trans('routes.textareadefaulttext') && strlen($action_items)>0)
-		{
-			$data['action'] = " has added an action item.";
-			$data['action_items'] = $action_items;
-			Mail::send('emails.admin_notification',$data, 
-						function($message) use($email){
-							$message
-							->to($email)
-							->subject('Seva Setu: Admin Notifications');
-						}
-					  );
+			$b_id = $duelist[0]['fk_b_id'];
+			$data['callchampion'] = User::where('user_id',$this->user_id)->get();
+			$b_obj = new Beneficiary();
+			$data['beneficiary'] = $b_obj->get_beneficiary_details($b_id);
+
+			$email = $_ENV['MAIL_LOGIN'];
+			if($call_stats == trans('routes.in'))
+			{
+				$data['action'] = $call_stats;
+				Mail::send('emails.admin_notification',$data, 
+							function($message) use($email){
+								$message
+								->to($email)
+								->subject('Seva Setu: Admin Notifications');
+							}
+						  );
+
+			}
+
+			if($action_items != trans('routes.textareadefaulttext') && strlen($action_items)>0)
+			{
+				$data['action'] = trans('routes.action');
+				$data['action_items'] = $action_items;
+				Mail::send('emails.admin_notification',$data, 
+							function($message) use($email){
+								$message
+								->to($email)
+								->subject('Seva Setu: Admin Notifications');
+							}
+						  );
+			}		
+
+			if($duedate_stats == trans('routes.incorrect'))
+			{
+				$data['action'] = $duedate_stats;
+				$data['expected_date'] = Input::get('duedate');
+
+				Beneficiary::where('b_id', $b_id)
+	            	->update(['reported _delivery_date' => $data['expected_date'] ]);
+
+				Mail::send('emails.admin_notification',$data, 
+							function($message) use($email){
+								$message
+								->to($email)
+								->subject('Seva Setu: Admin Notifications');
+							}
+						  );
+
+			}
 		}
 
-		// return view('emails.admin_notification',$data);
 		$update_status = $cc->update_cc_report($dueid, $call_stats, $general_note, $action_items);		
 		
 		// ideally should be using session flashing to be doing this i think.
