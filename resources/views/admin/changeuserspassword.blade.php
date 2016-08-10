@@ -3,13 +3,13 @@
 </head>
 <body>
 @include('template/admin_header')
-@include('template/admin_sidebar')
+@include('template/callchampion_sidebar')
 @include('template/script_multilanguage')
 <div id="content">
   <div id="content-header">
     <h1><?php echo trans('routes.changepassword'); ?></h1>
   </div>
-  <div id="breadcrumb"> <a href="<?php echo Config::get('app.url'); ?>admin/dashboard" title="<?php echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i><?php echo trans('routes.home'); ?></a><a class="current"><?php echo trans('routes.changepassword'); ?></a></div>
+  <div id="breadcrumb"> <a href="{{ url() }}/dashboard" title="<?php echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i><?php echo trans('routes.home'); ?></a><a class="current"><?php echo trans('routes.changepassword'); ?></a></div>
   <div class="container-fluid">
   <div id="errorInsertion"></div>
     <div class="row-fluid">
@@ -28,7 +28,7 @@
 				</ul>
 			</div>
 		 @endif
-            <form class="form-horizontal" role="form" method="POST" id="frmChangePassword" name="frmChangePassword" action="<?php echo Config::get('app.url').'admin/dochangeuserpassword'; ?>">
+            <form class="form-horizontal" role="form" method="POST" id="frmChangePassword" name="frmChangePassword" action="{{ url() }}/dochangeuserpassword">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="hdnUserId" id="hdnUserId" value="<?php echo $user_id; ?>">
 			        <div class="control-group">
@@ -46,7 +46,7 @@
                 <div class="form-actions">
                   <div class="splitFormSubmitButton">
                     <button type="submit" class="btn btn-primary"><?php echo trans('routes.submit'); ?></button>
-                    <a href="<?php echo Config::get('app.url'); ?>admin<?php echo "/".$url;?>" onClick="btnCancel();" class="btn btn-danger"><?php echo trans('routes.cancel'); ?></a>
+                    <a href="{{ url() }}/admin<?php echo "/".$url;?>" onClick="btnCancel();" class="btn btn-danger"><?php echo trans('routes.cancel'); ?></a>
                   </div>
                 </div>
            </form>
@@ -59,7 +59,7 @@
 @include('template/admin_jsscript')
 </body>
 </html>
-<script src="<?php echo Config::get('constant.SITEURL'); ?>external/js_admin/jquery.validate.js"></script> 
+<script src="{{ url() }}/external/js_admin/jquery.validate.js"></script> 
 <script>
 jQuery.validator.addMethod("notEqual", function(value, element, param) {
 	 return this.optional(element) || value != $(param).val();

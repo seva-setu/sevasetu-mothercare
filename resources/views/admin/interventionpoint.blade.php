@@ -7,14 +7,14 @@
 </style>
 </head><body>
 @include('template/admin_header')
-@include('template/admin_sidebar')
+@include('template/callchampion_sidebar')
 <div id="content">
   <div id="content-header">
     <h1>
       <?php  echo trans('routes.interventionpoint'); ?>
     </h1>
   </div>
-  <div id="breadcrumb"> <a href="<?php echo Config::get('app.url'); ?>admin/dashboard" title="<?php  echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i>
+  <div id="breadcrumb"> <a href="{{ url() }}/dashboard" title="<?php  echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i>
     <?php  echo trans('routes.home'); ?>
     </a><a class="current">
     <?php  echo trans('routes.interventionpoint'); ?>
@@ -25,7 +25,7 @@
 			//$attributes = array('class' => 'form-horizontal', 'id' => 'frmList', 'name' => 'frmList');
 			//echo form_open(SITEURLADM.$cntrlName.'/deleteSelected',$attributes);?>
     <?php //echo $this->session->flashdata('dispMessage');?>
-    <form class="form-horizontal" accept-charset="utf-8" role="form" method="POST" id="frmList" name="frmList" action="<?php echo Config::get('app.url').'admin/updateInterventionPoint'; ?>">
+    <form class="form-horizontal" accept-charset="utf-8" role="form" method="POST" id="frmList" name="frmList" action="{{ url() }}/updateInterventionPoint">
       <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
       <input type="hidden" name="txtHdn" id="txtHdn" value="<?php echo count($result); ?>" />
       <div class="row-fluid">
@@ -49,7 +49,7 @@
                           <th><?php  echo trans('routes.week'); ?></th>
                           <th>{{ trans('routes.title') }}</th>
                           <th>{{ trans('routes.description') }}</th>
-                          <th><img width="18" height="18" class="hand" onClick="addcomponents('clone');" title="Add More Intervention Point" alt="Add Product Intervention Point" src="<?php echo Config::get('app.url'); ?>external/images/add.png"></th>
+                          <th><img width="18" height="18" class="hand" onClick="addcomponents('clone');" title="Add More Intervention Point" alt="Add Product Intervention Point" src="{{ url() }}/external/images/add.png"></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -74,7 +74,7 @@
                             </select></td>
                           <td style="text-align: center;" data-title="Title"><input type="text" class="txttile" name="txtTitle[]" value="<?php echo $v->v_name; ?>" ></td>
                          <!--width: 270px;--> <td style="text-align: center;" data-title="Description"><textarea class="txtdescription" name="txtDescritpion[]" cols="5" rows="5" ><?php echo $v->t_description; ?> </textarea></td>
-                          <td style=" text-align: center;"><img src="<?php echo Config::get('app.url'); ?>external/images/min.png" alt="Delete Intervention Point" title="Delete Intervention Point" onClick="removecomponents(<?php echo $i;?>,'<?php echo $v->bi_id; ?>');" height="20" width="20" class="hand" /></td>
+                          <td style=" text-align: center;"><img src="{{ url() }}/external/images/min.png" alt="Delete Intervention Point" title="Delete Intervention Point" onClick="removecomponents(<?php echo $i;?>,'<?php echo $v->bi_id; ?>');" height="20" width="20" class="hand" /></td>
                         </tr>
                         <?php }?>
                       </tbody>
@@ -117,14 +117,14 @@ function addcomponents(objBtn) {
 	row += '<td style="text-align: center;" ><input type="text" class="txttile" name="txtTitle[]" value="" ></td>';
 	row += '<td style="text-align: center;width: 270px;"><textarea class="txtdescription" name="txtDescritpion[]" cols="5" rows="5" ></textarea></td>';
               
-	row += '<td style=" text-align: center;"><img src="<?php echo Config::get('app.url'); ?>external/images/min.png" title="Delete Intervention Point" width="20" height="20" onclick="removecomponents('+i+',0);" class="hand" /></td>';											  
+	row += '<td style=" text-align: center;"><img src="{{ url() }}/external/images/min.png" title="Delete Intervention Point" width="20" height="20" onclick="removecomponents('+i+',0);" class="hand" /></td>';											  
 	row += '</tr>';
 	$('#insertMore').append(row);
 	$("#txtHdn").val(i);
 	buttonsetting(<?php echo count($result); ?>,$("#txtHdn").val()); 
 	//getProductComponents();
 }
-var baseURL="<?php echo Config::get('app.url'); ?>";
+var baseURL="{{ url() }}/";
 function removecomponents(trId,id)
 {
 	var token=$("#_token").val();

@@ -30,19 +30,18 @@ class WeeklyCalllistController extends Controller{
 	protected $role_permissions;
 	
 	public function __construct(){
-		$userinfo = Session::get('user_logged');
-		$this->beneficiary_details 	= Session::get('user');
-		
-		//check for valid use
-		if(!isset($userinfo['role_id'])){
-			Redirect::to('/admin/')->send();
+		if(!Session::has('user_logged')){
+			Redirect::to('/')->send();
 		}
-		$this->user_type = $userinfo['v_role'];
-		$this->user_id = $userinfo['user_id'];
-		$this->role_id = $userinfo['role_id'];
-		
-		$this->helper = new Helpers();
-		$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
+		else{
+			$userinfo=Session::get('user_logged');
+			$this->user_id=$userinfo['user_id'];
+			$this->role_id=$userinfo['role_id'];
+			$this->role_type=$userinfo['v_role'];
+			if($this->role_type == 1){
+				return Redirect::to('/admins')->send();
+			}
+		}
 	}
 
 	/*
@@ -54,7 +53,7 @@ class WeeklyCalllistController extends Controller{
 		if($this->role_permissions['canweeklyreport']){
 			return $this->list_all_calls();
 		}else{
-			return Redirect::to('/admin/');
+			return Redirect::to('/');
 		}
 	}
 	
@@ -73,7 +72,8 @@ class WeeklyCalllistController extends Controller{
 	}
 	
 	public function list_specific_call_details($due_id_encoded){
-		$due_id = $this->decode($due_id_encoded);
+		$helper_obj = new Helpers;
+		$due_id = $helper_obj->decode($due_id_encoded);
 		$due_list_obj = new DueList;
 		$due_id_obj = $due_list_obj->find($due_id);
 		
@@ -83,38 +83,25 @@ class WeeklyCalllistController extends Controller{
 		$b_obj = new Beneficiary;
 		$beneficiary_details = $b_obj->get_beneficiary_details($beneficiary_id);
 		$beneficiary_details = $beneficiary_details[0];
-		$beneficiary_details->due_id = $due_id;
 		
 		$call_details = $due_list_obj->get_due_list_callchamp($due_id_obj['attributes']['fk_cc_id'], $beneficiary_id);
 		
 		$action_item_id = $due_id_obj['attributes']['fk_action_id'];
 		$action_items = $due_list_obj->get_checklist_items($action_item_id);
 		
+		$previous_notes = $b_obj->get_previous_notes($beneficiary_id);
 		
-		$data['personal_details'] = $beneficiary_details;
-		$data['due_list_completed'] = $call_details['due_list_completed'];
-		$data['due_list_scheduled'] = $call_details['due_list_scheduled'];
-		$data['action_items'] = $action_items;
+		$current_notes = $b_obj->get_current_notes($due_id);
 		
-		if(false)
-			return(view('mycalls.details',$data));
-		else
-			return(view('mycalls.details',$data));
+		$call_details['personal_details'] 	= $beneficiary_details;
+		$call_details['action_items'] 		= $action_items;
+		$call_details['previous_notes'] 	= $previous_notes;
+		$call_details['call_details'] 		= array('due_id'=>$due_id, 'action_date'=>$due_id_obj['attributes']['dt_intervention_date']);
+		$call_details['current_notes'] 		=  $current_notes;
+		
+		
+		return(view('mycalls.details',$call_details));
 	}
-	
-	public function submit_data(){
-		print_r(Input::all());
-	}
-	
-	public function decode($id=0){
-  		if($id){
-  			$hashids = new Hashids();
-  			$arr = $hashids->decode($id);
-  			return (!empty($arr)) ? $id=$arr[0] : 0;
-  			//return $id=$arr[0];
-  		}else
-  			return 0;
-  	}
 	
 	
 	public function showMoreCallList()

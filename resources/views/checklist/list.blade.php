@@ -11,8 +11,15 @@ smallfont{
 }
 </style>
 <body>
-@include('template/admin_header')
-@include('template/admin_sidebar')
+@if(Session::has('user_logged'))
+	@include('template/admin_header')
+	@if(Session::get('user_logged')['v_role'] == 2)
+		@include('template/callchampion_sidebar')
+	@endif
+	@if(Session::get('user_logged')['v_role'] == 1)
+		@include('template/admin_sidebar')
+	@endif
+@endif
 
 <div id="page-wrapper" >
 	<div id="page-inner">

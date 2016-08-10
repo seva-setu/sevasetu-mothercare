@@ -11,7 +11,7 @@ class Kernel extends ConsoleKernel {
 	 * @var array
 	 */
 	protected $commands = [
-		'App\Console\Commands\Inspire',
+		'App\Console\Commands\Remind',
 	];
 
 	/**
@@ -20,10 +20,10 @@ class Kernel extends ConsoleKernel {
 	 * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
 	 * @return void
 	 */
-	protected function schedule(Schedule $schedule)
-	{
-		$schedule->command('inspire')
-				 ->hourly();
+	protected function schedule(Schedule $schedule){
+		$schedule->command('remind')
+				 ->cron('0 6 * * *');
+		
 	}
 
 }

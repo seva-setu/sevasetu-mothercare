@@ -12,7 +12,8 @@
 		"torann/hashids": "2.0.*@dev",
 		"maatwebsite/excel": "~2.0.0",	
 		"intervention/image":"2.*",
-		"barryvdh/laravel-dompdf": "0.6.*"
+		"barryvdh/laravel-dompdf": "0.6.*",
+		"guzzlehttp/guzzle": "~4.0" 
 		
 	},
 	"require-dev": {

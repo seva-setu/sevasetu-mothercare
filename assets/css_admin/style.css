@@ -1,0 +1,455 @@
+.loginbuttondiv{
+	margin-top:0;
+}
+.splitFormSubmitButton{
+	margin-left:30.4%;
+}
+.insertDelMultipleButton{
+	margin:15px 0;
+	float:right;
+}
+.sessionFlashMessage{
+	margin-top:60px;
+}
+.studentManageSearchbox{
+	width:285px;
+}
+#errorInsertion{
+	margin-top:15px !important;
+}
+.floatRight{
+	float:right;
+}
+.standardSortRemoveImg{
+	display:none;
+	margin-top: 4px; 
+	margin-left:5px;
+}
+.sortBystudent{
+	width:70px;	
+}
+.error{
+	color:#ff0000;	
+}
+.widget-box{ margin:0 auto; width:98%; margin-top:20px; }
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.language_dropdown{float:left; margin-top: 10px;}
+.header_logout_btn{font-weight: bold;}
+.navbar-inverse .brand, .navbar-inverse .header_logout_btn > li > a {color: #fff;}
+ .download_btns{float: right;}
+.download_btns .beneficiary_btn, .download_btns .btn-primary{ float: left;}
+
+.beneficiary_btn .fileUpload{margin: 0 10px;}
+.download_btns .insertDelMultipleButton{float:left;width: 67.5%;}
+.download_btns .insertDelMultipleButton .btn-danger{float:right;}
+.icon-calendar{
+	position: absolute;
+    right: 55px;
+    top: 15px;
+   }
+
+.checkbox-custome {
+    float:left;
+    display:inline-block;
+    overflow:hidden
+}
+.checkbox-custome input[type="checkbox"] {
+    margin-left: 5px;
+    margin-right:5px;
+    margin-top:0px;
+    }
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+#user-nav{
+    float: right;
+    width: 41%;
+}
+.user-label{
+     color: #fff;
+     margin-top:10px;
+     font-size:12px;
+    /*float: left;
+    line-height: 30px;
+    width: 37%; */
+	
+}
+.form-inline{float: left;}
+.search_for h4, .field_worker h4, .form-inline h4{font-size: 14px;margin: 0; }
+.field_worker{ width: 100%;float: left;}
+.search_for span, .field_worker .btn, .form-inline span{ margin:5px 10px 10px 0;float: left;}
+.field_worker .check_assing{margin:0 5px 0 0; }
+#loaderdiv {  
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:1000;
+    background-color:#BBBBBB;
+    opacity: .8;
+ }
+
+.ajax-loader {
+    position: absolute;
+    left: 43%;
+    top: 50%;
+    margin-left: -32px; /* -1 * image width / 2 */
+    margin-top: -32px;  /* -1 * image height / 2 */
+    display: block;     
+}
+
+.errmsg{ color:#ff0000; }
+#content{
+	min-height:600px;
+}
+.table-responsive {
+  min-height: .01%;
+  overflow-x: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .table-responsive {
+    width: 100%;
+    margin-bottom: 15px;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 1px solid #ddd;
+  }
+  .table-responsive > .table {
+    margin-bottom: 0;
+  }
+  .table-responsive > .table > thead > tr > th,
+  .table-responsive > .table > tbody > tr > th,
+  .table-responsive > .table > tfoot > tr > th,
+  .table-responsive > .table > thead > tr > td,
+  .table-responsive > .table > tbody > tr > td,
+  .table-responsive > .table > tfoot > tr > td {
+    white-space: nowrap;
+  }
+  .table-responsive > .table-bordered {
+    border: 0;
+  }
+  .table-responsive > .table-bordered > thead > tr > th:first-child,
+  .table-responsive > .table-bordered > tbody > tr > th:first-child,
+  .table-responsive > .table-bordered > tfoot > tr > th:first-child,
+  .table-responsive > .table-bordered > thead > tr > td:first-child,
+  .table-responsive > .table-bordered > tbody > tr > td:first-child,
+  .table-responsive > .table-bordered > tfoot > tr > td:first-child {
+    border-left: 0;
+  }
+  .table-responsive > .table-bordered > thead > tr > th:last-child,
+  .table-responsive > .table-bordered > tbody > tr > th:last-child,
+  .table-responsive > .table-bordered > tfoot > tr > th:last-child,
+  .table-responsive > .table-bordered > thead > tr > td:last-child,
+  .table-responsive > .table-bordered > tbody > tr > td:last-child,
+  .table-responsive > .table-bordered > tfoot > tr > td:last-child {
+    border-right: 0;
+  }
+  .table-responsive > .table-bordered > tbody > tr:last-child > th,
+  .table-responsive > .table-bordered > tfoot > tr:last-child > th,
+  .table-responsive > .table-bordered > tbody > tr:last-child > td,
+  .table-responsive > .table-bordered > tfoot > tr:last-child > td {
+    border-bottom: 0;
+  }
+
+.mobile_height .modal-body{ max-height:190px;}	
+}
+
+.icon-menu{ color:#fff;}
+.dashicon{  
+	color: #333;
+    font-size: 19px;
+    margin-bottom: 0.7em;
+    margin-top: 0.5em;
+}
+
+table .nav > li > a:hover, .nav > li > a:focus {
+    background-color: transparent;
+}
+
+#no-more-tables{ text-align:center; margin-top:20px;}
+#no-more-tables thead{ 
+	background-color:#d1d1d1;}
+#no-more-tables thead th{ 
+	/*padding:20px;*/
+    color: #3c3c3c; text-align:center;
+    font-family: Verdana;
+    font-weight: normal;}
+#no-more-tables tbody tr{ 
+
+	}
+#no-more-tables tbody > tr > td{
+    border-top: 20px solid #fff;
+    
+    font-family: Khmer UI;
+    /*padding: 20px 10px;*/
+}
+#no-more-tables tbody > tr > td{border-top:20px solid #fff;}
+#no-more-tables tbody:before {
+    /* This doesn't work because of border-collapse */
+    line-height:2em;
+    <!-- content:"_"; -->
+    color:white;
+    display:block;
+}
+
+.table_blog, .table_blog table {
+    margin-bottom: 10px;
+}
+.resp-tabs-list {
+	background-color: #4d4d4d;
+	width: 100%;
+}
+.resp-tabs-list li {
+	font-size:30px;
+	color:#fff;
+	display: inline-block;
+	padding: 13px 15px;
+	margin-left:-12px;
+	margin-right:10px;
+	list-style: none;
+	cursor: pointer;
+	width:24%;
+	text-align:center;
+	transform:  skew(20deg);
+}
+.resp-tabs-list li span {
+	transform: skew(-20deg);
+	display: inline-block;
+}
+.resp-tabs-container {
+	padding: 0px;
+	clear: left;
+}
+h2.resp-accordion {
+	cursor: pointer;
+	padding: 5px;
+	display: none;
+}
+.resp-tab-content {
+	display: none;
+}
+.resp-tab-active {
+	background-color:#d10101;
+	box-shadow:2px 2px 2px #444;
+	/* border: 1px solid #c1c1c1;*/
+  border-bottom: none;
+	margin-bottom: -1px !important;
+	padding: 12px 14px 14px 14px !important;
+}
+.resp-tabs-list li:hover {
+	background-color:#d10101;
+	box-shadow:2px 2px 2px #444;
+}
+.resp-tab-active {
+	border-bottom: none;
+}
+.resp-content-active, .resp-accordion-active {
+	display: block;
+}
+h2.resp-accordion {
+	background-color:#777;
+	font-size: 16px;
+	border: 1px solid #c1c1c1;
+	border-top: 0px solid #c1c1c1;
+	margin: 0px;
+	color:#fff;
+	padding: 10px 15px;
+}
+h2.resp-tab-active {
+	border-bottom: 0px solid #c1c1c1 !important;
+	margin-bottom: 0px !important;
+	padding: 10px 15px !important;
+}
+h2.resp-tab-title:last-child {
+	border-bottom: 12px solid #c1c1c1 !important;
+	background: blue;
+}
+/*-----------Arrow accordian tabs-----------*/
+
+.resp-vtabs li.resp-tab-active {
+	border: 1px solid #c1c1c1;
+	border-right: none;
+	background-color: #fff;
+	position: relative;
+	z-index: 1;
+	margin-right: -1px !important;
+	padding: 14px 15px 15px 14px !important;
+}
+.resp-arrow {
+	width: 0;
+	height: 0;
+	float: right;
+	margin-top: 3px;
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-top: 12px solid #c1c1c1;
+}
+h2.resp-tab-active span.resp-arrow {
+	border: none;
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-bottom: 12px solid #9B9797;
+}
+/*-----------Accordion styles-----------*/
+
+h2.resp-tab-active {
+	background: #777 !important;
+}
+.resp-easy-accordion h2.resp-accordion {
+	display: block;
+}
+.resp-easy-accordion .resp-tab-content {
+	border: 1px solid #c1c1c1;
+}
+.resp-easy-accordion .resp-tab-content:last-child {
+	border-bottom: 1px solid #c1c1c1 !important;
+}
+.resp-jfit {
+	width: 100%;
+	margin: 0px;
+}
+h2.resp-accordion:first-child {
+	border-top: 1px solid #c1c1c1 !important;
+}
+/*Here your can change the breakpoint to set the accordion, when screen resolution changed*/
+@media only screen and (max-width:780px) {
+.demo {
+margin:5%;
+width:90%;
+}
+.how-use {
+display:none;
+float:left;
+width:300px;
+}
+}
+@media only screen and (max-width: 768px) {
+#no-more-tables tbody::before {
+line-height:0;
+}
+ul.resp-tabs-list {
+display: none;
+}
+ h2.resp-accordion {
+display: block;
+}
+ .resp-vtabs .resp-tab-content {
+border: 1px solid #C1C1C1;
+}
+ .resp-vtabs .resp-tabs-container {
+ border: none;
+ float: none;
+ width: 100%;
+ min-height: initial;
+ clear: none;
+}
+.resp-accordion-closed {
+display: none !important;
+}
+.resp-vtabs .resp-tab-content:last-child {
+border-bottom: 1px solid #c1c1c1 !important;
+}
+.hideInterventionPoint{ width:100%;}
+}
+ @media only screen and (max-width: 800px) {
+	 .resp-tab-active{ box-shadow:none;}
+ #no-more-tables {margin-top:0;}
+ #no-more-tables tbody > tr > td {
+font-size:14px;
+ border-top:10px solid #fff;
+padding:7px 10px 5px 54%;
+}
+    /* Force table to not be like tables anymore */
+#no-more-tables table {
+border:1px solid #ccc;
+}
+ #no-more-tables table,  #no-more-tables thead,  #no-more-tables tbody,  #no-more-tables th,  #no-more-tables td,  #no-more-tables tr {
+ display: block;
+}
+ 
+	/* Hide table headers (but not display: none;, for accessibility) */
+	#no-more-tables thead tr {
+ position: absolute;
+ top: -9999px;
+ left: -9999px;
+}
+ #no-more-tables tr {
+border: 1px solid #ccc;
+margin:10px 0;
+}
+ #no-more-tables td {
+		/* Behave  like a "row" */
+		border: none;
+ border-bottom: 1px solid #eee;
+ position: relative;
+ padding-left: 50%;
+ white-space: normal;
+ text-align:left;
+ word-wrap: break-word;
+}
+ #no-more-tables td:before {
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+ left: 6px;
+ width: 45%;
+ padding-right: 10px;
+ white-space: nowrap;
+ text-align:left;
+ font-weight: bold;
+}
+ 
+	/*
+	Label the data
+	*/
+#no-more-tables td:before {
+content: attr(data-title);
+}
+}
+@media screen and (max-width: 639px) {
+.mobile_height .modal-body{ max-height:400px;}	
+}
+@media screen and (max-width: 559px) {
+.mobile_height .modal-body{ max-height:150px;}	
+}
+@media screen and (max-width: 479px) {
+.mobile_height .modal-body{ max-height:450px;}	
+}
+@media screen and (max-width: 359px) {
+.mobile_height .modal-body{ max-height:290px;}	
+}
+
+
+
+	

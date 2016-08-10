@@ -47,8 +47,39 @@ class Beneficiary extends Eloquent {
 	}
 	
 		
-	public function update_notes($beneficiary_id, $notes){
-		
+	public function get_previous_notes($beneficiary_id){
+		$table_name = 'mct_callchampion_report';
+		$join_table = 'mct_due_list';
+		$select  	= DB::table($table_name)
+						->join($join_table, $join_table.'.due_id', '=', $table_name.'.fk_due_id')
+						->select(
+							$table_name.'.fk_due_id as call_id',
+							$table_name.'.e_call_status as status',
+							$table_name.'.dt_modify_date as modify_date',
+							$table_name.'.t_conversation as general_notes',
+							$table_name.'.t_action_items as action_items'
+						)
+						->where($join_table.'.fk_b_id', '=' , $beneficiary_id)
+						->orderBy($table_name.'.dt_modify_date','desc')
+						->simplepaginate(15);
+		return $select;
+	}
+	
+	public function get_current_notes($due_id){
+		$table_name = 'mct_callchampion_report';
+		$join_table = 'mct_due_list';
+		$select  	= DB::table($table_name)
+						->join($join_table, $join_table.'.due_id', '=', $table_name.'.fk_due_id')
+						->select(
+							$table_name.'.t_conversation as conversation_notes',
+							$table_name.'.t_action_items as action_items',
+							$table_name.'.e_call_status as status'
+						)
+						->where($join_table.'.due_id', '=' , $due_id)
+						->orderBy($table_name.'.report_id','desc')
+						->get();
+		//ACTION ITEM: Needs proper exception handling
+		return $select[0];
 	}
 
 }

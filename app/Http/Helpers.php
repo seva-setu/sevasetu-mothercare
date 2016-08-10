@@ -2,11 +2,15 @@
 /*use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 */
+
+use Hashids\Hashids;
+use Torann\Hashids\HashidsServiceProvider;
 use Cache;
 class Helpers {
 	
 	public function __construct(){
-		define('SITENAME',' - Mother Care');
+		if(!defined('SITENAME'))
+			define('SITENAME',' - Mother Care');
 	}
 	/*
 	 * Permission Manager Method
@@ -68,7 +72,16 @@ class Helpers {
        	$pdf = PDF::setPaper('a4')->setOrientation('landscape')->loadView(viewPath, $dataArray);
     	return $pdf->download('Weekly_Call_List_'.date('d/m/Y').'.pdf');
     }
-
+	
+	public function decode($id=0){
+  		if($id){
+  			$hashids = new Hashids();
+  			$arr = $hashids->decode($id);
+  			return (!empty($arr)) ? $id=$arr[0] : 0;
+  			//return $id=$arr[0];
+  		}else
+  			return 0;
+  	}
    /* public function makeLengthAware($collection, $total, $perPage,$currpage){
       		$paginator = new LengthAwarePaginator(
     				$collection,

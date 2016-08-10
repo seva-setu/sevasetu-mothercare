@@ -37,20 +37,17 @@ class BeneficiaryController extends Controller{
 	
 	protected $helper;
 	protected $role_permissions;
+	
 	public function __construct(){
-		$userinfo=Session::get('user_logged');
-		//check for valid use
-		if(!isset($userinfo['role_id'])){
-			Redirect::to('/admin/')->send();
+		if(!Session::has('user_logged')){
+			Redirect::to('/')->send();
 		}
-		$this->role_type=$userinfo['v_role'];
-		$this->user_id=$userinfo['user_id'];
-		$this->role_id = $userinfo['role_id'];
-		
-		$this->helper = new Helpers();
-		$this->role_permissions = $this->helper->checkpermission(Session::get('user_logged')['v_role']);
-		
-		$this->helper->clearBen_Data();
+		else{
+			$userinfo=Session::get('user_logged');
+			$this->user_id=$userinfo['user_id'];
+			$this->role_id=$userinfo['role_id'];
+			$this->role_type=$userinfo['v_role'];
+		}
 	}
 
 	// make the input to this function an excel
@@ -83,16 +80,19 @@ class BeneficiaryController extends Controller{
 	}
 	
 	public function tester_method(){
+		 die("test done");
+	}
+	public function upload_mother(){
 		$bene_obj = Beneficiary::all();
 		foreach($bene_obj as $bene){
-			for($i=0;$i<10;$i++){
-				$duelist_obj = new DueList();
-				$due_list = $duelist_obj->get_duelist($bene->b_id);
-				$this->allocate_call_champion($due_list, $bene->b_id);
-			}
+			// add a check - if mother doesnt exist in the DB, only then do the following -
+			$due_list = $this->add_due_list($bene->b_id, $bene->dt_due_date);
+			$this->allocate_call_champion($due_list, $bene->b_id);
+			$this->update_call_champion_report($due_list);
+			
 		}
 		
-		die("adone");
+		 die("mother upload done");
 	}
 	
 	public function add_due_list($beneficiary_id, $delivery_date){
@@ -177,6 +177,19 @@ class BeneficiaryController extends Controller{
 		return $due_list_obj->assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr);
 	}
 	
+	public function update_call_champion_report($due_list){
+		$table_name = 'mct_callchampion_report';
+		$insert_array = [];
+		foreach($due_list as $val)
+			$insert_arr []= array('fk_due_id'=>$val);
+		
+		DB::table($table_name)
+			->insert($insert_arr);
+		
+		// Needs exception handling here
+		return true;
+	}
+	
 	public function list_all_beneficiaries(){
 		
 	}
@@ -212,7 +225,7 @@ class BeneficiaryController extends Controller{
     		}else{
     			Session::flash('message', '<div class="alert alert-error" style="clear:both;">
               <button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.excelvalid").'</div>');
-    			return Redirect::to('/admin/beneficiary/');
+    			return Redirect::to('/beneficiary/');
     		}
     		foreach($arr as $key=>$val){
     			$datetime = date("Y-m-d H:i:s");
@@ -288,7 +301,7 @@ class BeneficiaryController extends Controller{
     			}
     		}
     		Session::flash('errormessage',$mess);
-    		return Redirect::to('/admin/beneficiary/');
+    		return Redirect::to('/beneficiary/');
     	}
  	}
  	

@@ -1,0 +1,84 @@
+/**
+ * @package ResponsiveVideoShortcodes
+ * @version 1.2.4
+ * @author Felix Arntz <felix-arntz@leaves-and-love.net>
+ */
+
+.resp-video-wrapper {
+  position: relative;
+  height: 0;
+  margin-bottom: 1em;
+}
+
+.size-4-3 {
+  padding-bottom: 75%;
+}
+
+.size-16-9 {
+  padding-bottom: 56.25%;
+}
+
+.size-21-9 {
+  padding-bottom: 42.86%;
+}
+
+.size-3-2 {
+  padding-bottom: 66.66%;
+}
+
+.size-3-1 {
+  padding-bottom: 33.33%;
+}
+
+.size-5-6 {
+  padding-bottom: 120%;
+}
+
+.size-1-1 {
+  padding-bottom: 100%;
+}
+
+.resp-video-wrapper iframe, .resp-video-wrapper object, .resp-video-wrapper embed {
+  position: absolute !important;
+  margin: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.resp-video-left {
+  float: left;
+  margin-right: 1%;
+}
+.resp-video-center {
+  float: none;
+  clear: both;
+  margin: 0px auto 0px auto;
+}
+.resp-video-right {
+  float: right;
+  margin-left: 1%;
+}
+
+.resp-num-1 {
+  width: 100%;
+}
+.resp-num-2 {
+  width: 49%;
+}
+.resp-num-3 {
+  width: 32%;
+}
+.resp-num-4 {
+  width: 24%;
+}
+.resp-num-5 {
+  width: 19%;
+}
+.resp-num-6 {
+  width: 15%;
+}
+
+.clear {
+  float: none;
+  clear: both;
+}

@@ -13,7 +13,7 @@ return [
 	|
 	*/
 
-	'debug' => env('APP_DEBUG',true),
+	'debug' => $_ENV['APP_DEBUG'],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return [
 	|
 	*/
 
-	'key' => env('APP_KEY', 'SomeRandomString'),
+	'key' => $_ENV['APP_KEY'],
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -148,6 +148,7 @@ return [
 		'Maatwebsite\Excel\ExcelServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
 		'Barryvdh\DomPDF\ServiceProvider',
+		
 
 	],
 
@@ -176,6 +177,7 @@ return [
 		'DB'        => 'Illuminate\Support\Facades\DB',
 		'Eloquent'  => 'Illuminate\Database\Eloquent\Model',
 		'Event'     => 'Illuminate\Support\Facades\Event',
+		'Form'      => 'Illuminate\Html\FormFacade',
 		'File'      => 'Illuminate\Support\Facades\File',
 		'Hash'      => 'Illuminate\Support\Facades\Hash',
 		'Input'     => 'Illuminate\Support\Facades\Input',

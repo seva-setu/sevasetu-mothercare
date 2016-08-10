@@ -9,8 +9,8 @@
 		<td><?php echo $value->v_product_name;?></td>
 		<td><?php echo $value->v_category_name;?></td>
 		<td><?php echo $value->v_status;?></td>
-		<td><a class="btn btn-info" href="<?php echo Config::get('app.url').'product/prod_edit/'.$value->b_id ?>">Edit</a>
-		<a class="btn btn-info" href="<?php echo Config::get('app.url').'product/prod_delete/'.$value->b_id ?>">Delete</a>
+		<td><a class="btn btn-info" href="<?php echo '{{ url() }}/product/prod_edit/'.$value->b_id ?>">Edit</a>
+		<a class="btn btn-info" href="<?php echo '{{ url() }}/product/prod_delete/'.$value->b_id ?>">Delete</a>
 		</td>
 	</tr>
 <?php }?>

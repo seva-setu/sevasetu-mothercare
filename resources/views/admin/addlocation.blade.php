@@ -14,13 +14,13 @@ if($taluka!="")
 </head>
 <body>
 @include('template/admin_header')
-@include('template/admin_sidebar')
+@include('template/callchampion_sidebar')
 @include('template/script_multilanguage')
 <div id="content">
   <div id="content-header">
     <h1><?php  echo trans('routes.location'); ?></h1>
   </div>
-  <div id="breadcrumb"> <a href="<?php echo Config::get('app.url'); ?>admin/dashboard" title="<?php  echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i> <?php  echo trans('routes.home'); ?></a><a href="<?php echo Config::get('app.url'); ?>admin/addlocation"><?php  echo trans('routes.location'); ?></a><a class="current"><?php  echo trans('routes.add'); ?></a></div>
+  <div id="breadcrumb"> <a href="{{ url() }}/dashboard" title="<?php  echo trans('routes.homelabel'); ?>" class="tip-bottom"><i class="icon-home"></i> <?php  echo trans('routes.home'); ?></a><a href="{{ url() }}admin/addlocation"><?php  echo trans('routes.location'); ?></a><a class="current"><?php  echo trans('routes.add'); ?></a></div>
   <div class="container-fluid">
   <div id="errorInsertion"></div>
     <div class="row-fluid">
@@ -31,7 +31,7 @@ if($taluka!="")
             <h5><?php  echo trans('routes.addloc'); ?></h5>
           </div>
           <?php  echo Session::get('message'); ?>
-          <form class="form-horizontal" role="form" method="POST" id="frmBeneficiary" name="frmBeneficiary" action="<?php echo Config::get('app.url').'admin/editlocation'; ?>">
+          <form class="form-horizontal" role="form" method="POST" id="frmBeneficiary" name="frmBeneficiary" action="{{ url() }}admin/editlocation">
 			<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 			<input type="hidden" name="hdnAddId" id="hdnAddId" value="">
 			<div class="row-fluid">
@@ -152,7 +152,7 @@ if($taluka!="")
         <?php if($state!="" || $city!="" || $taluka!=""){?>
         <div class="span1" style="float:left;margin:0">
     	<div style="width: 100%;position: relative;" id="keywordtextbox">
-			<a style="width:99%;" class="btn btn-primary" href="<?php echo Config::get('app.url').'admin/addlocation';?>"><?php  echo trans('routes.reset'); ?></a>
+			<a style="width:99%;" class="btn btn-primary" href="{{ url() }}admin/addlocation"><?php  echo trans('routes.reset'); ?></a>
 	    </div>
         </div>
         <?php }?>
@@ -196,11 +196,11 @@ if($taluka!="")
 @include('template/admin_jsscript')
 </body>
 </html>
-<script src="<?php echo Config::get('constant.SITEURL'); ?>external/js_admin/jquery.validate.js"></script>
-<script src="<?php echo Config::get('constant.SITEURL'); ?>external/js/customevalidation.js"></script>
+<script src="{{ url() }}/external/js_admin/jquery.validate.js"></script>
+<script src="{{ url() }}/external/js/customevalidation.js"></script>
 <script type="application/javascript">
 var token=$("#_token").val();
-var siteurl="<?php echo Config::get('app.url')?>";
+var siteurl="{{ url() }}";
 $(document).ready(function(){
 		$("#frmBeneficiary").validate({
 		ignore: ":hidden",
@@ -333,7 +333,7 @@ function searchAddress(){
 	var dist=$("#city").val()!=""?$("#city").val():"all";
 	var taluka=$("#taluka").val()!=""?$("#taluka").val():"all";
 	if(state!="all" || dist!="all" || taluka!="all"){
-		window.location="<?php echo Config::get('app.url'); ?>admin/searchdataaddress/"+state+'/'+dist+'/'+taluka;
+		window.location="{{ url() }}/searchdataaddress/"+state+'/'+dist+'/'+taluka;
 	}else{
 		alert(js_validadrress);
 	}

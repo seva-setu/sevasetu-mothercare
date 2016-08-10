@@ -85,5 +85,23 @@ class CallChampion extends Eloquent {
 		else
 			die("pop");
 	} 
+	
+	public function update_cc_report($dueid, $call_stats, $general_note, $action_items){
+		$table_name = 'mct_callchampion_report';
+		$current_date = date("Y/m/d");
+		$values_to_update = [
+		'fk_due_id' => $dueid,
+		'e_call_status' =>$call_stats,
+		'dt_modify_date' => $current_date,
+		't_conversation' => $general_note,
+		't_action_items' => $action_items
+		];
+		
+		$result = DB::table($table_name)->insert($values_to_update);
+		// todo: add a check here: if integrity constraints or such some fails
+		
+		return true;
+		
+	}
 	 
 }

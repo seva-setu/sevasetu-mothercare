@@ -15,8 +15,7 @@ class User extends Eloquent {
 	 * Check user credentials from Database
 	 */
 	 
-	public function mod_user($inputData, $role = 2){
-		
+	public function mod_user($inputData, $user_id = -1){
 		if(isset($inputData['v_name']))
 			$this->v_name 			=	$inputData['v_name'];
 		
@@ -24,11 +23,11 @@ class User extends Eloquent {
 			$this->v_email	=	$inputData['v_email'];
 		
 		
-		if(isset($inputData['i_phonenum']))
-			$this->i_phonenum	=	$inputData['i_phonenum'];
+		if(isset($inputData['i_phone_number']))
+			$this->i_phone_number	=	$inputData['i_phone_number'];
 		
-		if(isset($inputData['password']))
-			$this->v_password	=	$inputData['password'];
+		if(isset($inputData['v_password']))
+			$this->v_password	=	$inputData['v_password'];
 		
 		if(isset($inputData['ti_is_verified']))
 			$this->ti_is_verified	=	$inputData['ti_is_verified'];
@@ -48,16 +47,23 @@ class User extends Eloquent {
 		if(isset($inputData['dt_last_login']))
 			$this->dt_last_login	=	$inputData['dt_last_login'];
 		
-		$this->v_role 		= $role;
+		if(isset($inputData['v_role']))
+			$this->v_role	=	$inputData['v_role'];
 		
 		$this->v_ip			=	$_SERVER['REMOTE_ADDR'];
 		
-				
-		$result = $this->save();
-		if($result)
-			return $this->getKey();
-		else
-			return false;
+		if($user_id == -1){		
+			$result = $this->save();
+			if($result)
+				return $this->getKey();
+			else
+				return false;
+		}
+		else{
+			$result = DB::table($this->table)
+					->where('user_id', $user_id)
+					->update($inputData);
+		}
 		
 	}
 	 
