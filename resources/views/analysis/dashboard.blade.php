@@ -155,11 +155,10 @@ smallfont{
 			<table class="table table-striped table-bordered table-hover">
 					<thead>
 					   <tr>
-					   	   <th> Action ID </th>
-						   <th> Checklist ID </th>
-						   <th> Reference Week </th>
-						   <th> Reference Description </th>
-						   <th> Action Description </th>
+					   	   <th> Report ID </th>
+						   <th> Modify Date </th>
+						   <th> Action Items </th>
+						   
 						   						   
 					   </tr>
 					 </thead>
@@ -167,19 +166,18 @@ smallfont{
 					<?php 
 					foreach($action_items as $val)
 					{
-						foreach($val as $val1){
+						
 					?>
 					<tr>
-					<td> {{$val1->i_action_id }} </td>
-					<td> {{$val1->checklist_id}} </td>
-					<td> {{$val1->i_reference_week}} </td>
-					<td> {{$val1->v_reference_descrip}} </td>
-					<td> {{$val1->v_action_descrip}} </td>
+					<td> {{$val1->report_id }} </td>
+					<td> {{$val1->dt_modify_date}} </td>
+					<td> {{$val1->t_action_items}} </td>
+					
 					</tr>
 					</tbody>
 					 
 					 <?php 
-						}
+						
 					}
 					 ?>
 					 

@@ -108,21 +108,22 @@ class AdminDashboardController extends Controller {
 	
 	public function actionitems_lastweek(){
 		
-		$select = DB::select('SELECT * FROM `mct_due_list`
-				WHERE dt_intervention_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY
-				AND dt_intervention_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY');
+		$select = DB::select('SELECT * FROM `mct_callchampion_report`
+				WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY
+				AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY');
 		
 		$select1 = Array(); //will contain details of action items scheduled in the past week
 		
-		foreach($select as $val)
+		/* foreach($select as $val)
 		{
-			$select1[] = DB::table('mct_checklist_master')
+			$select1[] = DB::table('mct_due_list')
 						 ->select('*')
-						 ->where('i_action_id','=',$val->fk_action_id)
+						 ->where('due_id','=',$val->fk_due_id)
 						 ->get();
-		}
+		} */
 		$data = Array();
-		$data['action_items'] = $select1;
+		$data['action_items'] = $select;
+		//var_dump($select);
 		return ($data);
 		
 	}
