@@ -1,14 +1,14 @@
 <?php
 	$template = array();
 	
-	function template1($phone_number, $auth_token){
+	function template1($phone_number, $auth_token, $name){
 		$ret = '<MESSAGE>
 		<AUTHKEY>'.$_ENV['SMS_KEY'].'</AUTHKEY>
 		<SENDER>'.$_ENV['SMS_NAME'].'</SENDER>
 		<ROUTE>'.$_ENV['SMS_ROUTE'].'</ROUTE>
 		<CAMPAIGN>XML API</CAMPAIGN>
 		<COUNTRY>91</COUNTRY>
-		<SMS TEXT="'.$auth_token.' is your passkey. For assistance, write to help@sevasetu.org" >
+		<SMS TEXT="Hi '.$name.'! '. $auth_token.' is yoour passkey. For assistance, write to help@sevasetu.org" >
 		<ADDRESS TO="'.$phone_number.'"></ADDRESS>
 		</SMS>
 		</MESSAGE>';

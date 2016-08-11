@@ -128,7 +128,7 @@ class AdminController extends Controller{
           return Redirect::to('/mothers');
 			}else{
 				Session::flash('message', trans("routes.loginerror"));
-				return Redirect::to('admin/login');
+				return Redirect::to('/login');
 			}
 		}
     }
@@ -139,8 +139,7 @@ class AdminController extends Controller{
           return Redirect::to('/mothers');   
     return view('admin/admin_dashboard');
   }
-  
-
+ 
   //change password view
   public function changepassword(){
   	if(!isset($this->userid)){
@@ -521,7 +520,7 @@ class AdminController extends Controller{
 		
 		//Send SMS
 		include(storage_path().'/sms.php');
-		$result = send_sms(1, array(0=>$request->get('phonenumber'), 1=>$token));
+		$result = send_sms(1, array(0=>$request->get('phonenumber'), 1=>$token, 2=> $request->get('name')));
 		
 		//Redirect to view
 		return view('auth.validate');
