@@ -39,7 +39,10 @@ Route::get('/FAQ/checklist', 'Admin\AdminController@faq_checklist');
 /////////// core application ///////////////////
 Route::get('/mothers', 'Admin\CallchampionsController@list_mothers');
 // Route::get('/admins', 'Admin\CallchampionsController@list_admins');
-Route::get('/data/upload', 'Admin\CallchampionsController@upload_data');
+
+
+Route::get('/data/upload', 'Admin\AdminController@upload_data');
+//Route::get('/data/upload', 'Admin\CallchampionsController@upload_data');
 Route::post('/data/upload','Admin\BeneficiaryController@importExcel');
 Route::get('/download', 'Admin\BeneficiaryController@downloadExcel');
 

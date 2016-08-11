@@ -80,6 +80,17 @@ class AdminController extends Controller{
 	/*
 	 * User Login for Dashboard
 	 */
+    public function upload_data(){
+    if(!Session::has('user_logged')){
+      Redirect::to('/')->send();
+    }
+    $session_data=Session::get('user_logged');
+    if($session_data['v_role']==1)
+      return view('admin/upload_data');
+    else
+      return 'User is not admin';
+  }
+
  	public function login() {
 		if(Session::has('user_logged')){
       if($this->user_role_type == 1)
@@ -529,8 +540,8 @@ class AdminController extends Controller{
 		$token_received = $request['passkey'];
 		$token_original = Session::get('phone_auth_token');
 		
-		if(true){
-//		if($token_original == $token_received){
+//		if(true){
+		if($token_original == $token_received){
 			Session::forget('phone_auth_token');
 			$name = Session::get('name');
 			$email = Session::get('email');

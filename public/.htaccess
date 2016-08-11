@@ -4,7 +4,7 @@
     </IfModule>
 
     RewriteEngine On
-    RewriteBase /
+    RewriteBase /mother_care/
 
     # Redirect Trailing Slashes...
     RewriteRule ^(.*)/$ $1 [L,R=301]
