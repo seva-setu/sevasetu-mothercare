@@ -114,13 +114,13 @@ class AdminDashboardController extends Controller {
 		
 		$select1 = Array(); //will contain details of action items scheduled in the past week
 		
-		/* foreach($select as $val)
+		 foreach($select as $val)
 		{
 			$select1[] = DB::table('mct_due_list')
 						 ->select('*')
 						 ->where('due_id','=',$val->fk_due_id)
 						 ->get();
-		} */
+		} 
 		$data = Array();
 		$data['action_items'] = $select;
 		//var_dump($select);
@@ -132,43 +132,15 @@ class AdminDashboardController extends Controller {
 		$data2 = $this->calls_lastweek();
 		$data3 = $this->actionitems_lastweek();
 		$data = array_merge($data1,$data2,$data3);
-		$this->DownloadReport();
+		
 		return view('analysis/dashboard',$data);
 	}
 	
 	
 	
-	/* Download Report */
-	public function DownloadReport(){
-		$dataArray1 = [];
-		$data1 = $this->get_callchampions_not_called();
-		$data2 = $this->calls_lastweek();
-		$data3 = $this->actionitems_lastweek();
-		//var_dump($data1);
-		//var_dump($data2);
-		//var_dump($data3);
-		
-		$dataArray1[] = ['due_id','fk_b_id','fk_cc_id','fk_action_id','dt_intervention_date','reminder_status'];
-		/* foreach($data2['call_details'] as $call_detail)
-		{
-			//$dataArray1[] = $call_detail->toArray();
-			array_push($dataArray1,$call_detail);
-		} */
-		
-		//var_dump($dataArray1);
-		
-				/* Excel */
-		
-				Excel::create('AdminStats', function($excel) use($dataArray1) {
-					$excel->sheet('CallDetails', function($sheet) use($dataArray1) {
-						//$sheet->loadView('weeklyreport.exceldownload_template', ['result' => $dataArray1]);
-						$sheet->fromArray($dataArray1);
-					});
-	
-				})->export('csv');
 	
 			
-	}
+	
 	
 }
 ?>
