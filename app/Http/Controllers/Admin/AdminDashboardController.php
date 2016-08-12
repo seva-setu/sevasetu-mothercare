@@ -158,6 +158,7 @@ class AdminDashboardController extends Controller {
 		//var_dump($dataArray1);
 		
 				/* Excel */
+		
 				Excel::create('AdminStats', function($excel) use($dataArray1) {
 					$excel->sheet('CallDetails', function($sheet) use($dataArray1) {
 						//$sheet->loadView('weeklyreport.exceldownload_template', ['result' => $dataArray1]);
