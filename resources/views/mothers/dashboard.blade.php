@@ -7,6 +7,7 @@
 <head>
 @include('template/admin_title')
 @include('template/admin_cssscripta')
+<link rel="shortcut icon" href="{{ url() }}/assets/img/favicon.png">
 </head>
 <style>
 smallfont{

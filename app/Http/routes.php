@@ -46,4 +46,10 @@ Route::post('/mycalls/update/{id}', 'Admin\CallchampionsController@update_call')
 Route::get('/callchampions', 'Admin\AdminController@callchampions');
 
 /////////////////////////////////////
+
+////////// For testing ///////////////////
+Route::get('/admins/test','Admin\AdminDashboardController@actionitems_lastweek');
+Route::get('/analysis','Admin\AdminDashboardController@get_data');
+
+
 ?>
