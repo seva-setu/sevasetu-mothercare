@@ -52,7 +52,7 @@ smallfont{
 								<br/>
 									<b>{{ trans('routes.phonenumber') }}</b>: {{ $value->phone_number }}
 								<br/>
-									<b>{{ trans('routes.expecteddate') }}</b>: {{ $value->due_date }}
+									<b>{{ trans('routes.expecteddate') }}</b>: {{ date("d M Y", strtotime($value->due_date)) }}
 								<br/>
 									<b>{{ trans('routes.fieldworkername') }}</b>: {{ $value->field_worker_name }} 
 								<br/>
