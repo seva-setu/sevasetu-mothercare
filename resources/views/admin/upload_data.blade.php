@@ -89,16 +89,45 @@ smallfont{
 </form>
 
 </div>
-@if(Session::has('count'))
-    <div class="alert alert-danger errors">
-    {{Session::get('count')}}
-      <b>Error:</b> Data-Missing<br>
-      Following Line Number of Excel Sheet were not stored in database : <br>
+@if(Session::has('count_excelupload_warning.count'))
+@if(Session::get('count_excelupload_warning.count')!=0)
+
+    <div class="alert alert-warning ">
+    
+      <b>Warning:({{Session::get('count_excelupload_warning.count')}})</b>Data with identical woman and husband name already exists.<br>
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      @for ($i = 0; $i < Session::get('count'); $i++)
-        {{Session::get($i)}}<br>
+      @for ($i = 0; $i < Session::get('count_excelupload_warning.count'); $i++)
+       <b>S.NO.</b> {{Session::get('count_excelupload_warning'.$i)}}<br>
       @endfor
     </div>
+@endif
+@endif
+@if(Session::has('count_excelupload_data_repeated.count'))
+@if(Session::get('count_excelupload_data_repeated.count')!=0)
+
+    <div class="alert alert-danger">
+    
+      <b>Error:({{Session::get('count_excelupload_data_repeated.count')}})</b>Following Data Already stored in Database.Data not saved again.<br>
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  @for ($i = 0; $i < Session::get('count_excelupload_data_repeated.count'); $i++)
+        <b>S.NO.</b>{{Session::get('count_excelupload_data_repeated'.$i)}}<br>
+      @endfor
+    </div>
+@endif
+@endif
+
+@if(Session::has('count_excelupload_errors.count'))
+@if(Session::get('count_excelupload_errors.count')!=0)
+    <div class="alert alert-danger errors">
+    
+      <b>Error:({{Session::get('count_excelupload_errors.count')}})</b> Data-Missing<br>
+      Following Line Number of Excel Sheet were not stored in database : <br>
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      @for ($i = 0; $i < Session::get('count_excelupload_errors.count'); $i++)
+      <b>S.NO.</b>  {{Session::get('count_excelupload_errors'.$i)}}<br>
+      @endfor
+    </div>
+@endif
 @endif
 @if(Session::has('message'))
   	<div class="alert alert-success uploaded_mothers">

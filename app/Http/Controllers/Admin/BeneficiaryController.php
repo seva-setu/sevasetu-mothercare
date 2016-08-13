@@ -201,7 +201,11 @@ class BeneficiaryController extends Controller{
 	}
 	public function importExcel()
 	{
-		Session::flash('count',0);		
+		Session::flash('count_excelupload_errors.count',0);
+		Session::flash('should_data_be_inserted',1);
+		Session::flash('count_excelupload_warning.count',0);
+		Session::flash('count_excelupload_data_repeated.count',0);		
+		Session::flash('count_excelupload_warning.message','');		
 		Excel::load(Input::file('beneficiaries_data'),function($reader)
  		{
 			if(Input::file('beneficiaries_data')->getClientOriginalExtension()=='csv')
@@ -215,17 +219,11 @@ class BeneficiaryController extends Controller{
 					$beneficiary= new Beneficiary;
 		  			$rules = array(
 		  			 'v_name' => 'required|min:3|max:20|Regex:/^[ A-Za-z]+[A-Za-z0-9.\' ]*$/',
-  					'v_husband_name'=>'required|min:3|max:20',
-  					'v_phone_number'=>'required|numeric|digits_between:10,20',
-  					'v_village_name'=>'required|min:3|max:20',
-  					'v_awc_number'=>'required',
-  					'i_age'=>'required',
+  					'v_phone_number'=>'required|numeric|digits_between:10,10',
   					'dt_due_date'=>'required'
 		  			);
 //  				// Carbon::parse($r->dt_due_date)->format('m/d/Y');
-//  				// dd($r->dt_due_date);
  				$dt_due_date=str_replace("-", "/", $r->date_of_delivery);
-   				// dd($dt_due_date);
     			$beneficiary_data = array(
     					'fk_f_id'=>$r->field_worker_id,
     					'v_name' => $r->womans_name,
@@ -234,25 +232,57 @@ class BeneficiaryController extends Controller{
     					'v_phone_number'=>$r->mobile_no,
     					'v_awc_number'=>$r->awc_code,
     					'v_village_name'=>$r->village_name,
-    					'dt_due_date'=>date('d/m/y',strtotime($dt_due_date))
+    					'dt_due_date'=>''//date('d/m/y',strtotime($dt_due_date))
     			);
-    			$var=Carbon::createFromFormat('d/m/y', $beneficiary_data['dt_due_date']);
-    			$w=Beneficiary::where('v_phone_number',$beneficiary_data['v_phone_number'])->first();
-    			if($w['v_phone_number']!='')
+    		//	dd($r->date_of_delivery);
+    			if($r->date_of_delivery!='')
     			{
-    				$beneficiary_data['v_phone_number']=0;//this will fail validation
+    				$beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
+    				$var=Carbon::createFromFormat('d/m/y', $beneficiary_data['dt_due_date']);
+    				if($var!='')
+    				$beneficiary_data['dt_due_date']=$var;
+    				else
+					$beneficiary_data['dt_due_date']=null;
+    			}
+    			else
+    			{
+    				$beneficiary_data['dt_due_date']=null;	
+    			}
+			//	dd($beneficiary_data['dt_due_date']);
+ 				$already_exist_name=Beneficiary::where(['v_name'=>$beneficiary_data['v_name'],'v_husband_name'=>$beneficiary_data['v_husband_name']])->first();
+ 				if($already_exist_name['v_name']!='')
+ 				{
+    				$count_excelupload_warning=Session::get('count_excelupload_warning.count');
+ 					Session::flash('count_excelupload_warning'.$count_excelupload_warning,$r->srno);
+ 					Session::flash('count_excelupload_warning.message'.$count_excelupload_warning,$r->srno);
+     				$count_excelupload_warning++;
+     				Session::forget('count_excelupload_warning.count');
+     				Session::flash('count_excelupload_warning.count',$count_excelupload_warning);
+ 				}
+
+    			$already_exist_number=Beneficiary::where('v_phone_number',$beneficiary_data['v_phone_number'])->first();
+    			if($already_exist_number['v_phone_number']!='')
+    			{
+    				$count_excelupload_data_repeated=Session::get('count_excelupload_data_repeated.count');
+ 					Session::flash('count_excelupload_data_repeated'.$count_excelupload_data_repeated,$r->srno);
+     				$count_excelupload_data_repeated++;
+     				Session::forget('count_excelupload_data_repeated.count');
+     				Session::flash('count_excelupload_data_repeated.count',$count_excelupload_data_repeated);
+     				Session::forget('should_data_be_inserted');
+     				Session::flash('should_data_be_inserted',0);
     			}
     			$validator = Validator::make($beneficiary_data, $rules);
-
     			if ($validator->fails())
     			{
-    				$count=Session::get('count');
- 					Session::flash($count,$r->srno);
-     				$count++;
-     				Session::forget('count');
-     				Session::flash('count',$count);
+    				$failedRules = $validator->failed();
+    	//			dd($failedRules);
+    				$count_excelupload_errors=Session::get('count_excelupload_errors.count');
+ 					Session::flash('count_excelupload_errors'.$count_excelupload_errors,$r->srno);
+     				$count_excelupload_errors++;
+     				Session::forget('count_excelupload_errors.count');
+     				Session::flash('count_excelupload_errors.count',$count_excelupload_errors);
      			}
-    			else
+    			else if(Session::get('should_data_be_inserted')==1)
     			{
     				$beneficiary->fk_f_id=$beneficiary_data['fk_f_id'];
     				$beneficiary->v_name= $beneficiary_data['v_name'];
@@ -263,13 +293,14 @@ class BeneficiaryController extends Controller{
     				$beneficiary->v_village_name=$beneficiary_data['v_village_name'];
     				$beneficiary->dt_due_date=$var;
     				$beneficiary->save();
-    			}	
+    			}
+    			Session::forget('should_data_be_inserted');
+     			Session::flash('should_data_be_inserted',1);	
  		});
  	});
-//	dd($mess);
-		if(Session::get('count')==0)
+		if(Session::get('count_excelupload_errors')==0)
 		{
-			Session::forget('count');	
+			Session::forget('count_excelupload_errors');	
 		}
 		Session::flash('message', 'Mothers data with complete information uploaded');
 	return back();
