@@ -31,6 +31,9 @@ smallfont{
 			<h3>
 					Call champions who did not make scheduled calls
 			</h3>
+			<?php 
+			if(!empty($cc_not_called)){
+			?>
 			<table class="table table-striped table-bordered table-hover">
 					<thead>
 					   <tr>
@@ -53,10 +56,17 @@ smallfont{
 					 <?php 
 						}
 					}
-					 ?>
-					 
-			</table>
+			?>
 			
+			</table>
+			<?php 
+			}
+			else {
+					 ?>
+					 <h4>No pending calls in the past week</h4>
+					 <?php 
+			}
+					 ?>
 			</div>
 			
 		</div>
@@ -66,6 +76,9 @@ smallfont{
 			<h3>
 					Calls scheduled last week
 			</h3>
+			<?php 
+			if(!empty($call_details)){
+			?>
 		    <table class="table table-striped table-bordered table-hover">
 					<thead>
 					   <tr>
@@ -95,10 +108,17 @@ smallfont{
 					 
 					 <?php 
 					}
+					?>
+					
+			</table>
+			<?php 
+			}
+			else {
 					
 					 ?>
-					 
-			</table>
+					 <h4>No scheduled calls in the past week</h4>
+					 <?php } 
+					 ?>
 			</div>
 		</div>
 		
@@ -107,6 +127,9 @@ smallfont{
 			<h3>
 					Received calls in the past week
 			</h3>
+			<?php 
+			if(!empty($received_calls)){
+			?>
 			<table class="table table-striped table-bordered table-hover">
 					<thead>
 					   <tr>
@@ -122,6 +145,7 @@ smallfont{
 					 </thead>
 					 <tbody>
 					<?php 
+					
 					foreach($received_calls as $val)
 					{
 						foreach($val as $val1){
@@ -140,51 +164,22 @@ smallfont{
 					 <?php 
 						}
 					}
-					 ?>
-					 
+					?>
+					
 			</table>
+			<?php 
+					}
+					else {
+					 ?>
+					 <h4>No calls received in the past week</h4>
+					 <?php 
+					}
+					 ?>
 			</div>
 			
 		</div>
 		
-				<div class="row">
-			<div class="col-lg-10 col-md-10">
-			<h3>
-					Acton items generated in the past week
-			</h3>
-			<table class="table table-striped table-bordered table-hover">
-					<thead>
-					   <tr>
-					   	   <th> Report ID </th>
-						   <th> Modify Date </th>
-						   <th> Action Items </th>
-						   
-						   						   
-					   </tr>
-					 </thead>
-					 <tbody>
-					<?php 
-					foreach($action_items as $val)
-					{
-						
-					?>
-					<tr>
-					<td> {{$val1->report_id }} </td>
-					<td> {{$val1->dt_modify_date}} </td>
-					<td> {{$val1->t_action_items}} </td>
-					
-					</tr>
-					</tbody>
-					 
-					 <?php 
-						
-					}
-					 ?>
-					 
-			</table>
-			</div>
 			
-		</div>
 		
 	</div>
 </div>
