@@ -219,10 +219,7 @@ smallfont{
 								  <label for="action_item">{{ trans('routes.notes_field')}}
 								  <span class="label label-danger">Important</span>
 								  </label>
-								  <textarea name="action_item" class="form-control" rows="5" id="action_item" placeholder="<?php echo trans('routes.textareadefaulttext');?>"><?php 
-								  if($current_notes->action_items == "")
-									  echo trans('routes.textareadefaulttext');
-								  else
+								  <textarea name="action_item" class="form-control" rows="5" id="action_item" placeholder="<?php echo trans('routes.textareadefaulttext');?>" onfocus="this.placeholder=''"   onblur="this.placeholder = '<?php echo trans('routes.textareadefaulttext');?>'"><?php
 									  echo $current_notes->action_items;
 								  ?></textarea>
 								</div>
