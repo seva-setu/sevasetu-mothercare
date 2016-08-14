@@ -44,6 +44,8 @@ Route::get('/mothers', 'Admin\CallchampionsController@list_mothers');
 Route::get('/data/upload', 'Admin\AdminController@upload_data');
 //Route::get('/data/upload', 'Admin\CallchampionsController@upload_data');
 Route::post('/data/upload','Admin\BeneficiaryController@importExcel');
+Route::post('/data/final_upload','Admin\BeneficiaryController@Excel_data_upload');
+
 Route::get('/download', 'Admin\BeneficiaryController@downloadExcel');
 
 

@@ -199,13 +199,76 @@ class BeneficiaryController extends Controller{
 	{
 		return response()->download(public_path('download\sample.xlsx'));
 	}
+	public function Excel_data_upload()
+	{
+		Session::flash('should_data_be_inserted',1);
+		$data=Session::get('excel_data');
+		$data->each(function($r){
+			
+					$beneficiary= new Beneficiary;
+		  			$rules = array(
+		  			 'v_name' => 'required|min:3|max:20|Regex:/^[ A-Za-z]+[A-Za-z0-9.\' ]*$/',
+  					'v_phone_number'=>'required|numeric|digits_between:10,10',
+  					'dt_due_date'=>'required'
+		  			);
+ 				$dt_due_date=str_replace("-", "/", $r->date_of_delivery);
+    			$beneficiary_data = array(
+    					'fk_f_id'=>$r->field_worker_id,
+    					'v_name' => $r->womans_name,
+    					'v_husband_name'=>$r->fatherspouse_name,
+    					'i_age'=>$r->age,
+    					'v_phone_number'=>$r->mobile_no,
+    					'v_awc_number'=>$r->awc_code,
+    					'v_village_name'=>$r->village_name,
+    					'dt_due_date'=>''
+    			);
+    			if($r->date_of_delivery!='')
+    			{
+    				$beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
+    				$var=Carbon::createFromFormat('d/m/y', $beneficiary_data['dt_due_date']);
+    				if($var!='')
+    				$beneficiary_data['dt_due_date']=$var;
+    				else
+					$beneficiary_data['dt_due_date']=null;
+    			}
+    			else
+    			{
+    				$beneficiary_data['dt_due_date']=null;	
+    			}
+    			$already_exist_number=Beneficiary::where('v_phone_number',$beneficiary_data['v_phone_number'])->first();
+    			if($already_exist_number['v_phone_number']!='')
+    			{
+     				Session::flash('should_data_be_inserted',0);
+    			}
+    			$validator = Validator::make($beneficiary_data, $rules);
+    			if ($validator->fails())
+    			{
+     			}
+    			else if(Session::get('should_data_be_inserted')==1)
+    			{
+    				$beneficiary->fk_f_id=$beneficiary_data['fk_f_id'];
+    				$beneficiary->v_name= $beneficiary_data['v_name'];
+     				$beneficiary->v_husband_name=$beneficiary_data['v_husband_name'];
+    				$beneficiary->i_age=$beneficiary_data['i_age'];
+    				$beneficiary->v_phone_number=$beneficiary_data['v_phone_number'];
+    				$beneficiary->v_awc_number=$beneficiary_data['v_awc_number'];
+    				$beneficiary->v_village_name=$beneficiary_data['v_village_name'];
+    				$beneficiary->dt_due_date=$var;
+    				$beneficiary->save();
+    			}
+    			Session::forget('should_data_be_inserted');
+     			Session::flash('should_data_be_inserted',1);	
+ 		});
+ 		Session::forget('excel_data');
+		Session::flash('message', 'Mothers data with complete information uploaded');
+		return back();
+	}
 	public function importExcel()
 	{
 		Session::flash('count_excelupload_errors.count',0);
 		Session::flash('should_data_be_inserted',1);
 		Session::flash('count_excelupload_warning.count',0);
-		Session::flash('count_excelupload_data_repeated.count',0);		
-		Session::flash('count_excelupload_warning.message','');		
+		Session::flash('count_excelupload_data_repeated.count',0);	
 		Excel::load(Input::file('beneficiaries_data'),function($reader)
  		{
 			if(Input::file('beneficiaries_data')->getClientOriginalExtension()=='csv')
@@ -222,7 +285,6 @@ class BeneficiaryController extends Controller{
   					'v_phone_number'=>'required|numeric|digits_between:10,10',
   					'dt_due_date'=>'required'
 		  			);
-//  				// Carbon::parse($r->dt_due_date)->format('m/d/Y');
  				$dt_due_date=str_replace("-", "/", $r->date_of_delivery);
     			$beneficiary_data = array(
     					'fk_f_id'=>$r->field_worker_id,
@@ -234,7 +296,6 @@ class BeneficiaryController extends Controller{
     					'v_village_name'=>$r->village_name,
     					'dt_due_date'=>''//date('d/m/y',strtotime($dt_due_date))
     			);
-    		//	dd($r->date_of_delivery);
     			if($r->date_of_delivery!='')
     			{
     				$beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
@@ -254,17 +315,17 @@ class BeneficiaryController extends Controller{
  				{
     				$count_excelupload_warning=Session::get('count_excelupload_warning.count');
  					Session::flash('count_excelupload_warning'.$count_excelupload_warning,$r->srno);
- 					Session::flash('count_excelupload_warning.message'.$count_excelupload_warning,$r->srno);
+ 					Session::flash('count_excelupload_warning.message'.$count_excelupload_warning,'Combination of Mother name and Husband name already exist');					
      				$count_excelupload_warning++;
      				Session::forget('count_excelupload_warning.count');
      				Session::flash('count_excelupload_warning.count',$count_excelupload_warning);
  				}
-
     			$already_exist_number=Beneficiary::where('v_phone_number',$beneficiary_data['v_phone_number'])->first();
     			if($already_exist_number['v_phone_number']!='')
     			{
     				$count_excelupload_data_repeated=Session::get('count_excelupload_data_repeated.count');
  					Session::flash('count_excelupload_data_repeated'.$count_excelupload_data_repeated,$r->srno);
+ 					Session::flash('count_excelupload_data_repeated.message'.$count_excelupload_data_repeated,'Identical Data exists in database');
      				$count_excelupload_data_repeated++;
      				Session::forget('count_excelupload_data_repeated.count');
      				Session::flash('count_excelupload_data_repeated.count',$count_excelupload_data_repeated);
@@ -275,34 +336,53 @@ class BeneficiaryController extends Controller{
     			if ($validator->fails())
     			{
     				$failedRules = $validator->failed();
-    	//			dd($failedRules);
+    			//	dd($failedRules);
+    				$error_message='';
+					if(isset($failedRules['v_phone_number'])) 
+					{
+						$error_message=$error_message."    "."Phone Number Missing/Incorrect";
+					}
+					if(isset($failedRules['v_name']))
+					{
+						if(isset($failedRules['v_phone_number']))
+						{
+							$error_message=$error_message.",";	
+						}
+						$error_message=$error_message."    "."Mother Name Missing";
+					}
+					 if(isset($failedRules['dt_due_date']))
+					 { 
+					 	if(isset($failedRules['v_name'])||isset($failedRules['v_phone_number']))
+					 	{
+					 		$error_message=$error_message.",";
+					 	}
+					 	$error_message=$error_message."    "."Date Of Delivery Missing";
+					 }
     				$count_excelupload_errors=Session::get('count_excelupload_errors.count');
  					Session::flash('count_excelupload_errors'.$count_excelupload_errors,$r->srno);
+					Session::flash('count_excelupload_errors.message'.$count_excelupload_errors,$error_message);
      				$count_excelupload_errors++;
      				Session::forget('count_excelupload_errors.count');
      				Session::flash('count_excelupload_errors.count',$count_excelupload_errors);
      			}
     			else if(Session::get('should_data_be_inserted')==1)
     			{
-    				$beneficiary->fk_f_id=$beneficiary_data['fk_f_id'];
-    				$beneficiary->v_name= $beneficiary_data['v_name'];
-     				$beneficiary->v_husband_name=$beneficiary_data['v_husband_name'];
-    				$beneficiary->i_age=$beneficiary_data['i_age'];
-    				$beneficiary->v_phone_number=$beneficiary_data['v_phone_number'];
-    				$beneficiary->v_awc_number=$beneficiary_data['v_awc_number'];
-    				$beneficiary->v_village_name=$beneficiary_data['v_village_name'];
-    				$beneficiary->dt_due_date=$var;
-    				$beneficiary->save();
+    				// $beneficiary->fk_f_id=$beneficiary_data['fk_f_id'];
+    				// $beneficiary->v_name= $beneficiary_data['v_name'];
+     			// 	$beneficiary->v_husband_name=$beneficiary_data['v_husband_name'];
+    				// $beneficiary->i_age=$beneficiary_data['i_age'];
+    				// $beneficiary->v_phone_number=$beneficiary_data['v_phone_number'];
+    				// $beneficiary->v_awc_number=$beneficiary_data['v_awc_number'];
+    				// $beneficiary->v_village_name=$beneficiary_data['v_village_name'];
+    				// $beneficiary->dt_due_date=$var;
+    				// $beneficiary->save();
     			}
     			Session::forget('should_data_be_inserted');
      			Session::flash('should_data_be_inserted',1);	
  		});
+				Session::put('excel_data',$data);
  	});
-		if(Session::get('count_excelupload_errors')==0)
-		{
-			Session::forget('count_excelupload_errors');	
-		}
-		Session::flash('message', 'Mothers data with complete information uploaded');
+		Session::flash('data_validated',1);
 	return back();
 	}		
 }

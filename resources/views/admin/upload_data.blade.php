@@ -17,7 +17,7 @@ smallfont{
 <body>
 @include('template/admin_header')
 @include('template/admin_jsscript')
-<br><br><br>
+<br><br>
 <div class="container" >
 <form class="form-horizontal" method="POST" action="{{url()}}/data/upload"
  enctype="multipart/form-data">
@@ -91,44 +91,65 @@ smallfont{
 </div>
 @if(Session::has('count_excelupload_warning.count'))
 @if(Session::get('count_excelupload_warning.count')!=0)
-
     <div class="alert alert-warning ">
-    
-      <b>Warning:({{Session::get('count_excelupload_warning.count')}})</b>Data with identical woman and husband name already exists.<br>
+    <b>Warnings</b>
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+     <table class="table">
+    <tr>
+     <th>S No. as per excel</th><th>Warnings(Total Warnings:{{Session::get('count_excelupload_warning.count')}})</th>  
+    </tr>
+      
       @for ($i = 0; $i < Session::get('count_excelupload_warning.count'); $i++)
-       <b>S.NO.</b> {{Session::get('count_excelupload_warning'.$i)}}<br>
+      <tr>
+        <td>{{Session::get('count_excelupload_warning'.$i)}}</td>
+        <td>{{Session::get('count_excelupload_warning.message'.$i)}}</td>
+      </tr>  
       @endfor
+      </table>
     </div>
 @endif
 @endif
-@if(Session::has('count_excelupload_data_repeated.count'))
-@if(Session::get('count_excelupload_data_repeated.count')!=0)
-
-    <div class="alert alert-danger">
-    
-      <b>Error:({{Session::get('count_excelupload_data_repeated.count')}})</b>Following Data Already stored in Database.Data not saved again.<br>
+@if(Session::has('count_excelupload_data_repeated.count')||Session::has('count_excelupload_errors.count'))
+<div class="alert alert-danger">    
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  @for ($i = 0; $i < Session::get('count_excelupload_data_repeated.count'); $i++)
-        <b>S.NO.</b>{{Session::get('count_excelupload_data_repeated'.$i)}}<br>
-      @endfor
-    </div>
-@endif
-@endif
 
+<b>Errors occurred while saving following data.<b><br>
+     <table class="table">
+    <tr >
+     <th>S No. as per excel</th><th>Error(Total errors:{{Session::get('count_excelupload_data_repeated.count')+Session::get('count_excelupload_errors.count')}})</th>  
+    </tr>
+
+@if(Session::get('count_excelupload_data_repeated.count')!=0)
+    
+  @for ($i = 0; $i < Session::get('count_excelupload_data_repeated.count'); $i++)
+      <tr>
+        <td>{{Session::get('count_excelupload_data_repeated'.$i)}}</td>
+        <td>{{Session::get('count_excelupload_data_repeated.message'.$i)}}</td>
+      </tr>  
+      @endfor    
+@endif
 @if(Session::has('count_excelupload_errors.count'))
 @if(Session::get('count_excelupload_errors.count')!=0)
-    <div class="alert alert-danger errors">
-    
-      <b>Error:({{Session::get('count_excelupload_errors.count')}})</b> Data-Missing<br>
-      Following Line Number of Excel Sheet were not stored in database : <br>
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       @for ($i = 0; $i < Session::get('count_excelupload_errors.count'); $i++)
-      <b>S.NO.</b>  {{Session::get('count_excelupload_errors'.$i)}}<br>
+      <tr>
+        <td>{{Session::get('count_excelupload_errors'.$i)}}</td>
+        <td>{{Session::get('count_excelupload_errors.message'.$i)}}</td>
+      </tr>  
       @endfor
-    </div>
 @endif
 @endif
+</table>
+</div>
+@endif
+
+@if(Session::has('data_validated'))
+<form method="POST" action="{{url()}}/data/final_upload">
+<input type="hidden" name="_token" value="{{ csrf_token() }}">    
+<button class="btn btn-primary">Save Data</button>
+</form>
+@endif
+
+
 @if(Session::has('message'))
   	<div class="alert alert-success uploaded_mothers">
     	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
