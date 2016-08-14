@@ -67,12 +67,10 @@ class AdminDashboardController extends Controller {
 		$data['total_calls'] = $count_scheduled_calls;
 		$data['cc_not_called'] = $select;
 		
-		
-		//var_dump($data);
+
 		return $data;
 		
-		//echo $select;
-		//foreach($cc_id_not_called as $val) { var_dump($val);}
+		
 		
 	}
 	
@@ -97,8 +95,7 @@ class AdminDashboardController extends Controller {
 		
 		$select1 = array_filter($select1);
 		
-		//var_dump($select1);		
-		//var_dump($select);
+		
 		$data = Array();
 		$data['call_details'] = $select;
 		$data['received_calls'] = $select1;
@@ -123,7 +120,7 @@ class AdminDashboardController extends Controller {
 		} 
 		$data = Array();
 		$data['action_items'] = $select;
-		//var_dump($select);
+		
 		return ($data);
 		
 	}
