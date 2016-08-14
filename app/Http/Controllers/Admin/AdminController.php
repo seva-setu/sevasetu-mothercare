@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\BeneficiaryController;
+
 use App\Models\Fieldworkers;
 use App\Models\Admin;
 
@@ -128,7 +130,118 @@ class AdminController extends Controller{
           return Redirect::to('/mothers');   
     return view('admin/admin_dashboard');
   }
- 
+
+  public function callChampions(){
+    if($this->user_role_type == 2)
+          return Redirect::to('/mothers');
+
+    $data['all']=DB::table('mct_call_champions')
+                        ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                        ->get();   
+                        
+    $data['unapproved']=DB::table('mct_call_champions')
+                        ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                        ->where('mct_call_champions.activation_status',0)
+                        ->get();
+
+
+    $data['mentors']=CallChampion::join('mct_user', 'user_id', '=', 'fk_user_id')
+                      ->where('mct_call_champions.activation_status',2)
+                      ->get();
+
+    $data['mentor']=array();
+
+    $data['mentees']=DB::table('mct_callchampion_shadow')
+                        ->join('mct_call_champions', 'cc_id', '=', 'mentee')
+                        ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                        ->where('mct_call_champions.activation_status',1)
+                        ->get();
+
+    $data['unassigned']=DB::table('mct_call_champions')
+                        ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                        ->where('mct_call_champions.activation_status',2) 
+                        ->whereRaw('cc_id not in (select fk_cc_id from mct_due_list)')
+                        ->get();
+
+
+    foreach ($data['mentees'] as $value)
+    {
+      $data['mentor'][] =  DB::table('mct_callchampion_shadow')
+                        ->join('mct_call_champions', 'cc_id', '=', 'mentor')
+                        ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                        ->where('mentee',$value->cc_id)
+                        ->get();
+
+    }
+
+    return view('admin/callchampions',$data);
+  }
+
+  public function assign_mentor(){
+    if($this->user_role_type == 2)
+          return Redirect::to('/mothers'); 
+        
+    $mentee = Input::get('mentee_id');
+    $mentor = Input::get('mentor_id');
+
+    $result=DB::table('mct_call_champions')
+                  ->where('mct_call_champions.cc_id',$mentee)
+                  ->update(['mct_call_champions.activation_status' => '1' ]);
+
+    DB::table('mct_callchampion_shadow')
+      ->insert(['mentee' => $mentee,
+                'mentor' => $mentor]
+              );
+    return response()->json($result);
+  }
+
+  public function update_callchampion_status(){
+    if($this->user_role_type == 2)
+          return Redirect::to('/mothers'); 
+        
+    $cc_id = Input::get('cc_id');
+
+    $result=DB::table('mct_call_champions')
+                  ->where('mct_call_champions.cc_id',$cc_id)
+                  ->update(['mct_call_champions.activation_status' => '2' ]);
+
+    return response()->json($result);
+  }
+  
+  public function get_assign_mothers($cc_id = -1){
+    if($this->user_role_type == 2)
+          return Redirect::to('/mothers'); 
+    if($cc_id == -1 )
+      return Redirect::to('/');
+
+    $data['unassigned']=DB::table('mct_beneficiary')
+                  ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
+                  ->get();
+
+    return view('admin/assign_mothers',$data);
+  }
+
+  public function post_assign_mothers()
+  {
+    if($this->user_role_type == 2)
+          return Redirect::to('/mothers'); 
+    
+    
+    if(!empty($_POST['check_list'])){
+      $cid = 6;
+      $bid = $_POST['check_list'];
+
+      $obj = new BeneficiaryController;
+      $a = $obj->upload_mother($bid,$cid);
+    }
+
+    $data['unassigned']=DB::table('mct_beneficiary')
+                  ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
+                  ->get();
+    return view('admin/assign_mothers',$data);
+
+  }
+
   //change password view
   public function changepassword(){
   	if(!isset($this->userid)){
@@ -139,6 +252,7 @@ class AdminController extends Controller{
   	return view('admin/changepassword',$data);
   }
   
+
   //change pass functionality
   public function dochangepassword(){
   	

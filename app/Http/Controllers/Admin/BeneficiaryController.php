@@ -82,13 +82,20 @@ class BeneficiaryController extends Controller{
 	public function tester_method(){
 		 die("test done");
 	}
-	public function upload_mother(){
-		$bene_obj = Beneficiary::all();
+
+	public function upload_mother($beneficiary_ids = array(), $cc_id = -1){
+		if(empty($beneficiary_ids))
+			$bene_obj = Beneficiary::all();
+		else
+			$bene_obj = Beneficiary::whereIn('b_id',$beneficiary_ids)->get();
 		foreach($bene_obj as $bene){
 			// add a check - if mother doesnt exist in the DB, only then do the following -
+			if($bene->b_id > 55 )
+			{
 			$due_list = $this->add_due_list($bene->b_id, $bene->dt_due_date);
-			$this->allocate_call_champion($due_list, $bene->b_id);
+			$this->allocate_call_champion($due_list, $bene->b_id, $cc_id);
 			$this->update_call_champion_report($due_list);
+			}
 			
 		}
 		
@@ -114,14 +121,17 @@ class BeneficiaryController extends Controller{
 		return $due_list;
 	}
 	
-	public function allocate_call_champion($due_list_ids_arr = array(), $beneficiary_id = -1, $MAX_ALLOWED_PER_CC = 5){
+	public function allocate_call_champion($due_list_ids_arr = array(), $beneficiary_id = -1, $cc_id = -1, $MAX_ALLOWED_PER_CC = 60 ){
 		if($beneficiary_id == -1)
 			$beneficiary_id = $this->get_beneficiary_id($due_list_ids_arr);
 		
 		// the input to the method below may have to be due_list_ids_arr
 		$prev_champ_ids = $this->get_previous_call_champions_for_beneficiary($beneficiary_id);
 		if(!$prev_champ_ids){
-			$call_champ_id = $this->randomly_select_call_champ();
+			if($cc_id == -1)
+				$call_champ_id = $this->randomly_select_call_champ();
+			else
+				$call_champ_id = $cc_id;
 			return $this->assign_call_champion_duelist_id($call_champ_id, $due_list_ids_arr);
 		}
 		else{
