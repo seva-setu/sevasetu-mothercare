@@ -91,7 +91,7 @@ class AdminDashboardController extends Controller {
 				WHERE dt_intervention_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY 
 				AND dt_intervention_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY');
 		
-		$select1 = Array(); //'$select1' will contain details of 'Received' calls in the past week
+		/* $select1 = Array(); //'$select1' will contain details of 'Received' calls in the past week
 		
 		foreach($select as $val)
 		{
@@ -101,11 +101,17 @@ class AdminDashboardController extends Controller {
 			->where('due_id','=',$val->due_id)
 			->where('e_call_status','=','Received')
 			->get();
-		}
+		} */
+		
+		$select1 = DB::select('select * from mct_due_list 
+				               join mct_callchampion_report on fk_due_id = due_id 
+				               where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY 
+				               AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY 
+				               and e_call_status = \'Received\'');
 		
 		$select1 = array_filter($select1);
 		
-		//var_dump($select);
+		//var_dump($select1);
 		
 		
 		/* $select2 = Array();

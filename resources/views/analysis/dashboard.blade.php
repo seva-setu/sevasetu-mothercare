@@ -22,7 +22,7 @@ smallfont{
 		<div class="row">
 			<div class="col-lg-10 col-md-10">
 			<h3>
-					Call champions who have calls in the week from <?php echo date("j F Y", $datestart); ?> to <?php echo date("j F Y", $dateend); ?>
+					{{ trans('adminDashboard.callchampions_week') }} <?php echo date("j F Y", $datestart); ?> to <?php echo date("j F Y", $dateend); ?>
 			</h3>
 			<?php 
 			if(!empty($call_details)){
@@ -30,11 +30,11 @@ smallfont{
 			<table class="table table-striped table-bordered table-hover">
 					<thead>
 					   <tr>
-					   	   <th> Call ID </th>
-						   <th> Call Champion Name </th>
-						   <th> Mother's Name </th>
-						   <th> Date of Call </th>
-						   <th> Mother's number </th>
+					   	   <th> {{ trans('adminDashboard.callID') }} </th>
+						   <th> {{ trans('adminDashboard.callchampionname') }} </th>
+						   <th> {{ trans('adminDashboard.mothername') }} </th>
+						   <th> {{ trans('adminDashboard.dateofcall') }} </th>
+						   <th> {{ trans('adminDashboard.motherphno') }} </th>
 					   </tr>
 					 </thead>
 					 <tbody>
@@ -62,7 +62,7 @@ smallfont{
 			}
 			else {
 					 ?>
-					 <h4>No scheduled calls in the past week</h4>
+					 <h4>{{ trans('adminDashboard.nocalls_week') }}</h4>
 					 <?php 
 			}
 					 ?>
@@ -74,47 +74,47 @@ smallfont{
 		<div class="row">
 			<div class="col-lg-10 col-md-10">
 			<h3>
-					Statistics for the week from <?php echo date("j F Y", $datestart); ?> to <?php echo date("j F Y", $dateend); ?>
+					{{ trans('adminDashboard.stats_week') }} <?php echo date("j F Y", $datestart); ?> to <?php echo date("j F Y", $dateend); ?>
 			</h3>
 			<table class="table table-striped table-bordered table-hover">
 			<tr>
-			<td> Number of calls made </td>
+			<td> {{ trans('adminDashboard.numberofcalls') }} </td>
 			<td> {{$totalcalls[0]->count}} </td>
 			</tr>
 			<tr>
-			<td> Number of mothers assigned </td>
+			<td> {{ trans('adminDashboard.numberofmothers') }} </td>
 			<td> {{$mothersassigned[0]->count}} </td>
 			</tr>
 			<tr>
-			<td> Average calls made per mother </td>
+			<td> {{ trans('adminDashboard.averagepermother') }} </td>
 			<td> {{$averagepermother[0]->Average}} </td>
 			</tr>
 			<tr>
-			<td> Number of scheduled calls connected in the first call attempt  </td>
+			<td> {{ trans('adminDashboard.callsattempt1') }}  </td>
 			<td> {{$callsattemptequal1[0]->count}} </td>
 			</tr>
 			<tr>
-			<td> Number of scheduled calls for which two attempts were made </td>
+			<td> {{ trans('adminDashboard.callsattempt2') }} </td>
 			<td> {{$callsattemptequal2[0]->count}} </td>
 			</tr>
 			<tr>
-			<td> Number of scheduled calls for which more than 2 attempts were made </td>
+			<td> {{ trans('adminDashboard.callsgt2') }} </td>
 			<td> {{$callsattemptgt2[0]->count}} </td>
 			</tr>
 			<tr>
-			<td> Number of mothers whose phone numbers were marked incorrect </td>
+			<td> {{ trans('adminDashboard.mothersincorrectphno') }} </td>
 			<td> {{$incorrectphno[0]->count}} </td>
 			</tr>
 			<tr>
-			<td> Number of mothers who were not reachable or were out of network </td>
+			<td> {{ trans('adminDashboard.mothersnotreachable') }} </td>
 			<td> {{$notreachable[0]->count}} </td>
 			</tr>
 			<tr>
-			<td> Number of numbers whose date of delivery was marked as incorrect </td>
+			<td> {{ trans('adminDashboard.mothersincorrectdeliverydate') }} </td>
 			<td> {{$incorrectdeliverydate[0]->count}} </td>
 			</tr>
 			<tr>
-			<td> Number of action items generated </td>
+			<td> {{ trans('adminDashboard.numberactionitems') }} </td>
 			<td> {{$actionitems[0]->count}} </td>
 			</tr>
 			</table>
@@ -128,7 +128,7 @@ smallfont{
 		<div class="row">
 			<div class="col-lg-10 col-md-10">
 			<h3>
-					Call champions who have not made scheduled calls in the week from <?php echo date("j F Y", $datestart); ?> to <?php echo date("j F Y", $dateend); ?>
+					{{ trans('adminDashboard.callchampionsnotcalled_week') }} <?php echo date("j F Y", $datestart); ?> to <?php echo date("j F Y", $dateend); ?>
 			</h3>
 			<?php 
 			if(!empty($cc_not_called)){
@@ -136,10 +136,10 @@ smallfont{
 		    <table class="table table-striped table-bordered table-hover">
 					<thead>
 					   <tr>
-					   	   <th> Due ID </th>
-						   <th> Name </th>
-						   <th> Call Champion Phone Number </th>
-						   <th> Reminder Status </th>
+					   	   <th> {{ trans('adminDashboard.dueid') }} </th>
+						   <th> {{ trans('adminDashboard.callchampionname') }} </th>
+						   <th> {{ trans('adminDashboard.callchampionphno') }} </th>
+						   <th> {{ trans('adminDashboard.reminderstatus') }} </th>
 						   
 					   </tr>
 					 </thead>
@@ -167,7 +167,7 @@ smallfont{
 			else {
 					
 					 ?>
-					 <h4>No scheduled calls in the past week</h4>
+					 <h4>{{ trans('adminDashboard.nocalls_week') }}</h4>
 					 <?php } 
 					 ?>
 			</div>
@@ -176,7 +176,7 @@ smallfont{
 		<div class="row">
 			<div class="col-lg-10 col-md-10">
 			<h3>
-					Received calls in the past week
+					{{ trans('adminDashboard.receivedcalls_week') }}
 			</h3>
 			<?php 
 			if(!empty($received_calls)){
@@ -184,22 +184,22 @@ smallfont{
 			<table class="table table-striped table-bordered table-hover">
 					<thead>
 					   <tr>
-					   	   <th> Report ID </th>
-						   <th> Due ID </th>
-						   <th> Beneficiary ID </th>
-						   <th> Call Champion ID </th>
-						   <th> Modify Date </th>
-						   <th> Conversation </th>
-						   <th> Action Items </th>
+					   	   <th> {{ trans('adminDashboard.reportid') }} </th>
+						   <th> {{ trans('adminDashboard.dueid') }} </th>
+						   <th> {{ trans('adminDashboard.beneficiaryid') }} </th>
+						   <th> {{ trans('adminDashboard.callchampionid') }} </th>
+						   <th> {{ trans('adminDashboard.modifydate') }} </th>
+						   <th> {{ trans('adminDashboard.conversation') }} </th>
+						   <th> {{ trans('adminDashboard.actionitems') }} </th>
 						   
 					   </tr>
 					 </thead>
 					 <tbody>
 					<?php 
 					
-					foreach($received_calls as $val)
+					foreach($received_calls as $val1)
 					{
-						foreach($val as $val1){
+						
 					?>
 					<tr>
 					<td> {{$val1->report_id }} </td>
@@ -213,7 +213,7 @@ smallfont{
 					 </tbody>
 					 
 					 <?php 
-						}
+						
 					}
 					?>
 					
@@ -222,7 +222,7 @@ smallfont{
 					}
 					else {
 					 ?>
-					 <h4>No calls received in the past week</h4>
+					 <h4>{{ trans('adminDashboard.nocallsreceived_week') }}</h4>
 					 <?php 
 					}
 					 ?>
