@@ -195,10 +195,24 @@ class BeneficiaryController extends Controller{
 	public function list_all_beneficiaries(){
 		
 	}
+
+	// download link for sample excel
 	public function downloadExcel()
 	{
 		return response()->download(public_path('download\sample.xlsx'));
 	}
+
+/** 
+* Save the validated data to database.
+* @input $excel_data saved in method @importExcel
+* @output Saves data in database. 
+* called by route /data/final-upload
+* @algorithm
+* 1. Run foreach on $exceldata.
+* 2. Validate the data and store the valid data to database.
+* 3. Return a message to Route::get /data/upload that messages are stored.
+*/
+
 	public function Excel_data_upload()
 	{
 		Session::flash('should_data_be_inserted',1);
@@ -263,14 +277,32 @@ class BeneficiaryController extends Controller{
 		Session::flash('message', 'Mothers data with complete information uploaded');
 		return back();
 	}
+
+
+/** 
+* Takes data of all mother from excel file and validates data and stores data in session.
+* @input Data from excel file
+* it validates data of excel file(data_of_delivery & mothername & phone no.) and saves data in Session (variable name $excel_data ) 
+* @calling_method Invoked as we go on post route /data/upload
+* @algorithm
+* 1. Load Excel file and data will be stored in $reader (array).
+* 2. Apply foreach on this array and get data of each row of excel file.
+* 3. On each data apply validation rules and accordingly store the message for 		particular type of error
+*/	
+
 	public function importExcel()
 	{
-		Session::flash('count_excelupload_errors.count',0);
+		//this variable tells whether data is error free and can be stored or not.
 		Session::flash('should_data_be_inserted',1);
+		//variable for different types of errors and warnings.
+		Session::flash('count_excelupload_errors.count',0);
 		Session::flash('count_excelupload_warning.count',0);
 		Session::flash('count_excelupload_data_repeated.count',0);	
+		//loads excel file
 		Excel::load(Input::file('beneficiaries_data'),function($reader)
  		{
+
+ 			//$reader acts differently in different excel formats
 			if(Input::file('beneficiaries_data')->getClientOriginalExtension()=='csv')
 				$data=$reader->get();
 			else
@@ -280,6 +312,7 @@ class BeneficiaryController extends Controller{
 			}
 			  $data->each(function($r){
 					$beneficiary= new Beneficiary;
+					//validation rules
 		  			$rules = array(
 		  			 'v_name' => 'required|min:3|max:20|Regex:/^[ A-Za-z]+[A-Za-z0-9.\' ]*$/',
   					'v_phone_number'=>'required|numeric|digits_between:10,10',
@@ -296,6 +329,7 @@ class BeneficiaryController extends Controller{
     					'v_village_name'=>$r->village_name,
     					'dt_due_date'=>''//date('d/m/y',strtotime($dt_due_date))
     			);
+    			//validating dates as by default date value is 1970/1/1 thus chaning that to null so that validation rules work correctly
     			if($r->date_of_delivery!='')
     			{
     				$beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
@@ -309,7 +343,7 @@ class BeneficiaryController extends Controller{
     			{
     				$beneficiary_data['dt_due_date']=null;	
     			}
-			//	dd($beneficiary_data['dt_due_date']);
+    			// checks for multiple combinations of mother name and hsuband name in database.
  				$already_exist_name=Beneficiary::where(['v_name'=>$beneficiary_data['v_name'],'v_husband_name'=>$beneficiary_data['v_husband_name']])->first();
  				if($already_exist_name['v_name']!='')
  				{
@@ -320,6 +354,7 @@ class BeneficiaryController extends Controller{
      				Session::forget('count_excelupload_warning.count');
      				Session::flash('count_excelupload_warning.count',$count_excelupload_warning);
  				}
+ 				// check for the data if it already exists in database.
     			$already_exist_number=Beneficiary::where('v_phone_number',$beneficiary_data['v_phone_number'])->first();
     			if($already_exist_number['v_phone_number']!='')
     			{
@@ -335,8 +370,8 @@ class BeneficiaryController extends Controller{
     			$validator = Validator::make($beneficiary_data, $rules);
     			if ($validator->fails())
     			{
+    				//find the reason for which our validation fails and store that reason in message.
     				$failedRules = $validator->failed();
-    			//	dd($failedRules);
     				$error_message='';
 					if(isset($failedRules['v_phone_number'])) 
 					{
@@ -380,6 +415,7 @@ class BeneficiaryController extends Controller{
     			Session::forget('should_data_be_inserted');
      			Session::flash('should_data_be_inserted',1);	
  		});
+				//save the above excel data in variable an then finally store this data when user makes confirmation by calling method @Excel_data_upload
 				Session::put('excel_data',$data);
  	});
 		Session::flash('data_validated',1);
