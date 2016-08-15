@@ -110,6 +110,10 @@ smallfont{
 			<td> {{$notreachable[0]->count}} </td>
 			</tr>
 			<tr>
+			<td> Number of numbers whose date of delivery was marked as incorrect </td>
+			<td> {{$incorrectdeliverydate[0]->count}} </td>
+			</tr>
+			<tr>
 			<td> Number of action items generated </td>
 			<td> {{$actionitems[0]->count}} </td>
 			</tr>

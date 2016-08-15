@@ -187,6 +187,7 @@ class AdminDashboardController extends Controller {
 				                   FROM mct_callchampion_report join mct_due_list on due_id = fk_due_id 
 				                   WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY 
 				                   AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY');
+		$incorrectDeliveryDate = DB::select('SELECT count(*)as count FROM `mct_beneficiary` WHERE dt_due_date <> `reported _delivery_date`');
 		/*  var_dump($totalCalls);
 		var_dump($callsAttemptEqual1);
 		var_dump($callsAttemptEqual2);
@@ -208,6 +209,7 @@ class AdminDashboardController extends Controller {
 		$data['incorrectphno'] = $incorrectphno;
 		$data['notreachable'] = $notReachable;
 		$data['mothersassigned'] = $mothersAssigned;
+		$data['incorrectdeliverydate'] = $incorrectDeliveryDate;
 		$data['actionitems'] = $actionItems;
 		return $data;
 				  
