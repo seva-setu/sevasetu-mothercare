@@ -213,7 +213,8 @@
 												<input type="hidden" name="mothers_count" value="-1"/>
 										      	<input type="hidden" name="_token" value="{{ csrf_token() }}"/>
 										      	<button class="btn btn-primary btn-xs">Assign mothers</button>
-										      	</form></td>
+										      	</form>
+										    </td>
 										</tr>  
 									<?php } ?>
 								</tbody>
@@ -245,7 +246,6 @@
   			 event.preventDefault();
   			 var mentee_id = document.getElementById('mentee').value;
   			 var mentor_id = document.getElementById('mentor').value;
-  			alert("hello");
   			$.ajax({
 			         url : '{{ url() }}/mentor/assign',
 			         type: "POST",
@@ -268,7 +268,6 @@
   		function shadowing_done(event,cc_id)
   		{
   			event.preventDefault();
-  			alert("hello");
   			$.ajax({
 			         url : '{{ url() }}/callchampion/status/update',
 			         type: "POST",

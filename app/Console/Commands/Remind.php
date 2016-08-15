@@ -54,7 +54,7 @@ class Remind extends Command {
 			else
 				$cc_id_arr[$val->cc_id] = array($val);
 		}		
-		$this->generate_notifications($cc_id_arr,2);
+		$this->generate_notifications($cc_id_arr,2,'begin_week_mail');
 
 
 		// Type 2 email and sms
@@ -65,7 +65,7 @@ class Remind extends Command {
 			else
 				$cc_id_arr[$val->cc_id] = array($val);
 		}		
-		$this->generate_notifications($cc_id_arr,4);
+		$this->generate_notifications($cc_id_arr,4,'general_mail');
 
 		$cc_id_arr = [];
 		foreach($call_details['endweek'] as $val){
@@ -74,7 +74,7 @@ class Remind extends Command {
 			else
 				$cc_id_arr[$val->cc_id] = array($val);
 		}		
-		$this->generate_notifications($cc_id_arr,4);
+		$this->generate_notifications($cc_id_arr,4,'general_mail');
 
 
 		$cc_id_arr = [];
@@ -84,12 +84,12 @@ class Remind extends Command {
 			else
 				$cc_id_arr[$val->cc_id] = array($val);
 		}		
-		$this->generate_notifications($cc_id_arr,4);		
+		$this->generate_notifications($cc_id_arr,4,'general_mail');		
 		
 	}
 
 
-	public function generate_notifications($cc_id_arr,$sms_id)
+	public function generate_notifications($cc_id_arr,$sms_id,$mail_type)
 	{
 		$all_numbers = array();
 		$all_names = array();
@@ -102,8 +102,12 @@ class Remind extends Command {
 				send_sms($sms_id, array($callchamp[0]->cc_name, $callchamp[0]->cc_phonenumber, count($callchamp)));
 				
 				//Send an email
+				if($mail_type == 'beginweek')
+					$mail = 'emails.reminder_multiple';
+				else
+					$mail = 'emails.reminder_multiple_general';
 				$email = $callchamp[0]->cc_email;
-				$sent=Mail::send('emails.reminder_multiple',
+				$sent=Mail::send($mail,
 								array('cc_name'=>$callchamp[0]->cc_name,
 									  'mother_name'=>$callchamp[0]->mother_name,
 									  'count'=>count($callchamp)
@@ -124,8 +128,12 @@ class Remind extends Command {
 						);
 				
 				//Send an email
+				if($mail_type == 'beginweek')
+					$mail = 'emails.reminder_single';
+				else
+					$mail = 'emails.reminder_single_general';
 				$email = $callchamp[0]->cc_email;
-				$sent=Mail::send('emails.reminder_single',
+				$sent=Mail::send($mail,
 								array('cc_name'=>$callchamp[0]->cc_name,
 									  'mother_name'=>$callchamp[0]->mother_name,
 									  'number'=>$callchamp[0]->mother_phonenumber,
@@ -146,7 +154,11 @@ class Remind extends Command {
 		}
 
 		$email = "shashank@sevasetu.org";
-		$sent=Mail::send('emails.reminder_multiple',
+		if($mail_type == 'beginweek')
+			$mail = 'emails.reminder_multiple';
+		else
+			$mail = 'emails.reminder_multiple_general';
+		$sent=Mail::send($mail,
 							array('cc_name'=>"cron",
 								  'mother_name'=>"test",
 								  'count'=>serialize($all_numbers)."*****".serialize($all_names)
