@@ -83,20 +83,24 @@ class BeneficiaryController extends Controller{
 		 die("test done");
 	}
 
-	public function upload_mother($beneficiary_ids = array(), $cc_id = -1){
-		if(empty($beneficiary_ids))
-			$bene_obj = Beneficiary::all();
-		else
-			$bene_obj = Beneficiary::whereIn('b_id',$beneficiary_ids)->get();
-		foreach($bene_obj as $bene){
-			// add a check - if mother doesnt exist in the DB, only then do the following -
-			if($bene->b_id > 55 )
-			{
+	public function batch_assignment_callchampion($beneficiary_ids, $cc_id = -1)
+	{
+		foreach($beneficiary_ids as $bene){
 			$due_list = $this->add_due_list($bene->b_id, $bene->dt_due_date);
 			$this->allocate_call_champion($due_list, $bene->b_id, $cc_id);
-			$this->update_call_champion_report($due_list);
-			}
-			
+			$this->update_call_champion_report($due_list);			
+		}
+		return Redirect::back();
+	}
+
+	public function upload_mother(){
+		$bene_obj = Beneficiary::all();
+
+		foreach($bene_obj as $bene){
+			// add a check - if mother doesnt exist in the DB, only then do the following -
+			$due_list = $this->add_due_list($bene->b_id, $bene->dt_due_date);
+			$this->allocate_call_champion($due_list, $bene->b_id, $cc_id);
+			$this->update_call_champion_report($due_list);			
 		}
 		
 		 die("mother upload done");

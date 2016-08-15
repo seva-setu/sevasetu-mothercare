@@ -41,6 +41,7 @@
 								<th>Name</th>
 								<th>Email</th>
 								<th>Contact</th>
+								<th>Assign mothers</th>
 							</thead>
 							
 							<tbody>
@@ -50,12 +51,44 @@
 										<td><?php echo $value->v_name;?></td>	
 										<td><?php echo $value->v_email;?></td>
 										<td><?php echo $value->i_phone_number;?></td>	
-										
+										<td><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#assign_mothers" data-id = '{{ $value->cc_id }}' >Assign mothers</button></td>
 									</tr>  
 								<?php } ?>
 							</tbody>
 						</table>
 						</div>
+
+						<div class="modal fade" id="assign_mothers" role="dialog">
+						    <div class="modal-dialog">						    
+						      <!-- Modal content-->
+						      	<div class="modal-content">
+						        	<div class="modal-header">
+						          		<button type="button" class="close" data-dismiss="modal">&times;</button>
+						          		<h4 class="modal-title">Select number of mothers</h4>
+						        	</div>
+						        	<div class="modal-body">
+						          		<form class="form-horizontal" role="form" method="post" action="{{ url() }}/assign/mothers">
+										    <div class="form-group">
+										      <label class="control-label col-sm-3" for="mothers_count">No of mothers:</label>
+										      <div class="col-sm-9">
+										        <input type="number" class="form-control" min="1" max="20" id="mothers_count" name="mothers_count" required>
+										        <input type="hidden"  id="cc_id" name="cc_id">
+										      </div>
+										    </div>
+										    <div class="form-group">
+										      <div class="col-sm-offset-2 col-sm-10">
+										      	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+										        <button type="submit" class="btn btn-primary">Assign Mothers</button>
+										      </div>
+										    </div>
+										</form>
+						        	</div>
+						        	<div class="modal-footer">
+						          		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						        	</div>
+						      	</div>						      
+						    </div>
+						</div> 
 					</div>
 
 					<div id="menu1" class="tab-pane fade">
@@ -175,7 +208,12 @@
 											<td><?php echo $value->v_name;?></td>	
 											<td><?php echo $value->v_email;?></td>
 											<td><?php echo $value->i_phone_number;?></td>	
-											<td><a href="{{ url() }}/assign/mothers/{{ $value->cc_id }}" <button class="btn btn-primary btn-xs">Assign mothers</button></td>
+											<td><form method="post" action="{{ url() }}/assign/mothers">
+												<input type="hidden" name="cc_id" value="{{ $value->cc_id }}"/>
+												<input type="hidden" name="mothers_count" value="-1"/>
+										      	<input type="hidden" name="_token" value="{{ csrf_token() }}"/>
+										      	<button class="btn btn-primary btn-xs">Assign mothers</button>
+										      	</form></td>
 										</tr>  
 									<?php } ?>
 								</tbody>
@@ -195,6 +233,11 @@
 			   var mentee = $(e.relatedTarget).data('name');
 			   document.getElementById('mentee_name').value = mentee;
 			   document.getElementById('mentee').value = menteeId;
+			});
+
+  		$('#assign_mothers').on('show.bs.modal', function(e){
+			   var cc_id = $(e.relatedTarget).data('id');
+			   document.getElementById('cc_id').value = cc_id;
 			});
 
   		function assign_mentor(event)

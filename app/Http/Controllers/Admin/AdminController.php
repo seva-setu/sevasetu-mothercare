@@ -137,6 +137,8 @@ class AdminController extends Controller{
 
     $data['all']=DB::table('mct_call_champions')
                         ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                        ->where('mct_call_champions.activation_status',2) 
+                        ->whereRaw('cc_id in (select fk_cc_id from mct_due_list)')
                         ->get();   
                         
     $data['unapproved']=DB::table('mct_call_champions')
@@ -167,10 +169,10 @@ class AdminController extends Controller{
     foreach ($data['mentees'] as $value)
     {
       $data['mentor'][] =  DB::table('mct_callchampion_shadow')
-                        ->join('mct_call_champions', 'cc_id', '=', 'mentor')
-                        ->join('mct_user', 'user_id', '=', 'fk_user_id')
-                        ->where('mentee',$value->cc_id)
-                        ->get();
+                            ->join('mct_call_champions', 'cc_id', '=', 'mentor')
+                            ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                            ->where('mentee',$value->cc_id)
+                            ->get();
 
     }
 
@@ -208,39 +210,79 @@ class AdminController extends Controller{
     return response()->json($result);
   }
   
-  public function get_assign_mothers($cc_id = -1){
-    if($this->user_role_type == 2)
-          return Redirect::to('/mothers'); 
-    if($cc_id == -1 )
-      return Redirect::to('/');
+  // public function get_assign_mothers($cc_id = -1){
+  //   if($this->user_role_type == 2)
+  //         return Redirect::to('/mothers'); 
+  //   if($cc_id == -1 )
+  //     return Redirect::to('/');
 
-    $data['unassigned']=DB::table('mct_beneficiary')
-                  ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
-                  ->get();
+  //   $data['unassigned']=DB::table('mct_beneficiary')
+  //                 ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
+  //                 ->get();
 
-    return view('admin/assign_mothers',$data);
-  }
+  //   return view('admin/assign_mothers',$data);
+  // }
 
-  public function post_assign_mothers()
+  // public function post_assign_mothers()
+  // {
+  //   if($this->user_role_type == 2)
+  //         return Redirect::to('/mothers'); 
+    
+    
+  //   if(!empty($_POST['check_list'])){
+  //     $cid = 6;
+  //     $bid = $_POST['check_list'];
+
+  //     $obj = new BeneficiaryController;
+  //     $a = $obj->upload_mother($bid,$cid);
+  //   }
+
+  //   $data['unassigned']=DB::table('mct_beneficiary')
+  //                 ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
+  //                 ->get();
+  //   return view('admin/assign_mothers',$data);
+
+  // }
+
+  public function assign_mothers()
   {
     if($this->user_role_type == 2)
-          return Redirect::to('/mothers'); 
-    
-    
-    if(!empty($_POST['check_list'])){
-      $cid = 6;
-      $bid = $_POST['check_list'];
+          return Redirect::to('/mothers');
 
-      $obj = new BeneficiaryController;
-      $a = $obj->upload_mother($bid,$cid);
+    $cc_id = Input::get('cc_id');
+    $count = Input::get('mothers_count');
+
+    if($cc_id == -1)
+      return Redirect::back();
+    
+    if($count == -1)
+    {
+      $total_beneficiary = DB::table('mct_beneficiary')
+                             ->count();
+
+      $total_call_champions = DB::table('mct_call_champions')
+                                ->where('activation_status','=',2)
+                                ->count();
+
+       $count = ceil($total_beneficiary / $total_call_champions);
     }
 
-    $data['unassigned']=DB::table('mct_beneficiary')
+    $bid_array = DB::table('mct_beneficiary')
                   ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
+                  ->take($count)
                   ->get();
-    return view('admin/assign_mothers',$data);
+
+     if(!empty($bid_array)){
+
+      $obj = new BeneficiaryController;
+      $obj->batch_assignment_callchampion($bid_array,$cc_id);
+     }
+
+    return Redirect::to('/callchampions'); 
 
   }
+
+
 
   //change password view
   public function changepassword(){
