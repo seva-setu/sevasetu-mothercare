@@ -31,7 +31,7 @@
  		'conversation' => 'Conversation',
  		'actionitems' => 'Action Items',
  		'nocallsreceived_week' => 'No calls received in the past week',
- 		'dataunvailable' => 'Data Unavailable'
+ 		'dataunavailable' => 'Data Unavailable'
  		
  		
  );

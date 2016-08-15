@@ -25,7 +25,7 @@ smallfont{
 					{{ trans('adminDashboard.callchampions_week') }} <?php echo date("j F Y", $datestart); ?> to <?php echo date("j F Y", $dateend); ?>
 			</h3>
 			<?php 
-			if(!empty($call_details)){
+			if(isset($call_details) && !empty($call_details)){
 			?>
 			<table class="table table-striped table-bordered table-hover">
 					<thead>
@@ -79,43 +79,133 @@ smallfont{
 			<table class="table table-striped table-bordered table-hover">
 			<tr>
 			<td> {{ trans('adminDashboard.numberofcalls') }} </td>
+			<?php if(isset($totalcalls)) { ?>
 			<td> {{$totalcalls[0]->count}} </td>
+			<?php 
+					 }
+					 else {
+					 ?>
+			<td> {{ trans('adminDashboard.dataunavailable') }} </td>
+					 <?php
+					 }
+					 ?>
 			</tr>
 			<tr>
 			<td> {{ trans('adminDashboard.numberofmothers') }} </td>
+			<?php if(isset($mothersassigned)) { ?>
 			<td> {{$mothersassigned[0]->count}} </td>
+			<?php 
+					 }
+					 else {
+					 ?>
+			<td> {{ trans('adminDashboard.dataunavailable') }} </td>
+					 <?php
+					 }
+					 ?>
 			</tr>
 			<tr>
 			<td> {{ trans('adminDashboard.averagepermother') }} </td>
+			<?php if(isset($averagepermother)) { ?>
 			<td> {{$averagepermother[0]->Average}} </td>
+			<?php 
+					 }
+					 else {
+					 ?>
+			<td> {{ trans('adminDashboard.dataunavailable') }} </td>
+					 <?php
+					 }
+					 ?>
 			</tr>
 			<tr>
 			<td> {{ trans('adminDashboard.callsattempt1') }}  </td>
+			<?php if(isset($callsattemptequal1)) { ?>
 			<td> {{$callsattemptequal1[0]->count}} </td>
+			<?php 
+					 }
+					 else {
+					 ?>
+			<td> {{ trans('adminDashboard.dataunavailable') }} </td>
+					 <?php
+					 }
+					 ?>
 			</tr>
 			<tr>
 			<td> {{ trans('adminDashboard.callsattempt2') }} </td>
+			<?php if(isset($callsattemptequal2)) { ?>
 			<td> {{$callsattemptequal2[0]->count}} </td>
+			<?php 
+					 }
+					 else {
+					 ?>
+			<td> {{ trans('adminDashboard.dataunavailable') }} </td>
+					 <?php
+					 }
+					 ?>
 			</tr>
 			<tr>
 			<td> {{ trans('adminDashboard.callsgt2') }} </td>
+			<?php if(isset($callsattemptgt2)) { ?>
 			<td> {{$callsattemptgt2[0]->count}} </td>
+			<?php 
+					 }
+					 else {
+					 ?>
+			<td> {{ trans('adminDashboard.dataunavailable') }} </td>
+					 <?php
+					 }
+					 ?>
 			</tr>
 			<tr>
 			<td> {{ trans('adminDashboard.mothersincorrectphno') }} </td>
+			<?php if(isset($incorrectphno)) { ?>
 			<td> {{$incorrectphno[0]->count}} </td>
+			<?php 
+					 }
+					 else {
+					 ?>
+			<td> {{ trans('adminDashboard.dataunavailable') }} </td>
+					 <?php
+					 }
+					 ?>
 			</tr>
 			<tr>
 			<td> {{ trans('adminDashboard.mothersnotreachable') }} </td>
+			<?php if(isset($notreachable)) { ?>
 			<td> {{$notreachable[0]->count}} </td>
+			<?php 
+					 }
+					 else {
+					 ?>
+			<td> {{ trans('adminDashboard.dataunavailable') }} </td>
+					 <?php
+					 }
+					 ?>
 			</tr>
 			<tr>
 			<td> {{ trans('adminDashboard.mothersincorrectdeliverydate') }} </td>
+			<?php if(isset($incorrectdeliverydate)) { ?>
 			<td> {{$incorrectdeliverydate[0]->count}} </td>
+			<?php 
+					 }
+					 else {
+					 ?>
+			<td> {{ trans('adminDashboard.dataunavailable') }} </td>
+					 <?php
+					 }
+					 ?>
 			</tr>
 			<tr>
 			<td> {{ trans('adminDashboard.numberactionitems') }} </td>
+			<?php if(isset($actionitems)) { ?>
 			<td> {{$actionitems[0]->count}} </td>
+			<?php 
+					 }
+					 else {
+					 ?>
+			<td> {{ trans('adminDashboard.dataunavailable') }} </td>
+					 <?php
+					 }
+					 ?>
 			</tr>
 			</table>
 			</div>
@@ -131,7 +221,7 @@ smallfont{
 					{{ trans('adminDashboard.callchampionsnotcalled_week') }} <?php echo date("j F Y", $datestart); ?> to <?php echo date("j F Y", $dateend); ?>
 			</h3>
 			<?php 
-			if(!empty($cc_not_called)){
+			if(isset($cc_not_called) && !empty($cc_not_called)){
 			?>
 		    <table class="table table-striped table-bordered table-hover">
 					<thead>
@@ -179,7 +269,7 @@ smallfont{
 					{{ trans('adminDashboard.receivedcalls_week') }}
 			</h3>
 			<?php 
-			if(!empty($received_calls)){
+			if(isset($received_calls) && !empty($received_calls)){
 			?>
 			<table class="table table-striped table-bordered table-hover">
 					<thead>
