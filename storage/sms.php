@@ -44,7 +44,7 @@
 	}
 	
 	
-	function template4($phone_number, $cc_name, $phone_number, $mother_name, $mother_number){
+	function template4( $phone_number,$cc_name, $phone_number, $mother_name, $mother_number){
 		$ret = '<MESSAGE>
 		<AUTHKEY>'.$_ENV['SMS_KEY'].'</AUTHKEY>
 		<SENDER>'.$_ENV['SMS_NAME'].'</SENDER>
@@ -58,7 +58,7 @@
 		return $ret;
 	}
 	
-	function template5($phone_number, $cc_name, $phone_number, $mother_name, $mother_number){
+	function template5($phone_number,$cc_name, $phone_number, $mother_name, $mother_number){
 		$ret = '<MESSAGE>
 		<AUTHKEY>'.$_ENV['SMS_KEY'].'</AUTHKEY>
 		<SENDER>'.$_ENV['SMS_NAME'].'</SENDER>
