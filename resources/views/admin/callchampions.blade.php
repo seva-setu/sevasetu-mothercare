@@ -26,24 +26,25 @@
 					<br/>
 					<!-- Call champion navigation tab bar-->
 					<ul class="nav nav-tabs">
-						<li class="active"><a data-toggle="tab" href="#home">All</a></li>
-						<li><a data-toggle="tab" href="#menu1">Unapproved</a></li>
-						<li><a data-toggle="tab" href="#menu2">Shadowing</a></li>
-						<li><a data-toggle="tab" href="#menu3">Unassigned Callchampions</a></li>
+						<li class="active"><a data-toggle="tab" href="#home">{{ trans('routes.approved') }}</a></li>
+						<li><a data-toggle="tab" href="#menu1">{{ trans('routes.unapproved') }}</a></li>
+						<li><a data-toggle="tab" href="#menu2">{{ trans('routes.shadowing') }}</a></li>
+						<li><a data-toggle="tab" href="#menu3">{{ trans('routes.unassignedcc') }}</a></li>
 					</ul>
 
 				<div class="tab-content">
 					<!--Tab for all callchampion who are approved and assigned to some beneficiaries-->
 					<div id="home" class="tab-pane fade in active">
-						<h3>Total call champions till date: 9</h3>
+						<h3>{{ trans('routes.approvedcc') }}</h3>
+						<br/>
 						<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover">
 							<thead class="warning">
-								<th>CC Id</th>
-								<th>Name</th>
-								<th>Email</th>
-								<th>Contact</th>
-								<th>Assign mothers</th>
+								<th>{{ trans('routes.cc_id') }}</th>
+								<th>{{ trans('routes.name') }}</th>
+								<th>{{ trans('routes.email') }}</th>
+								<th>{{ trans('routes.phonenumber') }}</th>
+								<th>{{ trans('routes.assignmothers') }}</th>
 							</thead>
 							
 							<tbody>
@@ -53,7 +54,7 @@
 										<td><?php echo $value->v_name;?></td>	
 										<td><?php echo $value->v_email;?></td>
 										<td><?php echo $value->i_phone_number;?></td>	
-										<td><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#assign_mothers" data-id = '{{ $value->cc_id }}' >Assign mothers</button></td>
+										<td><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#assign_mothers" data-id = '{{ $value->cc_id }}' >{{ trans('routes.assignmothers') }}</button></td>
 									</tr>  
 								<?php } ?>
 							</tbody>
@@ -67,12 +68,12 @@
 						      	<div class="modal-content">
 						        	<div class="modal-header">
 						          		<button type="button" class="close" data-dismiss="modal">&times;</button>
-						          		<h4 class="modal-title">Select number of mothers</h4>
+						          		<h4 class="modal-title">{{ trans('routes.selectmothers') }}</h4>
 						        	</div>
 						        	<div class="modal-body">
 						          		<form class="form-horizontal" role="form" method="post" action="{{ url() }}/assign/mothers">
 										    <div class="form-group">
-										      <label class="control-label col-sm-3" for="mothers_count">No of mothers:</label>
+										      <label class="control-label col-sm-3" for="mothers_count">{{ trans('routes.noofmothers') }}</label>
 										      <div class="col-sm-9">
 										        <input type="number" class="form-control" min="1" max="20" id="mothers_count" name="mothers_count" required>
 										        <input type="hidden"  id="cc_id" name="cc_id">
@@ -81,7 +82,7 @@
 										    <div class="form-group">
 										      <div class="col-sm-offset-2 col-sm-10">
 										      	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-										        <button type="submit" class="btn btn-primary">Assign Mothers</button>
+										        <button type="submit" class="btn btn-primary">{{ trans('routes.assignmothers') }}</button>
 										      </div>
 										    </div>
 										</form>
@@ -96,15 +97,15 @@
 
 					<!--Tab for Unapproved callchampions who just got unboard and unapproved-->
 					<div id="menu1" class="tab-pane fade">
-						<h3>Unapproved</h3>
+						<h3>{{ trans('routes.unapproved') }}</h3>
 						<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover">
 							<thead class="warning">
-								<th>CC Id</th>
-								<th>Name</th>
-								<th>Email</th>
-								<th>Contact</th>
-								<th>Assign mentor</th>
+								<th>{{ trans('routes.cc_id') }}</th>
+								<th>{{ trans('routes.name') }}</th>
+								<th>{{ trans('routes.email') }}</th>
+								<th>{{ trans('routes.phonenumber') }}</th>
+								<th>{{ trans('routes.assignmentor') }}</th>
 							</thead>
 							
 							<tbody>
@@ -114,7 +115,7 @@
 										<td><?php echo $value->v_name;?></td>	
 										<td><?php echo $value->v_email;?></td>
 										<td><?php echo $value->i_phone_number;?></td>	
-										<td><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#assign_mentor" data-id = '{{ $value->cc_id }}' data-name='{{ $value->v_name }}' >Assign mentor</button></td>
+										<td><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#assign_mentor" data-id = '{{ $value->cc_id }}' data-name='{{ $value->v_name }}' >{{ trans('routes.assignmentor') }}</button></td>
 									</tr>  
 								<?php } ?>
 							</tbody>
@@ -128,19 +129,19 @@
 						      	<div class="modal-content">
 						        	<div class="modal-header">
 						          		<button type="button" class="close" data-dismiss="modal">&times;</button>
-						          		<h4 class="modal-title">Assign a mentor</h4>
+						          		<h4 class="modal-title">{{ trans('routes.assignmentor') }}</h4>
 						        	</div>
 						        	<div class="modal-body">
 						          		<form class="form-horizontal" role="form">
 										    <div class="form-group">
-										      <label class="control-label col-sm-3" for="mentee_name">Mentee:</label>
+										      <label class="control-label col-sm-3" for="mentee_name">{{ trans('routes.mentee') }}:</label>
 										      <div class="col-sm-9">
 										        <input type="text" class="form-control" id="mentee_name" readonly>
 										        <input type="hidden"  id="mentee">
 										      </div>
 										    </div>
 										    <div class="form-group">
-										      <label class="control-label col-sm-3" for="mentor">Select Mentor:</label>
+										      <label class="control-label col-sm-3" for="mentor">{{ trans('routes.selectmentor') }}:</label>
 										      <div class="col-sm-9">
 										        <select class="form-control" id="mentor" name="mentor" placeholder="Mentor">
 										        <?php foreach ($mentors as $value){ ?>
@@ -151,7 +152,7 @@
 										    </div>
 										    <div class="form-group">
 										      <div class="col-sm-offset-2 col-sm-10">
-										        <button type="submit" onclick="assign_mentor(event)" class="btn btn-primary">Assign Mentor</button>
+										        <button type="submit" onclick="assign_mentor(event)" class="btn btn-primary">{{ trans('routes.assignmentor') }}</button>
 										      </div>
 										    </div>
 										</form>
@@ -166,17 +167,17 @@
 
 					<!--Tab for ongoing shadowing mentors and mentees -->
 					<div id="menu2" class="tab-pane fade">
-						<h3>Shadowing</h3>
+						<h3>{{ trans('routes.shadowing') }}</h3>
 						<div class="table-responsive">
 							<table class="table table-striped table-bordered table-hover">
 								<thead class="warning">
-									<th>CC Id</th>
-									<th>Mentee</th>
-									<th>Contact</th>
-									<th>CC Id</th>
-									<th>Mentor</th>
-									<th>Contact</th>
-									<th>Mark as done</th>
+									<th>{{ trans('routes.cc_id') }}</th>
+									<th>{{ trans('routes.mentee') }}</th>
+									<th>{{ trans('routes.phonenumber') }}</th>
+									<th>{{ trans('routes.cc_id') }}</th>
+									<th>{{ trans('routes.mentor') }}</th>
+									<th>{{ trans('routes.phonenumber') }}</th>
+									<th>{{ trans('routes.markdone') }}</th>
 								</thead>
 								
 								<tbody>
@@ -188,7 +189,7 @@
 											<td><?php echo $mentor[$i][0]->cc_id;?></td>
 											<td><?php echo $mentor[$i][0]->v_name;?></td>
 											<td><?php echo $mentor[$i][0]->i_phone_number;?></td>	
-											<td><button class="btn btn-primary btn-xs" onclick="shadowing_done(event, <?php echo $mentees[$i]->cc_id;?>)" >Mark as Done</button></td>
+											<td><button class="btn btn-primary btn-xs" onclick="shadowing_done(event, <?php echo $mentees[$i]->cc_id;?>)" >{{ trans('routes.markdone') }}</button></td>
 										</tr>  
 									<?php } ?>
 								</tbody>
@@ -198,15 +199,15 @@
 
 					<!--Tab for approved callchampions who are yet to assign to any beneficiary-->
 					<div id="menu3" class="tab-pane fade">
-						<h3>Menu 3</h3>
+						<h3>{{ trans('routes.unassignedcc') }}</h3>
 						<div class="table-responsive">
 							<table class="table table-striped table-bordered table-hover">
 								<thead class="warning">
-									<th>CC Id</th>
-									<th>Name</th>
-									<th>Email</th>
-									<th>Contact</th>
-									<th>Assign mothers</th>
+									<th>{{ trans('routes.cc_id') }}</th>
+									<th>{{ trans('routes.name') }}</th>
+									<th>{{ trans('routes.email') }}</th>
+									<th>{{ trans('routes.phonenumber') }}</th>
+									<th>{{ trans('routes.assignmothers') }}</th>
 								</thead>
 								
 								<tbody>
@@ -220,7 +221,7 @@
 												<input type="hidden" name="cc_id" value="{{ $value->cc_id }}"/>
 												<input type="hidden" name="mothers_count" value="-1"/>
 										      	<input type="hidden" name="_token" value="{{ csrf_token() }}"/>
-										      	<button class="btn btn-primary btn-xs">Assign mothers</button>
+										      	<button class="btn btn-primary btn-xs">{{ trans('routes.assignmothers') }}</button>
 										      	</form>
 										    </td>
 										</tr>  
@@ -267,12 +268,12 @@
 			         	  },
 			     }).done(function (data) {
 			     	$('#assign_mentor').modal('hide');
-			         alert("successfuly assigned mentor.");
+			         alert("{{ trans('routes.assignmentormsg') }}");
 			         event.preventDefault();
 			         window.location.href = "";
 
 			     }).fail(function (data) {
-			     	alert("Error in assigning mentor. check logs for further info.");
+			     	alert("{{ trans('routes.mentorerrormsg') }}");
 			     });
   		}
 
@@ -288,12 +289,12 @@
 			         		'cc_id': cc_id
 			         	  },
 			     }).done(function (data) {
-			         alert("successfuly marked shadowing as done.");
+			         alert("{{ trans('routes.shadowingdonemsg') }}");
 			         event.preventDefault();
 			         window.location.href = "";
 
 			     }).fail(function (data) {
-			     	alert("Error in assigning mentor. check logs for further info.");
+			     	alert("{{ trans('routes.shadowerrormsg') }}");
 			     });
   		}
 
