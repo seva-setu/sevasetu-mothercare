@@ -383,7 +383,12 @@ class BeneficiaryController extends Controller{
     				$error_message='';
 					if(isset($failedRules['v_phone_number'])) 
 					{
-						$error_message=$error_message."    "."Phone Number Missing/Incorrect";
+						if(isset($failedRules['v_phone_number']['DigitsBetween']))
+						$error_message=$error_message."    "."Phone Number Incorrect";
+						else
+						{
+							$error_message=$error_message."    "."Phone Number Missing";
+						}
 					}
 					if(isset($failedRules['v_name']))
 					{
@@ -408,18 +413,6 @@ class BeneficiaryController extends Controller{
      				Session::forget('count_excelupload_errors.count');
      				Session::flash('count_excelupload_errors.count',$count_excelupload_errors);
      			}
-    			else if(Session::get('should_data_be_inserted')==1)
-    			{
-    				// $beneficiary->fk_f_id=$beneficiary_data['fk_f_id'];
-    				// $beneficiary->v_name= $beneficiary_data['v_name'];
-     			// 	$beneficiary->v_husband_name=$beneficiary_data['v_husband_name'];
-    				// $beneficiary->i_age=$beneficiary_data['i_age'];
-    				// $beneficiary->v_phone_number=$beneficiary_data['v_phone_number'];
-    				// $beneficiary->v_awc_number=$beneficiary_data['v_awc_number'];
-    				// $beneficiary->v_village_name=$beneficiary_data['v_village_name'];
-    				// $beneficiary->dt_due_date=$var;
-    				// $beneficiary->save();
-    			}
     			Session::forget('should_data_be_inserted');
      			Session::flash('should_data_be_inserted',1);	
  		});
