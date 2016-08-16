@@ -196,7 +196,7 @@ class BeneficiaryController extends Controller{
 		
 	}
 
-	// download link for sample excel
+	// download link for sample excels
 	public function downloadExcel()
 	{
 		return response()->download(public_path('download\sample.xlsx'));
@@ -303,6 +303,7 @@ class BeneficiaryController extends Controller{
  		{
 
  			//$reader acts differently in different excel formats
+		//	dd($reader->get());
 			if(Input::file('beneficiaries_data')->getClientOriginalExtension()=='csv')
 				$data=$reader->get();
 			else
@@ -318,8 +319,9 @@ class BeneficiaryController extends Controller{
   					'v_phone_number'=>'required|numeric|digits_between:10,10',
   					'dt_due_date'=>'required'
 		  			);
- 				$dt_due_date=str_replace("-", "/", $r->date_of_delivery);
-    			$beneficiary_data = array(
+    			if(isset($r['mobile_no'])&&isset($r['womans_name'])&&isset($r['field_worker_id'])&&isset($r['fatherspouse_name'])&&isset($r['age'])&&isset($r['awc_code'])&&isset($r['village_name'])&&isset($r['date_of_delivery']))
+    			{
+    					$beneficiary_data = array(
     					'fk_f_id'=>$r->field_worker_id,
     					'v_name' => $r->womans_name,
     					'v_husband_name'=>$r->fatherspouse_name,
@@ -329,6 +331,12 @@ class BeneficiaryController extends Controller{
     					'v_village_name'=>$r->village_name,
     					'dt_due_date'=>''//date('d/m/y',strtotime($dt_due_date))
     			);
+    			}
+    			else
+    			{
+    				dd('Incorrect Excel Format.');
+    			}
+ 				$dt_due_date=str_replace("-", "/", $r->date_of_delivery);
     			//validating dates as by default date value is 1970/1/1 thus chaning that to null so that validation rules work correctly
     			if($r->date_of_delivery!='')
     			{

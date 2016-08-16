@@ -16,7 +16,9 @@ smallfont{
 </style>
 <body>
 @include('template/admin_header')
+@include('template/admin_sidebar')
 @include('template/admin_jsscript')
+
 <br><br>
 <div class="container" >
 <form class="form-horizontal" method="POST" action="{{url()}}/data/upload"
@@ -96,13 +98,13 @@ smallfont{
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
      <table class="table">
     <tr>
-     <th>S No. as per excel</th><th>Warnings(Total Warnings:{{Session::get('count_excelupload_warning.count')}})</th>  
+     <th>S No. as per excel</th><th>Warnings&nbsp;(Total Warnings:&nbsp;&nbsp;{{Session::get('count_excelupload_warning.count')}})</th>  
     </tr>
       
       @for ($i = 0; $i < Session::get('count_excelupload_warning.count'); $i++)
       <tr>
         <td>{{Session::get('count_excelupload_warning'.$i)}}</td>
-        <td>{{Session::get('count_excelupload_warning.message'.$i)}}</td>
+        <td><b>{{Session::get('count_excelupload_warning.message'.$i)}}</b></td>
       </tr>  
       @endfor
       </table>
@@ -113,10 +115,10 @@ smallfont{
 <div class="alert alert-danger">    
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 
-<b>Errors occurred while saving following data.<b><br>
+<b>Errors occurred while saving following data.</b><br>
      <table class="table">
     <tr >
-     <th>S No. as per excel</th><th>Error(Total errors:{{Session::get('count_excelupload_data_repeated.count')+Session::get('count_excelupload_errors.count')}})</th>  
+     <th>S No. as per excel</th><th>Error&nbsp;(Total errors:&nbsp;&nbsp;{{Session::get('count_excelupload_data_repeated.count')+Session::get('count_excelupload_errors.count')}})</th>  
     </tr>
 
 @if(Session::get('count_excelupload_data_repeated.count')!=0)
@@ -124,7 +126,7 @@ smallfont{
   @for ($i = 0; $i < Session::get('count_excelupload_data_repeated.count'); $i++)
       <tr>
         <td>{{Session::get('count_excelupload_data_repeated'.$i)}}</td>
-        <td>{{Session::get('count_excelupload_data_repeated.message'.$i)}}</td>
+        <td><b>{{Session::get('count_excelupload_data_repeated.message'.$i)}}</b></td>
       </tr>  
       @endfor    
 @endif
@@ -133,7 +135,7 @@ smallfont{
       @for ($i = 0; $i < Session::get('count_excelupload_errors.count'); $i++)
       <tr>
         <td>{{Session::get('count_excelupload_errors'.$i)}}</td>
-        <td>{{Session::get('count_excelupload_errors.message'.$i)}}</td>
+        <td><b>{{Session::get('count_excelupload_errors.message'.$i)}}</b></td>
       </tr>  
       @endfor
 @endif

@@ -8,7 +8,6 @@
 	
 	$user_stats = Session::get('user_stats');
 ?>
-
 <nav class="navbar-default navbar-side" role="navigation">
 	<div class="sidebar-collapse">
 		<ul class="nav" id="main-menu">
@@ -27,3 +26,4 @@
 		</ul>
 	</div>
 </nav>
+<br><br>
