@@ -32,13 +32,13 @@ smallfont{
 
 <!-- File Button --> 
 <div class="form-group">
-  <label class="col-md-4 control-label" for="excel_file">Upload Excel-File</label>
+  <label class="col-md-4 control-label" for="excel_file">{{ trans('upload_excel.Upload_Excel_File') }}</label>
   <div class="col-md-4">
 	<input type="file" name="beneficiaries_data" class="filestyle" data-buttonName="btn-primary" accept=".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain">
  </div>
 <div class="form-group">
   <div class="col-md-1 temp_submit">
-    <button id="upload" class="btn btn-primary">Upload Data</button>
+    <button id="upload" class="btn btn-primary">{{ trans('upload_excel.upload_data_button') }}</button>
   </div>
  <a href="{{url()}}/download" class="btn btn-large pull-right">
 <div class="row">
@@ -46,7 +46,7 @@ smallfont{
  <span class="glyphicon glyphicon-download fa-lg"></span>
  </div>
 <div class="col-md-1">
- Download Sample Excel-File  
+ {{ trans('upload_excel.Download_Sample_Excel_File') }}  
 </div>
 </div>
 </a>
@@ -63,9 +63,9 @@ smallfont{
  </div>
   <div class="col-md-4 ">
 <div id="final_submit" style="display:none;">
-  Are you sure you want to submit?
-  <button type="submit" class="btn btn-primary">Yes</button>
-  <button  id="dont_submit" class="btn btn-primary">No</button>
+  {{ trans('upload_excel.confirm_submit') }}
+  <button type="submit" class="btn btn-primary">{{ trans('upload_excel.yes') }}</button>
+  <button  id="dont_submit" class="btn btn-primary">{{ trans('upload_excel.no') }}</button>
 </div>
 </div>
 
@@ -79,7 +79,7 @@ smallfont{
 <div id="choose_file" style="display:none;">
     <div class="alert alert-danger">
       <a href="#" class="close" aria-label="close">&times;</a>
-        File Missing.
+        {{ trans('upload_excel.File_Missing') }}
     </div>
 
 </div>

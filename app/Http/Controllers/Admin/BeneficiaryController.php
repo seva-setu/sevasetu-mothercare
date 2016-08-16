@@ -357,7 +357,7 @@ class BeneficiaryController extends Controller{
  				{
     				$count_excelupload_warning=Session::get('count_excelupload_warning.count');
  					Session::flash('count_excelupload_warning'.$count_excelupload_warning,$r->srno);
- 					Session::flash('count_excelupload_warning.message'.$count_excelupload_warning,'Combination of Mother name and Husband name already exist');					
+ 					Session::flash('count_excelupload_warning.message'.$count_excelupload_warning,trans('upload_excel.combination_warning'));					
      				$count_excelupload_warning++;
      				Session::forget('count_excelupload_warning.count');
      				Session::flash('count_excelupload_warning.count',$count_excelupload_warning);
@@ -368,7 +368,7 @@ class BeneficiaryController extends Controller{
     			{
     				$count_excelupload_data_repeated=Session::get('count_excelupload_data_repeated.count');
  					Session::flash('count_excelupload_data_repeated'.$count_excelupload_data_repeated,$r->srno);
- 					Session::flash('count_excelupload_data_repeated.message'.$count_excelupload_data_repeated,'Identical Data exists in database');
+ 					Session::flash('count_excelupload_data_repeated.message'.$count_excelupload_data_repeated,trans('upload_excel.already_in_database'));
      				$count_excelupload_data_repeated++;
      				Session::forget('count_excelupload_data_repeated.count');
      				Session::flash('count_excelupload_data_repeated.count',$count_excelupload_data_repeated);
@@ -384,10 +384,10 @@ class BeneficiaryController extends Controller{
 					if(isset($failedRules['v_phone_number'])) 
 					{
 						if(isset($failedRules['v_phone_number']['DigitsBetween']))
-						$error_message=$error_message."    "."Phone Number Incorrect";
+						$error_message=$error_message."    ".trans('upload_excel.Phone_Number_Incorrect');
 						else
 						{
-							$error_message=$error_message."    "."Phone Number Missing";
+							$error_message=$error_message."    ".trans('upload_excel.Phone_Number_Missing');
 						}
 					}
 					if(isset($failedRules['v_name']))
@@ -396,7 +396,7 @@ class BeneficiaryController extends Controller{
 						{
 							$error_message=$error_message.",";	
 						}
-						$error_message=$error_message."    "."Mother Name Missing";
+						$error_message=$error_message."    ".trans('upload_excel.Mother_Name_Missing');
 					}
 					 if(isset($failedRules['dt_due_date']))
 					 { 
@@ -404,7 +404,7 @@ class BeneficiaryController extends Controller{
 					 	{
 					 		$error_message=$error_message.",";
 					 	}
-					 	$error_message=$error_message."    "."Date Of Delivery Missing";
+					 	$error_message=$error_message."    ".trans('upload_excel.Date_Of_Delivery_Missing');
 					 }
     				$count_excelupload_errors=Session::get('count_excelupload_errors.count');
  					Session::flash('count_excelupload_errors'.$count_excelupload_errors,$r->srno);
