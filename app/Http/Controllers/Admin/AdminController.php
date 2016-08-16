@@ -244,13 +244,16 @@ class AdminController extends Controller{
 
   // }
 
-  public function assign_mothers()
+  public function assign_mothers($cc_id = -1, $count = -1)
   {
     if($this->user_role_type == 2)
           return Redirect::to('/mothers');
 
-    $cc_id = Input::get('cc_id');
-    $count = Input::get('mothers_count');
+    if(isset(Input::get('cc_id')))
+      $cc_id = Input::get('cc_id');
+
+    if(isset(Input::get('mothers_count')))
+      $count = Input::get('mothers_count');
 
     if($cc_id == -1)
       return Redirect::back();
