@@ -24,6 +24,7 @@
 			<div class="row container-fluid">
 				<h2>Call Champions</h2>
 					<br/>
+					<!-- Call champion navigation tab bar-->
 					<ul class="nav nav-tabs">
 						<li class="active"><a data-toggle="tab" href="#home">All</a></li>
 						<li><a data-toggle="tab" href="#menu1">Unapproved</a></li>
@@ -32,6 +33,7 @@
 					</ul>
 
 				<div class="tab-content">
+					<!--Tab for all callchampion who are approved and assigned to some beneficiaries-->
 					<div id="home" class="tab-pane fade in active">
 						<h3>Total call champions till date: 9</h3>
 						<div class="table-responsive">
@@ -58,6 +60,7 @@
 						</table>
 						</div>
 
+						<!--Modal for assigning mothers and selection of no of mothers to be assigned to that callchampion-->
 						<div class="modal fade" id="assign_mothers" role="dialog">
 						    <div class="modal-dialog">						    
 						      <!-- Modal content-->
@@ -91,6 +94,7 @@
 						</div> 
 					</div>
 
+					<!--Tab for Unapproved callchampions who just got unboard and unapproved-->
 					<div id="menu1" class="tab-pane fade">
 						<h3>Unapproved</h3>
 						<div class="table-responsive">
@@ -117,6 +121,7 @@
 						</table>
 						</div>
 
+						<!--Modal for assigning mentors and selection of mentors to be assigned to that unapproved callchampion-->
 						<div class="modal fade" id="assign_mentor" role="dialog">
 						    <div class="modal-dialog">						    
 						      <!-- Modal content-->
@@ -159,6 +164,7 @@
 						</div> 
 					</div>
 
+					<!--Tab for ongoing shadowing mentors and mentees -->
 					<div id="menu2" class="tab-pane fade">
 						<h3>Shadowing</h3>
 						<div class="table-responsive">
@@ -189,6 +195,8 @@
 							</table>
 						</div>
 					</div>
+
+					<!--Tab for approved callchampions who are yet to assign to any beneficiary-->
 					<div id="menu3" class="tab-pane fade">
 						<h3>Menu 3</h3>
 						<div class="table-responsive">
@@ -229,6 +237,7 @@
 
 
 	<script type="text/javascript">
+	 	// function sets the value of mentee id when assign mentor modal opens for a particular call champion
   		$('#assign_mentor').on('show.bs.modal', function(e){
 			   var menteeId = $(e.relatedTarget).data('id');
 			   var mentee = $(e.relatedTarget).data('name');
@@ -236,11 +245,13 @@
 			   document.getElementById('mentee').value = menteeId;
 			});
 
+  		// function sets the value of callchampion id when assign mothers modal opens for a particular call champion
   		$('#assign_mothers').on('show.bs.modal', function(e){
 			   var cc_id = $(e.relatedTarget).data('id');
 			   document.getElementById('cc_id').value = cc_id;
 			});
 
+  		// function sends a request to controller for assigning mentor for a particular unapproved callchampion
   		function assign_mentor(event)
   		{
   			 event.preventDefault();
@@ -265,6 +276,7 @@
 			     });
   		}
 
+  		// function calls the method in controller for changing the status of a cllchampion from shadowing to approved on mark as done action
   		function shadowing_done(event,cc_id)
   		{
   			event.preventDefault();
