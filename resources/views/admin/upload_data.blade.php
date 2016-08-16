@@ -40,7 +40,7 @@ smallfont{
   <div class="col-md-1 temp_submit">
     <button id="upload" class="btn btn-primary">Upload Data</button>
   </div>
- <a href="/download" class="btn btn-large pull-right">
+ <a href="{{url()}}/download" class="btn btn-large pull-right">
 <div class="row">
 <div class="col-md-1">
  <span class="glyphicon glyphicon-download fa-lg"></span>
