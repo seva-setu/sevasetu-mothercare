@@ -324,5 +324,5 @@ return array(
 		'promote' => 'Promote to Approved',
 		'confirmpromote' => 'Are you sure you want to promote to approved callchampions',
 		'successpromote' => 'Successfully Promoted to approved callchampions',
-
+		'errorpromote' => 'Some error occured while promoting. Check logs for further info.',
 );

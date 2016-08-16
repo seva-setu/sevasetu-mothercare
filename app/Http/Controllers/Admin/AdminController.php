@@ -377,7 +377,13 @@ class AdminController extends Controller{
     {  
       Session::flash('message',trans("routes.successpromote"));
       return Redirect::back();
-    }  
+    } 
+    else 
+    {  
+      Session::flash('message',trans("routes.errorpromote"));
+      return Redirect::back();
+    }
+
   }
 
 
