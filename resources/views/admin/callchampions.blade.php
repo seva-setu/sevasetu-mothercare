@@ -1,5 +1,6 @@
 <?php 
 	$userinfo = Session::get('user_logged');
+	
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,11 +19,13 @@
 <body>
 	@include('template/admin_header')
 	@include('template/admin_sidebar')
-
 	<div id="page-wrapper" >
 		<div id="page-inner">
 			<div class="row container-fluid">
 				<h2>Call Champions</h2>
+					@if(Session::has('message'))
+						<script> $( document ).ready(function() {alert("{{ Session::get('message') }}")});</script>
+					@endif
 					<br/>
 					<!-- Call champion navigation tab bar-->
 					<ul class="nav nav-tabs">
@@ -106,6 +109,7 @@
 								<th>{{ trans('routes.email') }}</th>
 								<th>{{ trans('routes.phonenumber') }}</th>
 								<th>{{ trans('routes.assignmentor') }}</th>
+								<th>{{ trans('routes.promote') }}</th>
 							</thead>
 							
 							<tbody>
@@ -115,7 +119,11 @@
 										<td><?php echo $value->v_name;?></td>	
 										<td><?php echo $value->v_email;?></td>
 										<td><?php echo $value->i_phone_number;?></td>	
-										<td><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#assign_mentor" data-id = '{{ $value->cc_id }}' data-name='{{ $value->v_name }}' >{{ trans('routes.assignmentor') }}</button></td>
+										<td><button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#assign_mentor" data-id = '{{ $value->cc_id }}' data-name='{{ $value->v_name }}' >{{ trans('routes.assignmentor') }}</button>
+										</td>
+										<td><a href="{{ url() }}/callchampion/promote/{{ $value->cc_id }}"><button
+										onclick = "return confirm('Are you sure you want to directly promote ' + '{{ $value->v_name }}' + ' to approved callchampions ?');" class="btn btn-success btn-xs">{{ trans('routes.promote') }}</button></a>
+										</td>
 									</tr>  
 								<?php } ?>
 							</tbody>

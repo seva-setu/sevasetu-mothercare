@@ -303,7 +303,7 @@ class AdminController extends Controller{
   */
   public function assign_mothers($cc_id = -1, $count = -1)
   {
-     // if user is a callchampion and trying to access this url redirect to /mothers
+    // if user is a callchampion and trying to access this url redirect to /mothers
     if($this->user_role_type == 2)
           return Redirect::to('/mothers');
 
@@ -348,6 +348,37 @@ class AdminController extends Controller{
 
   }
 
+
+  /*
+  Directely promotes a callchampion from unapproved to approved(in case prior experience no need for shadowing)
+  @input a) cc_id
+  @calling_method invoked by admin_dashboard/callchampion view also can be invoked by any other function
+  @algorithm
+    1. collects cc_id
+    2. if cc_id is not given redirects back
+    3. else updates status to 2(approved) and redirects back
+  */
+  public function promote_callchampion($cc_id = -1)
+  {
+    // if user is a callchampion and trying to access this url redirect to /mothers
+    if($this->user_role_type == 2)
+          return Redirect::to('/mothers');
+
+    //if cc_id is not given redirects back
+    if($cc_id == -1)
+      return Redirect::back();
+
+    //updating status from 0(unapproved) to 2(approved)
+    $result=DB::table('mct_call_champions')
+              ->where('mct_call_champions.cc_id',$cc_id)
+              ->update(['mct_call_champions.activation_status' => '2' ]);
+
+    if($result)
+    {  
+      Session::flash('message',trans("routes.successpromote"));
+      return Redirect::back();
+    }  
+  }
 
 
   //change password view

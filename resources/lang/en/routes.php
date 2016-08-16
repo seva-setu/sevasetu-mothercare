@@ -321,5 +321,8 @@ return array(
 		'mentorerrormsg' => 'Error in assigning mentor. check logs for further info.',
 		'shadowerrormsg' => 'Error in Shadowing. check logs for further info.',
 		'shadowingdonemsg' => 'successfuly marked shadowing as done.',
+		'promote' => 'Promote to Approved',
+		'confirmpromote' => 'Are you sure you want to promote to approved callchampions',
+		'successpromote' => 'Successfully Promoted to approved callchampions',
 
 );
