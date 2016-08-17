@@ -22,7 +22,7 @@ smallfont{
 		<div class="row">
 			<div class="col-lg-10 col-md-10">
 			<h3>
-					{{ trans('adminDashboard.callchampions_week') }} <?php echo date("j F Y", $datestart); ?> to <?php echo date("j F Y", $dateend); ?>
+					{{ trans('adminDashboard.callchampions_week') }} <?php echo date("d-m-Y", $datestart); ?> to <?php echo date("d-m-Y", $dateend); ?>
 			</h3>
 			<?php 
 			if(isset($call_details) && !empty($call_details)){
@@ -35,6 +35,7 @@ smallfont{
 						   <th> {{ trans('adminDashboard.mothername') }} </th>
 						   <th> {{ trans('adminDashboard.dateofcall') }} </th>
 						   <th> {{ trans('adminDashboard.motherphno') }} </th>
+						   <th> {{ trans('adminDashboard.reminderstatus') }} </th>
 					   </tr>
 					 </thead>
 					 <tbody>
@@ -47,8 +48,9 @@ smallfont{
 					<td> {{$val1->due_id }} </td>
 					<td> {{$val1->c_name}} </td>
 					<td> {{$val1->b_name}} </td>
-					<td> {{$val1->dt_intervention_date}} </td>
+					<td> {{date('d-m-Y', strtotime($val1->dt_intervention_date))}} </td>
 					<td> {{$val1->v_phone_number}} </td>
+					<td> {{$val1->reminder_status}} </td>
 					</tr>
 					 </tbody>
 					 
@@ -74,7 +76,7 @@ smallfont{
 		<div class="row">
 			<div class="col-lg-10 col-md-10">
 			<h3>
-					{{ trans('adminDashboard.stats_week') }} <?php echo date("j F Y", $datestart); ?> to <?php echo date("j F Y", $dateend); ?>
+					{{ trans('adminDashboard.stats_week') }} <?php echo date("d-m-Y", $datestart); ?> to <?php echo date("d-m-Y", $dateend); ?>
 			</h3>
 			<table class="table table-striped table-bordered table-hover">
 			<tr>
@@ -211,114 +213,6 @@ smallfont{
 			</div>
 		</div>
 		
-		
-		
-		
-		
-		<div class="row">
-			<div class="col-lg-10 col-md-10">
-			<h3>
-					{{ trans('adminDashboard.callchampionsnotcalled_week') }} <?php echo date("j F Y", $datestart); ?> to <?php echo date("j F Y", $dateend); ?>
-			</h3>
-			<?php 
-			if(isset($cc_not_called) && !empty($cc_not_called)){
-			?>
-		    <table class="table table-striped table-bordered table-hover">
-					<thead>
-					   <tr>
-					   	   <th> {{ trans('adminDashboard.dueid') }} </th>
-						   <th> {{ trans('adminDashboard.callchampionname') }} </th>
-						   <th> {{ trans('adminDashboard.callchampionphno') }} </th>
-						   <th> {{ trans('adminDashboard.reminderstatus') }} </th>
-						   
-					   </tr>
-					 </thead>
-					 <tbody>
-					<?php 
-					foreach($cc_not_called as $val)
-					{
-						
-					?>
-					<tr>
-					<td> {{$val->due_id }} </td>
-					<td> {{$val->name}} </td>
-					<td> {{$val->phno}} </td>					
-					<td> {{$val->reminder_status}} </td>
-					</tr>
-					 </tbody>
-					 
-					 <?php 
-					}
-					?>
-					
-			</table>
-			<?php 
-			}
-			else {
-					
-					 ?>
-					 <h4>{{ trans('adminDashboard.nocalls_week') }}</h4>
-					 <?php } 
-					 ?>
-			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col-lg-10 col-md-10">
-			<h3>
-					{{ trans('adminDashboard.receivedcalls_week') }}
-			</h3>
-			<?php 
-			if(isset($received_calls) && !empty($received_calls)){
-			?>
-			<table class="table table-striped table-bordered table-hover">
-					<thead>
-					   <tr>
-					   	   <th> {{ trans('adminDashboard.reportid') }} </th>
-						   <th> {{ trans('adminDashboard.dueid') }} </th>
-						   <th> {{ trans('adminDashboard.beneficiaryid') }} </th>
-						   <th> {{ trans('adminDashboard.callchampionid') }} </th>
-						   <th> {{ trans('adminDashboard.modifydate') }} </th>
-						   <th> {{ trans('adminDashboard.conversation') }} </th>
-						   <th> {{ trans('adminDashboard.actionitems') }} </th>
-						   
-					   </tr>
-					 </thead>
-					 <tbody>
-					<?php 
-					
-					foreach($received_calls as $val1)
-					{
-						
-					?>
-					<tr>
-					<td> {{$val1->report_id }} </td>
-					<td> {{$val1->fk_due_id}} </td>
-					<td> {{$val1->fk_b_id}} </td>
-					<td> {{$val1->fk_cc_id}} </td>
-					<td> {{$val1->dt_modify_date}} </td>
-					<td> {{$val1->t_conversation}} </td>
-					<td> {{$val1->t_action_items}} </td>
-					</tr>
-					 </tbody>
-					 
-					 <?php 
-						
-					}
-					?>
-					
-			</table>
-			<?php 
-					}
-					else {
-					 ?>
-					 <h4>{{ trans('adminDashboard.nocallsreceived_week') }}</h4>
-					 <?php 
-					}
-					 ?>
-			</div>
-			
-		</div>
 		
 			
 		
