@@ -225,7 +225,7 @@ class BeneficiaryController extends Controller{
 		
 	}
 
-	// download link for sample excel
+	// download link for sample excels
 	public function downloadExcel()
 	{
 		return response()->download(public_path('download\sample.xlsx'));
@@ -332,6 +332,7 @@ class BeneficiaryController extends Controller{
  		{
 
  			//$reader acts differently in different excel formats
+		//	dd($reader->get());
 			if(Input::file('beneficiaries_data')->getClientOriginalExtension()=='csv')
 				$data=$reader->get();
 			else
@@ -347,8 +348,9 @@ class BeneficiaryController extends Controller{
   					'v_phone_number'=>'required|numeric|digits_between:10,10',
   					'dt_due_date'=>'required'
 		  			);
- 				$dt_due_date=str_replace("-", "/", $r->date_of_delivery);
-    			$beneficiary_data = array(
+    			if(isset($r['mobile_no'])&&isset($r['womans_name'])&&isset($r['field_worker_id'])&&isset($r['fatherspouse_name'])&&isset($r['age'])&&isset($r['awc_code'])&&isset($r['village_name'])&&isset($r['date_of_delivery']))
+    			{
+    					$beneficiary_data = array(
     					'fk_f_id'=>$r->field_worker_id,
     					'v_name' => $r->womans_name,
     					'v_husband_name'=>$r->fatherspouse_name,
@@ -358,6 +360,12 @@ class BeneficiaryController extends Controller{
     					'v_village_name'=>$r->village_name,
     					'dt_due_date'=>''//date('d/m/y',strtotime($dt_due_date))
     			);
+    			}
+    			else
+    			{
+    				dd('Incorrect Excel Format.');
+    			}
+ 				$dt_due_date=str_replace("-", "/", $r->date_of_delivery);
     			//validating dates as by default date value is 1970/1/1 thus chaning that to null so that validation rules work correctly
     			if($r->date_of_delivery!='')
     			{
@@ -378,7 +386,7 @@ class BeneficiaryController extends Controller{
  				{
     				$count_excelupload_warning=Session::get('count_excelupload_warning.count');
  					Session::flash('count_excelupload_warning'.$count_excelupload_warning,$r->srno);
- 					Session::flash('count_excelupload_warning.message'.$count_excelupload_warning,'Combination of Mother name and Husband name already exist');					
+ 					Session::flash('count_excelupload_warning.message'.$count_excelupload_warning,trans('upload_excel.combination_warning'));					
      				$count_excelupload_warning++;
      				Session::forget('count_excelupload_warning.count');
      				Session::flash('count_excelupload_warning.count',$count_excelupload_warning);
@@ -389,7 +397,7 @@ class BeneficiaryController extends Controller{
     			{
     				$count_excelupload_data_repeated=Session::get('count_excelupload_data_repeated.count');
  					Session::flash('count_excelupload_data_repeated'.$count_excelupload_data_repeated,$r->srno);
- 					Session::flash('count_excelupload_data_repeated.message'.$count_excelupload_data_repeated,'Identical Data exists in database');
+ 					Session::flash('count_excelupload_data_repeated.message'.$count_excelupload_data_repeated,trans('upload_excel.already_in_database'));
      				$count_excelupload_data_repeated++;
      				Session::forget('count_excelupload_data_repeated.count');
      				Session::flash('count_excelupload_data_repeated.count',$count_excelupload_data_repeated);
@@ -404,7 +412,12 @@ class BeneficiaryController extends Controller{
     				$error_message='';
 					if(isset($failedRules['v_phone_number'])) 
 					{
-						$error_message=$error_message."    "."Phone Number Missing/Incorrect";
+						if(isset($failedRules['v_phone_number']['DigitsBetween']))
+						$error_message=$error_message."    ".trans('upload_excel.Phone_Number_Incorrect');
+						else
+						{
+							$error_message=$error_message."    ".trans('upload_excel.Phone_Number_Missing');
+						}
 					}
 					if(isset($failedRules['v_name']))
 					{
@@ -412,7 +425,7 @@ class BeneficiaryController extends Controller{
 						{
 							$error_message=$error_message.",";	
 						}
-						$error_message=$error_message."    "."Mother Name Missing";
+						$error_message=$error_message."    ".trans('upload_excel.Mother_Name_Missing');
 					}
 					 if(isset($failedRules['dt_due_date']))
 					 { 
@@ -420,7 +433,7 @@ class BeneficiaryController extends Controller{
 					 	{
 					 		$error_message=$error_message.",";
 					 	}
-					 	$error_message=$error_message."    "."Date Of Delivery Missing";
+					 	$error_message=$error_message."    ".trans('upload_excel.Date_Of_Delivery_Missing');
 					 }
     				$count_excelupload_errors=Session::get('count_excelupload_errors.count');
  					Session::flash('count_excelupload_errors'.$count_excelupload_errors,$r->srno);
@@ -429,18 +442,6 @@ class BeneficiaryController extends Controller{
      				Session::forget('count_excelupload_errors.count');
      				Session::flash('count_excelupload_errors.count',$count_excelupload_errors);
      			}
-    			else if(Session::get('should_data_be_inserted')==1)
-    			{
-    				// $beneficiary->fk_f_id=$beneficiary_data['fk_f_id'];
-    				// $beneficiary->v_name= $beneficiary_data['v_name'];
-     			// 	$beneficiary->v_husband_name=$beneficiary_data['v_husband_name'];
-    				// $beneficiary->i_age=$beneficiary_data['i_age'];
-    				// $beneficiary->v_phone_number=$beneficiary_data['v_phone_number'];
-    				// $beneficiary->v_awc_number=$beneficiary_data['v_awc_number'];
-    				// $beneficiary->v_village_name=$beneficiary_data['v_village_name'];
-    				// $beneficiary->dt_due_date=$var;
-    				// $beneficiary->save();
-    			}
     			Session::forget('should_data_be_inserted');
      			Session::flash('should_data_be_inserted',1);	
  		});
