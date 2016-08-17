@@ -27,6 +27,7 @@ class CallChampion extends Eloquent {
 		// needs to be joined with active records
 		$select_cc = DB::table($this->table)
 					->select('cc_id')
+					->where('activation_status','=', 2)
 					->get();
 		$list_cc = array();
 		foreach($select_cc as $cc)

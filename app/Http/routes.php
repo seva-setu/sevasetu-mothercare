@@ -58,6 +58,12 @@ Route::get('/mycalls/view/{id}', 'Admin\WeeklyCalllistController@list_specific_c
 Route::get('/checklist', 'Admin\WeeklyCalllistController@get_master_checklist');
 Route::post('/mycalls/update/{id}', 'Admin\CallchampionsController@update_call');
 Route::get('/callchampions', 'Admin\AdminController@callchampions');
+Route::post('/mentor/assign', 'Admin\AdminController@assign_mentor');
+Route::post('/callchampion/status/update', 'Admin\AdminController@update_callchampion_status');
+Route::post('/assign/mothers', 'Admin\AdminController@assign_mothers');
+Route::get('/callchampion/promote/{id}', 'Admin\AdminController@promote_callchampion');
+
+// Route::post('/assign/mothers/', 'Admin\AdminController@post_assign_mothers');
 
 /////////////////////////////////////
 
