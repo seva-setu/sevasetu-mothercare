@@ -81,15 +81,15 @@ class AdminDashboardController extends Controller {
 	public function calls_lastweek(){
 		
 		//'$select' contains details of calls scheduled in the past week
-		$date1 = DB::select('SELECT CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY as start');
-		$date2 = DB::select('SELECT CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY as end');
+		$date1 = DB::select('SELECT CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY as start');
+		$date2 = DB::select('SELECT CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY as end');
 		//var_dump($date1[0]->start);
 		//var_dump($date2[0]->end);
 		$datestart = strtotime($date1[0]->start);
 		$dateend = strtotime($date2[0]->end);
 		$select = DB::select('SELECT * FROM `mct_due_list` 
-				WHERE dt_intervention_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY 
-				AND dt_intervention_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY');
+				WHERE dt_intervention_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
+				AND dt_intervention_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY');
 		
 		/* $select1 = Array(); //'$select1' will contain details of 'Received' calls in the past week
 		
@@ -105,8 +105,8 @@ class AdminDashboardController extends Controller {
 		
 		$select1 = DB::select('select * from mct_due_list 
 				               join mct_callchampion_report on fk_due_id = due_id 
-				               where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY 
-				               AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY 
+				               where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
+				               AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY 
 				               and e_call_status = \'Received\'');
 		
 		$select1 = array_filter($select1);
@@ -125,74 +125,75 @@ class AdminDashboardController extends Controller {
 		} */
 		
 	   $select2 = DB::select('SELECT *,mct_beneficiary.v_name as b_name,mct_user.v_name as c_name from (Select * from mct_due_list 
-	   		WHERE dt_intervention_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY 
-				AND dt_intervention_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY)t1
+	   		WHERE dt_intervention_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+3 DAY 
+				AND dt_intervention_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-11 DAY)t1
 	   		join mct_beneficiary on mct_beneficiary.b_id=t1.fk_b_id
 	   		join mct_call_champions on mct_call_champions.cc_id=t1.fk_cc_id
-	   		join mct_user on mct_call_champions.fk_user_id=mct_user.user_id');
+	   		join mct_user on mct_call_champions.fk_user_id=mct_user.user_id
+	   		ORDER BY dt_intervention_date');
 		
 		//var_dump($select2);
 		
 	   /* $averagePerMother = DB::select('SELECT (select count(*) FROM mct_callchampion_report 
-	   		                           WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY 
-	   		                           AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY) / 
+	   		                           WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
+	   		                           AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) / 
 	   		                           (select count(distinct fk_due_id) FROM mct_callchampion_report
-	   		                           WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY 
-	   		                           AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY) as Average'); */
+	   		                           WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
+	   		                           AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) as Average'); */
 	   $averagePerMother = DB::select('SELECT (select count(*) FROM mct_callchampion_report
-	   		                           WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY
-	   		                           AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY) /
+	   		                           WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY
+	   		                           AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) /
 	   		                           (select count(distinct fk_b_id)as count from mct_due_list
 				                     join (SELECT distinct(fk_due_id) as id
 				                     FROM mct_callchampion_report
-				                     where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY
-				                     AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY) t1
+				                     where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY
+				                     AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) t1
 				                      on t1.id = mct_due_list.due_id) as Average');
 		$totalCalls = DB::select('select count(*) as count FROM mct_callchampion_report 
-				                  WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY 
-				                  AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY');
-		$callsAttemptEqual1 = DB::select('select count(*) as count from 
-				                          ( SELECT COUNT(fk_due_id) as c from mct_callchampion_report
-				                           WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY
-				                           AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY 
-				                           group by fk_due_id) t1 
-				                           where t1.c = 1');
-		$callsAttemptEqual2 = DB::select('select count(*) as count from
-				                          ( SELECT COUNT(fk_due_id) as c from mct_callchampion_report
-				                           WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY
-				                           AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY
-				                           group by fk_due_id) t1
-				                           where t1.c = 2');
-		$callsAttemptGT2 = DB::select('select count(*) as count from
-				                          ( SELECT COUNT(fk_due_id) as c from mct_callchampion_report
-				                           WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY
-				                           AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY
-				                           group by fk_due_id) t1
-				                           where t1.c > 2');
+				                  WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
+				                  AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY');
+		$callsAttemptEqual1 = DB::select('select count(distinct fk_b_id) as count from 
+				                          (select fk_b_id,count(fk_b_id) as c from mct_callchampion_report 
+				                           join mct_due_list on fk_due_id = due_id 
+				                           where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
+				                           AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY 
+				                           group by fk_b_id) t1 where t1.c = 1');
+		$callsAttemptEqual2 = DB::select('select count(distinct fk_b_id) as count from 
+				                          (select fk_b_id,count(fk_b_id) as c from mct_callchampion_report 
+				                           join mct_due_list on fk_due_id = due_id 
+				                           where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
+				                           AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY 
+				                           group by fk_b_id) t1 where t1.c = 2');
+		$callsAttemptGT2 = DB::select('select count(distinct fk_b_id) as count from 
+				                          (select fk_b_id,count(fk_b_id) as c from mct_callchampion_report 
+				                           join mct_due_list on fk_due_id = due_id 
+				                           where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
+				                           AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY 
+				                           group by fk_b_id) t1 where t1.c > 2');
 		$incorrectphno = DB::select('select count(distinct fk_b_id) as count from mct_due_list 
 				                     join (SELECT distinct(fk_due_id) as id 
 				                     FROM mct_callchampion_report 
 				                     where e_call_status = "Incorrect number" 
-				                     and dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY
-				                     AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY) t1 
+				                     and dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY
+				                     AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) t1 
 				                      on t1.id = mct_due_list.due_id');
 		$notReachable = DB::select('select count(distinct fk_b_id) as count from mct_due_list
 				                     join (SELECT distinct(fk_due_id) as id
 				                     FROM mct_callchampion_report
 				                     where e_call_status = "Not reachable"
-				                     and dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY
-				                     AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY) t1
+				                     and dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY
+				                     AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) t1
 				                      on t1.id = mct_due_list.due_id');
 		$mothersAssigned = DB::select('select count(distinct fk_b_id)as count from mct_due_list
 				                     join (SELECT distinct(fk_due_id) as id
 				                     FROM mct_callchampion_report
-				                     where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY
-				                     AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY) t1
+				                     where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY
+				                     AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) t1
 				                      on t1.id = mct_due_list.due_id');
 		$actionItems = DB::select('SELECT count(distinct fk_action_id) as count 
 				                   FROM mct_callchampion_report join mct_due_list on due_id = fk_due_id 
-				                   WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY 
-				                   AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY');
+				                   WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
+				                   AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY');
 		$incorrectDeliveryDate = DB::select('SELECT count(*)as count FROM `mct_beneficiary` WHERE dt_due_date <> `reported _delivery_date`');
 		/*  var_dump($totalCalls);
 		var_dump($callsAttemptEqual1);
@@ -201,6 +202,7 @@ class AdminDashboardController extends Controller {
 		var_dump($averagePerMother); 
 		var_dump($incorrectphno);
 		var_dump($mothersAssigned); */
+		
 		
 		$data = Array();
 		$data['datestart'] = $datestart;
@@ -224,8 +226,8 @@ class AdminDashboardController extends Controller {
 	public function actionitems_lastweek(){
 		
 		$select = DB::select('SELECT * FROM `mct_callchampion_report`
-				WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+6 DAY
-				AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-1 DAY');
+				WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY
+				AND dt_modify_date < CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY');
 		
 		$select1 = Array(); //will contain details of action items scheduled in the past week
 		
