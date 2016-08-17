@@ -338,6 +338,7 @@ class BeneficiaryController extends Controller{
     			}
  				$dt_due_date=str_replace("-", "/", $r->date_of_delivery);
     			//validating dates as by default date value is 1970/1/1 thus chaning that to null so that validation rules work correctly
+    			// dd($dt_due_date);
     			if($r->date_of_delivery!='')
     			{
     				$beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
@@ -351,6 +352,7 @@ class BeneficiaryController extends Controller{
     			{
     				$beneficiary_data['dt_due_date']=null;	
     			}
+    			//dd($beneficiary_data['dt_due_date']);
     			// checks for multiple combinations of mother name and hsuband name in database.
  				$already_exist_name=Beneficiary::where(['v_name'=>$beneficiary_data['v_name'],'v_husband_name'=>$beneficiary_data['v_husband_name']])->first();
  				if($already_exist_name['v_name']!='')
