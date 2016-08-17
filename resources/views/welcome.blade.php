@@ -178,7 +178,7 @@ margin-top:25px !important;
 		</a>
 	</div>
 	<div class="col-xs-6">
-		<h2>Each One Reach One program</h2>
+		<h2>Seva Setu's Each One Reach One program</h2>
 	</div>
 	<div class="col-xs-3">
 		<a href="{{url()}}/login" class="btn btn-primary" style="max-width: none ! important; width: 100px !important; text-align: center !important ;" >Login</a>	

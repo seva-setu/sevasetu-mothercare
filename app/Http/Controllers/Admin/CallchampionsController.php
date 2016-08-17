@@ -47,8 +47,7 @@ class CallchampionsController extends Controller{
 				if($this->role_type == 2){
 					$callchamp = new CallChampion;
 					$dashboard_data = $callchamp->get_dashboard_data($this->role_id);
-				}
-			
+				}			
 				// If its a fieldworker
 				elseif($this->role_type == 3){
 					$fieldworker = new Fieldworkers;
@@ -70,14 +69,25 @@ class CallchampionsController extends Controller{
 		}
 		if($cc_id > 0){
 			$due_list_obj = new DueList();
-			$beneficiary_ids_list = $due_list_obj->get_beneficiary_ids_list($cc_id);	
-						
+			$beneficiary_ids_list = $due_list_obj->get_beneficiary_ids_list($cc_id);						
 			$b_obj = new Beneficiary();
-			$data['data'] = $b_obj->get_beneficiary_details($beneficiary_ids_list);
-			
+			$data['data'] = $b_obj->get_beneficiary_details($beneficiary_ids_list);			
 			return view('mothers/dashboard',$data);
 		}
 	}
+  public function upload_data(){
+    if(!Session::has('user_logged')){
+      Redirect::to('/')->send();
+    }
+    $session_data=Session::get('user_logged');
+    if($session_data['v_role']==1)
+      return view('admin/upload_data');
+    else
+      return 'User is not admin';
+
+  }
+
+
 	
 	public function update_call($due_id_encrypted){
 		$helper_obj = new Helpers;

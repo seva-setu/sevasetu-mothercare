@@ -7,6 +7,8 @@ use App\Models\Users;
 use App\Models\DueList;
 use App\Models\Checklist;
 
+
+use Carbon\Carbon;
 use Request;
 use Mail;
 use Auth;
@@ -222,118 +224,231 @@ class BeneficiaryController extends Controller{
 	public function list_all_beneficiaries(){
 		
 	}
-	
-	public function importExcel(){
-    	$beneficiary= new Beneficiary;
-    	$mess=array();
-    	$destinationPath = 'external/uploads'; // upload path
-    	$extension = Input::file('txtExcel')->getClientOriginalExtension(); // getting image extension
-    	$fileName = rand(11111,99999).'.'.$extension; // renameing image
-    	Input::file('txtExcel')->move($destinationPath, $fileName); // uploading file to given path
-    	
-  	// Applying validation rules.
-    $filedworkerid="";
-    if($_POST['fieldwrokerid']!="")
-    	$filedworkerid=$this->decode($_POST['fieldwrokerid']);
-  	$rules = array(
-  			'name' => 'required|min:3|max:20|Regex:/^[A-Za-z]+[A-Za-z0-9.\' ]*$/',
-  			'husband_name'=>'required|min:3|max:20',
-  			'phone_number'=>'required|numeric|digits_between:10,20',
-  			'village'=>'required|min:3|max:20',
-  			'language'=>'required',
-  			'pincode'=>'required|numeric|digits_between:4,6',
-  			'due_date'=>'required_without:delivery_date|date_format:d/m/Y',
-  			'delivery_date'=>'required_without:due_date|date_format:d/m/Y'
-  			
-  	);
-  		$arr = Excel::load($destinationPath.'/'.$fileName)->get();
-    	$i=0;
-    	if(!empty($arr)){
-    		if(isset($arr[0]->name) && isset($arr[0]->language) && isset($arr[0]->number_pregnancies) && isset($arr[0]->husband_name) && isset($arr[0]->phone_number) && isset($arr[0]->alternate_phone_no)  && isset($arr[0]->village) && isset($arr[0]->pincode)   && isset($arr[0]->taluka) && isset($arr[0]->awc_name) && isset($arr[0]->awc_number) && isset($arr[0]->due_date) && isset($arr[0]->delivery_date)){
-    		
-    		}else{
-    			Session::flash('message', '<div class="alert alert-error" style="clear:both;">
-              <button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.excelvalid").'</div>');
-    			return Redirect::to('/beneficiary/');
-    		}
-    		foreach($arr as $key=>$val){
-    			$datetime = date("Y-m-d H:i:s");
-    			$i++;
-    			$due_date=str_replace("-", "/", $val->due_date);
-    			$delivery_date=str_replace("-", "/", $val->delivery_date);
-    			$userdata = array(
-    					'name' => $val->name,
-    					'husband_name'=>$val->husband_name,
-    					'phone_number'=>$val->phone_number,
-    					'village'=>$val->village,
-    					'language'=>$val->language,
-    					'pincode'=>$val->pincode,
-    					'due_date'=>date('d/m/Y',strtotime($due_date)),
-    					'delivery_date'=>date('d/m/Y',strtotime($delivery_date))
-    			);
-    			$validator = Validator::make($userdata, $rules);
-    			$address_id="";
-    			$address_id= DB::table('mct_address')->where('v_pincode', 'LIKE', '%'.$val->pincode.'%')->take(1)->get();
-    			$language=explode(",", strtolower($val->language));
-    			$langId= DB::table('mct_language')->select('bi_id')->whereIn('v_language',$language)->get();
-    			$result = array();
-    			if(count($langId)>0){
-	    			foreach ($langId as $key => $value) {
-	    				$result[] = $value->bi_id;
-	    			}
-    			}
-    			$langid=implode(",",$result);
-    			if ($validator->fails() || empty($address_id)){ //check validation
-    				$messages = $validator->messages()->toArray();
-    				if(empty($address_id))
-    					$messages["zipcode"]="Address does not Match.";
-    				$mess[$i]=$messages;
-    			}else{
-    				$lastrow=$beneficiary::orderBy('bi_id', 'DESC')->first();
-	
-					if(count($lastrow)>0)
-						$code='BF'.($lastrow->bi_id+1);
-					else
-						$code='BF1';
-					
-    				$data=array(
-    						'v_name' =>$val->name,
-    						'v_language'=>$langid,
-    						'i_number_pregnancies'=>$val->number_pregnancies,
-    						'v_husband_name'=>$val->husband_name,
-    						'v_phone_number'=>$val->phone_number,
-    						'v_alternate_phone_no'=>$val->alternate_phone_no,
-    						'v_address'=>$val->village,
-    						'i_address_id' =>$address_id[0]->bi_id,
-    						'v_awc_name'=>$val->awc_name,
-    						'v_awc_number'=>$val->awc_number,
-    						'v_unique_code'=>$code,
-    						'dt_due_date'=>date("Y-m-d H:i:s",strtotime($val->due_date)),
-    						'dt_delivery_date'=>date("Y-m-d H:i:s",strtotime($val->delivery_date)),
-    						'dt_lmp_date'=>date('Y-m-d H:i:s',strtotime('-36 week', strtotime($val->due_date))),
-    						'dt_create_date'=>$datetime,
-    						'dt_modify_date'=>$datetime,
-    						'e_status'=>"Active",
-    						'v_ip'=>$_SERVER['REMOTE_ADDR']);
-    				$data=$beneficiary->insert($data);//insert excel data into database
-    				$lastid=DB::getPdo()->lastInsertId();
-    				if($lastid){
-    					if($this->usertype==3){
-    						$user = Fieldworkers::query()->where('bi_user_login_id', $this->userid)->get(array('bi_id'));
-    						$data=$beneficiary::where('bi_id', $lastid)->update(['bi_field_worker_id' => $user[0]->bi_id]);
-    					}elseif($filedworkerid!=""){
-    						$data=$beneficiary::where('bi_id', $lastid)->update(['bi_field_worker_id' => $filedworkerid]);
-    					}
-    				}
-    				//Session::flash('message', '<div class="alert alert-success" style="clear:both;">
-              //<button data-dismiss="alert" class="close" type="button">×</button>'.trans("routes.beneficiary").' '.trans("routes.addmessage").'</div>');
-    			}
-    		}
-    		Session::flash('errormessage',$mess);
-    		return Redirect::to('/beneficiary/');
-    	}
- 	}
- 	
-	///////////////////////////////////////////	
 
+	// download link for sample excels
+	public function downloadExcel()
+	{
+		return response()->download(public_path('download\sample.xlsx'));
+	}
+
+/** 
+* Save the validated data to database.
+* @input $excel_data saved in method @importExcel
+* @output Saves data in database. 
+* called by route /data/final-upload
+* @algorithm
+* 1. Run foreach on $exceldata.
+* 2. Validate the data and store the valid data to database.
+* 3. Return a message to Route::get /data/upload that messages are stored.
+*/
+
+	public function Excel_data_upload()
+	{
+		Session::flash('should_data_be_inserted',1);
+		$data=Session::get('excel_data');
+		$data->each(function($r){
+			
+					$beneficiary= new Beneficiary;
+		  			$rules = array(
+		  			 'v_name' => 'required|min:3|max:20|Regex:/^[ A-Za-z]+[A-Za-z0-9.\' ]*$/',
+  					'v_phone_number'=>'required|numeric|digits_between:10,10',
+  					'dt_due_date'=>'required'
+		  			);
+ 				$dt_due_date=str_replace("-", "/", $r->date_of_delivery);
+    			$beneficiary_data = array(
+    					'fk_f_id'=>$r->field_worker_id,
+    					'v_name' => $r->womans_name,
+    					'v_husband_name'=>$r->fatherspouse_name,
+    					'i_age'=>$r->age,
+    					'v_phone_number'=>$r->mobile_no,
+    					'v_awc_number'=>$r->awc_code,
+    					'v_village_name'=>$r->village_name,
+    					'dt_due_date'=>''
+    			);
+    			if($r->date_of_delivery!='')
+    			{
+    				$beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
+    				$var=Carbon::createFromFormat('d/m/y', $beneficiary_data['dt_due_date']);
+    				if($var!='')
+    				$beneficiary_data['dt_due_date']=$var;
+    				else
+					$beneficiary_data['dt_due_date']=null;
+    			}
+    			else
+    			{
+    				$beneficiary_data['dt_due_date']=null;	
+    			}
+    			$already_exist_number=Beneficiary::where('v_phone_number',$beneficiary_data['v_phone_number'])->first();
+    			if($already_exist_number['v_phone_number']!='')
+    			{
+     				Session::flash('should_data_be_inserted',0);
+    			}
+    			$validator = Validator::make($beneficiary_data, $rules);
+    			if ($validator->fails())
+    			{
+     			}
+    			else if(Session::get('should_data_be_inserted')==1)
+    			{
+    				$beneficiary->fk_f_id=$beneficiary_data['fk_f_id'];
+    				$beneficiary->v_name= $beneficiary_data['v_name'];
+     				$beneficiary->v_husband_name=$beneficiary_data['v_husband_name'];
+    				$beneficiary->i_age=$beneficiary_data['i_age'];
+    				$beneficiary->v_phone_number=$beneficiary_data['v_phone_number'];
+    				$beneficiary->v_awc_number=$beneficiary_data['v_awc_number'];
+    				$beneficiary->v_village_name=$beneficiary_data['v_village_name'];
+    				$beneficiary->dt_due_date=$var;
+    				$beneficiary->save();
+    			}
+    			Session::forget('should_data_be_inserted');
+     			Session::flash('should_data_be_inserted',1);	
+ 		});
+ 		Session::forget('excel_data');
+		Session::flash('message', 'Mothers data with complete information uploaded');
+		return back();
+	}
+
+
+/** 
+* Takes data of all mother from excel file and validates data and stores data in session.
+* @input Data from excel file
+* it validates data of excel file(data_of_delivery & mothername & phone no.) and saves data in Session (variable name $excel_data ) 
+* @calling_method Invoked as we go on post route /data/upload
+* @algorithm
+* 1. Load Excel file and data will be stored in $reader (array).
+* 2. Apply foreach on this array and get data of each row of excel file.
+* 3. On each data apply validation rules and accordingly store the message for 		particular type of error
+*/	
+
+	public function importExcel()
+	{
+		//this variable tells whether data is error free and can be stored or not.
+		Session::flash('should_data_be_inserted',1);
+		//variable for different types of errors and warnings.
+		Session::flash('count_excelupload_errors.count',0);
+		Session::flash('count_excelupload_warning.count',0);
+		Session::flash('count_excelupload_data_repeated.count',0);	
+		//loads excel file
+		Excel::load(Input::file('beneficiaries_data'),function($reader)
+ 		{
+
+ 			//$reader acts differently in different excel formats
+		//	dd($reader->get());
+			if(Input::file('beneficiaries_data')->getClientOriginalExtension()=='csv')
+				$data=$reader->get();
+			else
+			{
+				$data=$reader->get();
+				$data=$data[0];
+			}
+			  $data->each(function($r){
+					$beneficiary= new Beneficiary;
+					//validation rules
+		  			$rules = array(
+		  			 'v_name' => 'required|min:3|max:20|Regex:/^[ A-Za-z]+[A-Za-z0-9.\' ]*$/',
+  					'v_phone_number'=>'required|numeric|digits_between:10,10',
+  					'dt_due_date'=>'required'
+		  			);
+    			if(isset($r['mobile_no'])&&isset($r['womans_name'])&&isset($r['field_worker_id'])&&isset($r['fatherspouse_name'])&&isset($r['age'])&&isset($r['awc_code'])&&isset($r['village_name'])&&isset($r['date_of_delivery']))
+    			{
+    					$beneficiary_data = array(
+    					'fk_f_id'=>$r->field_worker_id,
+    					'v_name' => $r->womans_name,
+    					'v_husband_name'=>$r->fatherspouse_name,
+    					'i_age'=>$r->age,
+    					'v_phone_number'=>$r->mobile_no,
+    					'v_awc_number'=>$r->awc_code,
+    					'v_village_name'=>$r->village_name,
+    					'dt_due_date'=>''//date('d/m/y',strtotime($dt_due_date))
+    			);
+    			}
+    			else
+    			{
+    				dd('Incorrect Excel Format.');
+    			}
+ 				$dt_due_date=str_replace("-", "/", $r->date_of_delivery);
+    			//validating dates as by default date value is 1970/1/1 thus chaning that to null so that validation rules work correctly
+    			if($r->date_of_delivery!='')
+    			{
+    				$beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
+    				$var=Carbon::createFromFormat('d/m/y', $beneficiary_data['dt_due_date']);
+    				if($var!='')
+    				$beneficiary_data['dt_due_date']=$var;
+    				else
+					$beneficiary_data['dt_due_date']=null;
+    			}
+    			else
+    			{
+    				$beneficiary_data['dt_due_date']=null;	
+    			}
+    			// checks for multiple combinations of mother name and hsuband name in database.
+ 				$already_exist_name=Beneficiary::where(['v_name'=>$beneficiary_data['v_name'],'v_husband_name'=>$beneficiary_data['v_husband_name']])->first();
+ 				if($already_exist_name['v_name']!='')
+ 				{
+    				$count_excelupload_warning=Session::get('count_excelupload_warning.count');
+ 					Session::flash('count_excelupload_warning'.$count_excelupload_warning,$r->srno);
+ 					Session::flash('count_excelupload_warning.message'.$count_excelupload_warning,trans('upload_excel.combination_warning'));					
+     				$count_excelupload_warning++;
+     				Session::forget('count_excelupload_warning.count');
+     				Session::flash('count_excelupload_warning.count',$count_excelupload_warning);
+ 				}
+ 				// check for the data if it already exists in database.
+    			$already_exist_number=Beneficiary::where('v_phone_number',$beneficiary_data['v_phone_number'])->first();
+    			if($already_exist_number['v_phone_number']!='')
+    			{
+    				$count_excelupload_data_repeated=Session::get('count_excelupload_data_repeated.count');
+ 					Session::flash('count_excelupload_data_repeated'.$count_excelupload_data_repeated,$r->srno);
+ 					Session::flash('count_excelupload_data_repeated.message'.$count_excelupload_data_repeated,trans('upload_excel.already_in_database'));
+     				$count_excelupload_data_repeated++;
+     				Session::forget('count_excelupload_data_repeated.count');
+     				Session::flash('count_excelupload_data_repeated.count',$count_excelupload_data_repeated);
+     				Session::forget('should_data_be_inserted');
+     				Session::flash('should_data_be_inserted',0);
+    			}
+    			$validator = Validator::make($beneficiary_data, $rules);
+    			if ($validator->fails())
+    			{
+    				//find the reason for which our validation fails and store that reason in message.
+    				$failedRules = $validator->failed();
+    				$error_message='';
+					if(isset($failedRules['v_phone_number'])) 
+					{
+						if(isset($failedRules['v_phone_number']['DigitsBetween']))
+						$error_message=$error_message."    ".trans('upload_excel.Phone_Number_Incorrect');
+						else
+						{
+							$error_message=$error_message."    ".trans('upload_excel.Phone_Number_Missing');
+						}
+					}
+					if(isset($failedRules['v_name']))
+					{
+						if(isset($failedRules['v_phone_number']))
+						{
+							$error_message=$error_message.",";	
+						}
+						$error_message=$error_message."    ".trans('upload_excel.Mother_Name_Missing');
+					}
+					 if(isset($failedRules['dt_due_date']))
+					 { 
+					 	if(isset($failedRules['v_name'])||isset($failedRules['v_phone_number']))
+					 	{
+					 		$error_message=$error_message.",";
+					 	}
+					 	$error_message=$error_message."    ".trans('upload_excel.Date_Of_Delivery_Missing');
+					 }
+    				$count_excelupload_errors=Session::get('count_excelupload_errors.count');
+ 					Session::flash('count_excelupload_errors'.$count_excelupload_errors,$r->srno);
+					Session::flash('count_excelupload_errors.message'.$count_excelupload_errors,$error_message);
+     				$count_excelupload_errors++;
+     				Session::forget('count_excelupload_errors.count');
+     				Session::flash('count_excelupload_errors.count',$count_excelupload_errors);
+     			}
+    			Session::forget('should_data_be_inserted');
+     			Session::flash('should_data_be_inserted',1);	
+ 		});
+				//save the above excel data in variable an then finally store this data when user makes confirmation by calling method @Excel_data_upload
+				Session::put('excel_data',$data);
+ 	});
+		Session::flash('data_validated',1);
+	return back();
+	}		
 }
