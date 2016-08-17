@@ -242,6 +242,7 @@ class DueList extends Eloquent {
 								$join_table_name3.'.v_phone_number as mother_phonenumber',
 								$join_table_name5.'.v_reference_descrip as agenda'
 							)
+					->where($join_table_name1.'.activation_status','=',2)
 					->distinct();
 					
 					
