@@ -44,21 +44,21 @@
 	}
 	
 	
-	function template4( $phone_number,$cc_name, $phone_number, $mother_name, $mother_number){
+	function template4($cc_name, $cc_phonenumber, $count){
 		$ret = '<MESSAGE>
 		<AUTHKEY>'.$_ENV['SMS_KEY'].'</AUTHKEY>
 		<SENDER>'.$_ENV['SMS_NAME'].'</SENDER>
 		<ROUTE>'.$_ENV['SMS_ROUTE'].'</ROUTE>
 		<CAMPAIGN>XML API</CAMPAIGN>
 		<COUNTRY>91</COUNTRY>
-		<SMS TEXT="Hi '.$cc_name.'! This is a reminder for your call with '.$mother_name.'. Please call her on '.$mother_number.'. Login to sevasetu.org/mother_care with your details for more info." >
-		<ADDRESS TO="'.$phone_number.'"></ADDRESS>
+		<SMS TEXT="Hi '.$cc_name.'! This is to remind you that you have  '.$count.'. phone calls scheduled. Login to sevasetu.org/mother_care with your details for more info." >
+		<ADDRESS TO="'.$cc_phone_number.'"></ADDRESS>
 		</SMS>
 		</MESSAGE>';
 		return $ret;
 	}
 	
-	function template5($phone_number,$cc_name, $phone_number, $mother_name, $mother_number){
+	function template5($cc_name, $cc_phonenumber, $mother_name, $mother_number){
 		$ret = '<MESSAGE>
 		<AUTHKEY>'.$_ENV['SMS_KEY'].'</AUTHKEY>
 		<SENDER>'.$_ENV['SMS_NAME'].'</SENDER>
@@ -66,7 +66,7 @@
 		<CAMPAIGN>XML API</CAMPAIGN>
 		<COUNTRY>91</COUNTRY>
 		<SMS TEXT="Hi '.$cc_name.'! This is a reminder for your call with '.$mother_name.'. Please call her on '.$mother_number.'. Login to sevasetu.org/mother_care with your details for more info." >
-		<ADDRESS TO="'.$phone_number.'"></ADDRESS>
+		<ADDRESS TO="'.$cc_phone_number.'"></ADDRESS>
 		</SMS>
 		</MESSAGE>';
 		return $ret;

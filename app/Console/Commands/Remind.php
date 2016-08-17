@@ -39,6 +39,7 @@ class Remind extends Command {
 	public function send_sms(){
 		
 	}
+
 	public function send_reminders($date_today){
 		include(storage_path().'/sms.php');
 		$due_list_obj = new DueList;
@@ -52,22 +53,61 @@ class Remind extends Command {
 				$cc_id_arr[$val->cc_id] []= $val;
 			else
 				$cc_id_arr[$val->cc_id] = array($val);
-		}
+		}		
+		$this->generate_notifications($cc_id_arr,2,'begin_week_mail');
+
+
+		// Type 2 email and sms
+		$cc_id_arr = [];
+		foreach($call_details['midweek'] as $val){
+			if(array_key_exists($val->cc_id, $cc_id_arr))
+				$cc_id_arr[$val->cc_id] []= $val;
+			else
+				$cc_id_arr[$val->cc_id] = array($val);
+		}		
+		$this->generate_notifications($cc_id_arr,4,'general_mail');
+
+		$cc_id_arr = [];
+		foreach($call_details['endweek'] as $val){
+			if(array_key_exists($val->cc_id, $cc_id_arr))
+				$cc_id_arr[$val->cc_id] []= $val;
+			else
+				$cc_id_arr[$val->cc_id] = array($val);
+		}		
+		$this->generate_notifications($cc_id_arr,4,'general_mail');
+
+
+		$cc_id_arr = [];
+		foreach($call_details['postweek'] as $val){
+			if(array_key_exists($val->cc_id, $cc_id_arr))
+				$cc_id_arr[$val->cc_id] []= $val;
+			else
+				$cc_id_arr[$val->cc_id] = array($val);
+		}		
+		$this->generate_notifications($cc_id_arr,4,'general_mail');		
 		
+	}
+
+
+	public function generate_notifications($cc_id_arr,$sms_id,$mail_type)
+	{
 		$all_numbers = array();
 		$all_names = array();
-		
 		foreach($cc_id_arr as $callchamp){
 			$all_numbers []= $callchamp[0]->cc_phonenumber;
 			$all_names []= $callchamp[0]->cc_name;
 			
 			//Send SMS to call champion
 			if(count($callchamp) > 1){
-				send_sms(2, array($callchamp[0]->cc_name, $callchamp[0]->cc_phonenumber, count($callchamp)));
+				send_sms($sms_id, array($callchamp[0]->cc_name, $callchamp[0]->cc_phonenumber, count($callchamp)));
 				
 				//Send an email
+				if($mail_type == 'beginweek')
+					$mail = 'emails.reminder_multiple';
+				else
+					$mail = 'emails.reminder_multiple_general';
 				$email = $callchamp[0]->cc_email;
-				$sent=Mail::send('emails.reminder_multiple',
+				$sent=Mail::send($mail,
 								array('cc_name'=>$callchamp[0]->cc_name,
 									  'mother_name'=>$callchamp[0]->mother_name,
 									  'count'=>count($callchamp)
@@ -81,15 +121,19 @@ class Remind extends Command {
 								);
 			}
 			else{
-				send_sms(3, array($callchamp[0]->cc_name,			 $callchamp[0]->cc_phonenumber, 
+				send_sms($sms_id+1, array($callchamp[0]->cc_name,			 $callchamp[0]->cc_phonenumber, 
 							$callchamp[0]->mother_name, 
 							$callchamp[0]->mother_phonenumber
 							)
 						);
 				
 				//Send an email
+				if($mail_type == 'beginweek')
+					$mail = 'emails.reminder_single';
+				else
+					$mail = 'emails.reminder_single_general';
 				$email = $callchamp[0]->cc_email;
-				$sent=Mail::send('emails.reminder_single',
+				$sent=Mail::send($mail,
 								array('cc_name'=>$callchamp[0]->cc_name,
 									  'mother_name'=>$callchamp[0]->mother_name,
 									  'number'=>$callchamp[0]->mother_phonenumber,
@@ -108,10 +152,13 @@ class Remind extends Command {
 			//foreach($callchamp as $details)
 				//send_sms(6, array($details->mother_phonenumber));
 		}
-		
-		// To mark that cron has triggered this
+
 		$email = "shashank@sevasetu.org";
-		$sent=Mail::send('emails.reminder_multiple',
+		if($mail_type == 'beginweek')
+			$mail = 'emails.reminder_multiple';
+		else
+			$mail = 'emails.reminder_multiple_general';
+		$sent=Mail::send($mail,
 							array('cc_name'=>"cron",
 								  'mother_name'=>"test",
 								  'count'=>serialize($all_numbers)."*****".serialize($all_names)
@@ -123,8 +170,9 @@ class Remind extends Command {
 								->bcc('shashank@sevasetu.org');
 								}
 							);
-		//
-		
+	
 	}
+
+	
 
 }
