@@ -18,18 +18,12 @@ smallfont{
 @include('template/admin_header')
 @include('template/admin_sidebar')
 @include('template/admin_jsscript')
-
 <br><br>
 <div class="container" >
 <form class="form-horizontal" method="POST" action="{{url()}}/data/upload"
  enctype="multipart/form-data">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">		
-
 <fieldset>
-
-<!-- Form Name -->
-<legend>Upload Data</legend>
-
 <!-- File Button --> 
 <div class="form-group">
   <label class="col-md-4 control-label" for="excel_file">{{ trans('upload_excel.Upload_Excel_File') }}</label>
@@ -50,16 +44,10 @@ smallfont{
 </div>
 </div>
 </a>
-
-
 </div>
-
 <br>
-
-
  <div class="form-group">
  <div class="col-md-4">
-
  </div>
   <div class="col-md-4 ">
 <div id="final_submit" style="display:none;">
@@ -91,14 +79,34 @@ smallfont{
 </form>
 
 </div>
+@if(Session::has('go_back'))
+@if(Session::get('go_back')==1)
+<div class="row">
+<div class="col-md-3">
+
+ </div>
+<div class="col-md-6">
+    <div class="alert alert-danger ">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+ {{ trans('upload_excel.Incorrect_Excel_File_Format') }}  
+    </div>
+</div> 
+</div>
+@endif
+@endif
 @if(Session::has('count_excelupload_warning.count'))
 @if(Session::get('count_excelupload_warning.count')!=0)
+<div class="row">
+<div class="col-md-3">
+ </div>
+<div class="col-md-6">
     <div class="alert alert-warning ">
-    <b>Warnings</b>
+    <b>{{ trans('upload_excel.Warnings') }}  
+ </b>
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
      <table class="table">
     <tr>
-     <th>S No. as per excel</th><th>Warnings&nbsp;(Total Warnings:&nbsp;&nbsp;{{Session::get('count_excelupload_warning.count')}})</th>  
+     <th>{{ trans('upload_excel.Sno_warning_table') }}</th><th>{{ trans('upload_excel.Warnings') }}&nbsp;({{ trans('upload_excel.Total_Warnings') }}:&nbsp;&nbsp;{{Session::get('count_excelupload_warning.count')}})</th>  
     </tr>
       
       @for ($i = 0; $i < Session::get('count_excelupload_warning.count'); $i++)
@@ -109,20 +117,23 @@ smallfont{
       @endfor
       </table>
     </div>
+</div>
+</div>
 @endif
 @endif
 @if(Session::has('count_excelupload_data_repeated.count')||Session::has('count_excelupload_errors.count'))
+<div class="row">
+<div class="col-md-3">
+ </div>
+<div class="col-md-6">
 <div class="alert alert-danger">    
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-
-<b>Errors occurred while saving following data.</b><br>
+<b>{{ trans('upload_excel.Error_heading') }}</b><br>
      <table class="table">
     <tr >
-     <th>S No. as per excel</th><th>Error&nbsp;(Total errors:&nbsp;&nbsp;{{Session::get('count_excelupload_data_repeated.count')+Session::get('count_excelupload_errors.count')}})</th>  
+     <th>{{ trans('upload_excel.Sno_warning_table') }}</th><th>{{ trans('upload_excel.Error') }}&nbsp;({{ trans('upload_excel.Total_Error') }}:&nbsp;&nbsp;{{Session::get('count_excelupload_data_repeated.count')+Session::get('count_excelupload_errors.count')}})</th>  
     </tr>
-
 @if(Session::get('count_excelupload_data_repeated.count')!=0)
-    
   @for ($i = 0; $i < Session::get('count_excelupload_data_repeated.count'); $i++)
       <tr>
         <td>{{Session::get('count_excelupload_data_repeated'.$i)}}</td>
@@ -142,13 +153,23 @@ smallfont{
 @endif
 </table>
 </div>
+</div>
+</div>
 @endif
 
 @if(Session::has('data_validated'))
+@if(Session::get('data_validated')==1)
+<div class="row">
+<div class="col-md-3">
+</div>
+<div class="col-md-4 pull-right">
 <form method="POST" action="{{url()}}/data/final_upload">
 <input type="hidden" name="_token" value="{{ csrf_token() }}">    
-<button class="btn btn-primary">Save Data</button>
+<button class="btn btn-primary">{{ trans('upload_excel.confirm_upload') }}</button>
 </form>
+</div>
+</div>
+@endif
 @endif
 
 
