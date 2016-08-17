@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\BeneficiaryController;
+
 use App\Models\Fieldworkers;
 use App\Models\Admin;
 
@@ -122,13 +124,269 @@ class AdminController extends Controller{
 		}
     }
 
-
+  /*
+  Admin dashboard for backend functions.
+  @returns admin dashboard view
+  */
   public function admin_dashboard(){
+    // if user is a callchampion and trying to access this url redirect to /mothers
     if($this->user_role_type == 2)
-          return Redirect::to('/mothers');   
+          return Redirect::to('/mothers');
+
     return view('admin/admin_dashboard');
   }
- 
+
+  /*
+  Callchampion tab in admin dashboard.
+  @returns admin/callchampion view with some related data
+  @calling_method invoked by admin_dashboard view
+  @algorithm
+    collects all required data for callchampion view in admin dashboard and return view with data
+  */
+  public function callChampions(){
+
+    // if user is a callchampion and trying to access this url redirect to /mothers
+    if($this->user_role_type == 2)
+          return Redirect::to('/mothers');
+
+    //all active callchampions who have already assigned to some mothers
+    $data['all']=DB::table('mct_call_champions')
+                        ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                        ->where('mct_call_champions.activation_status',2) 
+                        ->whereRaw('cc_id in (select fk_cc_id from mct_due_list)')
+                        ->get();
+
+    //callchampions who just got onboard still to be approved
+    $data['unapproved']=DB::table('mct_call_champions')
+                        ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                        ->where('mct_call_champions.activation_status',0)
+                        ->get();
+
+    //list of all callchampions who can shadow unapproved callchampions
+    $data['mentors']=CallChampion::join('mct_user', 'user_id', '=', 'fk_user_id')
+                      ->where('mct_call_champions.activation_status',2)
+                      ->get();
+
+    
+    //unapproved callchampions who are learning the the processs
+    $data['mentees']=DB::table('mct_callchampion_shadow')
+                        ->join('mct_call_champions', 'cc_id', '=', 'mentee')
+                        ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                        ->where('mct_call_champions.activation_status',1)
+                        ->get();
+    //approved callchampions who have completed shadowing process but yet to assign any beneficiary
+    $data['unassigned']=DB::table('mct_call_champions')
+                        ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                        ->where('mct_call_champions.activation_status',2) 
+                        ->whereRaw('cc_id not in (select fk_cc_id from mct_due_list)')
+                        ->get();
+
+    //list of mentors corressponding to every mentee who are shadowing them 
+    $data['mentor']=array();
+    foreach ($data['mentees'] as $value)
+    {
+      $data['mentor'][] =  DB::table('mct_callchampion_shadow')
+                            ->join('mct_call_champions', 'cc_id', '=', 'mentor')
+                            ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                            ->where('mentee',$value->cc_id)
+                            ->get();
+
+    }
+
+    return view('admin/callchampions',$data);
+  }
+
+  /*
+  Assigns a mentor to unapproved callchampion and changes status from unapproved to shadowing
+  @returns result for success or failure of updating status of unapproved callchampion
+  @calling_method invoked by admin_dashboard/callchampion view
+  @algorithm
+    1. collects mentee and mentor cc_id 
+    2. updates mentee activation status form 0(unapproved) to 1(shadowing) 
+    3. inserts mentee and mentor to mct_callchampion_shadow table
+  */
+  public function assign_mentor(){
+
+    // if user is a callchampion and trying to access this url redirect to /mothers
+    if($this->user_role_type == 2)
+          return Redirect::to('/mothers'); 
+
+    //collects mentee and mentor cc_id from request inputs    
+    $mentee = Input::get('mentee_id');
+    $mentor = Input::get('mentor_id');
+
+    //updates mentee activation status form 0(unapproved) to 1(shadowing)
+    $result=DB::table('mct_call_champions')
+                  ->where('mct_call_champions.cc_id',$mentee)
+                  ->update(['mct_call_champions.activation_status' => '1' ]);
+
+    //inserts mentee and mentor to mct_callchampion_shadow table
+    DB::table('mct_callchampion_shadow')
+      ->insert(['mentee' => $mentee,
+                'mentor' => $mentor]
+              );
+    return response()->json($result);
+  }
+
+
+  /*
+  updates callchampion status from shadowing to approved when mentor says shadowing completed
+  @returns result for success or failure of updating status of callchampion
+  @calling_method invoked by admin_dashboard/callchampion view
+  @algorithm
+    1. collects cc_id
+    2. updates activation status from 1(shadowing) to 2(approved)
+  */
+  public function update_callchampion_status(){
+    
+    // if user is a callchampion and trying to access this url redirect to /mothers
+    if($this->user_role_type == 2)
+          return Redirect::to('/mothers'); 
+
+    //collects cc_id    
+    $cc_id = Input::get('cc_id');
+
+    //updates activation status from 1(shadowing) to 2(approved)
+    $result=DB::table('mct_call_champions')
+                  ->where('mct_call_champions.cc_id',$cc_id)
+                  ->update(['mct_call_champions.activation_status' => '2' ]);
+
+    return response()->json($result);
+  }
+  
+  // public function get_assign_mothers($cc_id = -1){
+  //   if($this->user_role_type == 2)
+  //         return Redirect::to('/mothers'); 
+  //   if($cc_id == -1 )
+  //     return Redirect::to('/');
+
+  //   $data['unassigned']=DB::table('mct_beneficiary')
+  //                 ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
+  //                 ->get();
+
+  //   return view('admin/assign_mothers',$data);
+  // }
+
+  // public function post_assign_mothers()
+  // {
+  //   if($this->user_role_type == 2)
+  //         return Redirect::to('/mothers'); 
+    
+    
+  //   if(!empty($_POST['check_list'])){
+  //     $cid = 6;
+  //     $bid = $_POST['check_list'];
+
+  //     $obj = new BeneficiaryController;
+  //     $a = $obj->upload_mother($bid,$cid);
+  //   }
+
+  //   $data['unassigned']=DB::table('mct_beneficiary')
+  //                 ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
+  //                 ->get();
+  //   return view('admin/assign_mothers',$data);
+
+  // }
+
+
+  /*
+  Allocate mothers to a callchampion
+  @input a) cc_id b)Mothers count
+  @calling_method invoked by admin_dashboard/callchampion view also can be invoked by any other function
+  @algorithm
+    1. collects cc_id and mothers count
+    2. if cc_id is not given redirects back
+    3. if count is not given calculates avg number of mothers assigned per callchampion
+    4. select count no of beneficiaries which are not assigned to any other callchampion to assign to callchampion having given cc_id 
+    5. if there is no such beneficiary found returns back.
+    6. else calls batch_assignment_callchampion method in BeneficiaryController
+  */
+  public function assign_mothers($cc_id = -1, $count = -1)
+  {
+    // if user is a callchampion and trying to access this url redirect to /mothers
+    if($this->user_role_type == 2)
+          return Redirect::to('/mothers');
+
+    //collects cc_id and mothers count
+    if(Input::get('cc_id') !== null)
+      $cc_id = Input::get('cc_id');
+
+    if(Input::get('mothers_count') !== null)
+      $count = Input::get('mothers_count');
+
+    //if cc_id is not given redirects back
+    if($cc_id == -1)
+      return Redirect::back();
+    
+    //if count is not given calculates avg number of mothers assigned per callchampion
+    if($count == -1)
+    {
+      $total_beneficiary = DB::table('mct_beneficiary')
+                             ->count();
+
+      $total_call_champions = DB::table('mct_call_champions')
+                                ->where('activation_status','=',2)
+                                ->count();
+
+       $count = ceil($total_beneficiary / $total_call_champions);
+    }
+
+    //select count no of beneficiaries which are not assigned to any other callchampion to assign to callchampion having given cc_id 
+    $bid_array = DB::table('mct_beneficiary')
+                  ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
+                  ->take($count)
+                  ->get();
+
+     if(!empty($bid_array)){
+      $obj = new BeneficiaryController;
+      //calls batch_assignment_callchampion method in BeneficiaryController
+      $obj->batch_assignment_callchampion($bid_array,$cc_id);
+     }
+
+    //if there is no such beneficiary found returns back
+    return Redirect::to('/callchampions'); 
+
+  }
+
+
+  /*
+  Directely promotes a callchampion from unapproved to approved(in case prior experience no need for shadowing)
+  @input a) cc_id
+  @calling_method invoked by admin_dashboard/callchampion view also can be invoked by any other function
+  @algorithm
+    1. collects cc_id
+    2. if cc_id is not given redirects back
+    3. else updates status to 2(approved) and redirects back
+  */
+  public function promote_callchampion($cc_id = -1)
+  {
+    // if user is a callchampion and trying to access this url redirect to /mothers
+    if($this->user_role_type == 2)
+          return Redirect::to('/mothers');
+
+    //if cc_id is not given redirects back
+    if($cc_id == -1)
+      return Redirect::back();
+
+    //updating status from 0(unapproved) to 2(approved)
+    $result=DB::table('mct_call_champions')
+              ->where('mct_call_champions.cc_id',$cc_id)
+              ->update(['mct_call_champions.activation_status' => '2' ]);
+
+    if($result)
+    {  
+      Session::flash('message',trans("routes.successpromote"));
+      return Redirect::back();
+    } 
+    else 
+    {  
+      Session::flash('message',trans("routes.errorpromote"));
+      return Redirect::back();
+    }
+
+  }
+
+
   //change password view
   public function changepassword(){
   	if(!isset($this->userid)){
@@ -139,6 +397,7 @@ class AdminController extends Controller{
   	return view('admin/changepassword',$data);
   }
   
+
   //change pass functionality
   public function dochangepassword(){
   	
