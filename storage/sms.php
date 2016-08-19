@@ -8,7 +8,7 @@
 		<ROUTE>'.$_ENV['SMS_ROUTE'].'</ROUTE>
 		<CAMPAIGN>XML API</CAMPAIGN>
 		<COUNTRY>91</COUNTRY>
-		<SMS TEXT="Hi '.$name.'! '. $auth_token.' is yoour passkey. For assistance, write to help@sevasetu.org" >
+		<SMS TEXT="Hi '.$name.'! '. $auth_token.' is your passkey. For assistance, write to help@sevasetu.org" >
 		<ADDRESS TO="'.$phone_number.'"></ADDRESS>
 		</SMS>
 		</MESSAGE>';
