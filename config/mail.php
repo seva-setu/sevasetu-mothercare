@@ -54,7 +54,7 @@ return [
 	|
 	*/
 
-	'from' => ['address' => 'shubwww@gmail.com', 'name' => 'Mother Care Program'],
+	'from' => ['address' => 'mothercare@sevasetu.org', 'name' => 'Mother Care Program'],
 
 	/*
 	|--------------------------------------------------------------------------
