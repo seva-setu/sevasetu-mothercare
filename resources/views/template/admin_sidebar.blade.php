@@ -18,7 +18,7 @@
 			<a href="{{url()}}/callchampions"><i class="fa fa-phone	 "></i>Call Champions  <span class="badge"></span></a>
 			</li>
 			<li <?php echo $actions; ?> >
-			<a href="{{url()}}/actions"><i class="fa fa-list-ol "></i>Action items</a>
+			<a href="{{url()}}/actions"><i class="fa fa-list-ol "></i>Action items<span class="badge">{{Session::get('total_actions_left')}}</span></a>
 			</li>
 			<li <?php echo $analysis; ?> >
 			<a href="{{url()}}/analysis"><i class="fa fa-cogs "></i>Analysis</a>

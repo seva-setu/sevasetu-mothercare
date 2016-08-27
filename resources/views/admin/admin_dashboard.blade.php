@@ -7,6 +7,16 @@
 <head>
 @include('template/admin_title')
 @include('template/admin_cssscripta')
+
+</head>
+<style>
+smallfont{
+  font-size:10px;
+}
+</style>
+<body>
+@include('template/admin_header')
+@include('template/admin_sidebar')
 @include('template/admin_jsscript')
 <br><br>
 <div class="container" >

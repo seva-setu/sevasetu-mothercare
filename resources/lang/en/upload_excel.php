@@ -21,7 +21,7 @@
 'Total_Warnings'=>'Total Warnings',
 'Error_heading'=>'Errors occurred while saving following data',
 'confirm_upload'=>'Save Data',
-'upload_success	'=>'Mothers data with complete information uploaded'
+'upload_success'=>'Mothers data with complete information uploaded'
  );
 
 ?>
