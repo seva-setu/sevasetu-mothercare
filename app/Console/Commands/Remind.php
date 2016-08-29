@@ -89,7 +89,7 @@ class Remind extends Command {
 		$this->generate_notifications($cc_id_arr,4,'general_mail', $all_numbers, $all_names);		
 
 		$email = "shashank@sevasetu.org";
-		$sent=Mail::send($mail,
+		$sent=Mail::send("emails.reminder_multiple",
 							array('cc_name'=>"cron",
 								  'mother_name'=>"test",
 								  'count'=>serialize($all_numbers)."*****".serialize($all_names)
