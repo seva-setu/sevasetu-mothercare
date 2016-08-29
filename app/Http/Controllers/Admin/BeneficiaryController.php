@@ -246,8 +246,7 @@ class BeneficiaryController extends Controller{
 	{
 		Session::flash('should_data_be_inserted',1);
 		$data=Session::get('excel_data');
-		$data->each(function($r){
-			
+		$data->each(function($r){			
 					$beneficiary= new Beneficiary;
 		  			$rules = array(
 		  			 'v_name' => 'required|min:3|max:20|Regex:/^[ A-Za-z]+[A-Za-z0-9.\' ]*$/',
@@ -303,7 +302,7 @@ class BeneficiaryController extends Controller{
      			Session::flash('should_data_be_inserted',1);	
  		});
  		Session::forget('excel_data');
-		Session::flash('message', 'Mothers data with complete information uploaded');
+		Session::flash('message',trans('upload_excel.upload_success'));
 		return back();
 	}
 
@@ -323,6 +322,7 @@ class BeneficiaryController extends Controller{
 	{
 		//this variable tells whether data is error free and can be stored or not.
 		Session::flash('should_data_be_inserted',1);
+		Session::flash('go_back',0);
 		//variable for different types of errors and warnings.
 		Session::flash('count_excelupload_errors.count',0);
 		Session::flash('count_excelupload_warning.count',0);
@@ -360,13 +360,25 @@ class BeneficiaryController extends Controller{
     					'v_village_name'=>$r->village_name,
     					'dt_due_date'=>''//date('d/m/y',strtotime($dt_due_date))
     			);
+    				Session::flash('data_validated',1);
     			}
     			else
     			{
-    				dd('Incorrect Excel Format.');
+    				//dd('Incorrect Excel Format.');
+					Session::forget('count_excelupload_errors.count');
+					Session::forget('count_excelupload_warning.count');
+					Session::forget('count_excelupload_data_repeated.count');	
+    				Session::flash('go_back',1);
     			}
+    			
+    			if(Session::get('go_back')==1)
+    				{
+    					Session::flash('error_format',1);
+    					return back()->send();
+    				}
  				$dt_due_date=str_replace("-", "/", $r->date_of_delivery);
     			//validating dates as by default date value is 1970/1/1 thus chaning that to null so that validation rules work correctly
+    			// dd($dt_due_date);
     			if($r->date_of_delivery!='')
     			{
     				$beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
@@ -380,6 +392,7 @@ class BeneficiaryController extends Controller{
     			{
     				$beneficiary_data['dt_due_date']=null;	
     			}
+    			//dd($beneficiary_data['dt_due_date']);
     			// checks for multiple combinations of mother name and hsuband name in database.
  				$already_exist_name=Beneficiary::where(['v_name'=>$beneficiary_data['v_name'],'v_husband_name'=>$beneficiary_data['v_husband_name']])->first();
  				if($already_exist_name['v_name']!='')
@@ -448,7 +461,6 @@ class BeneficiaryController extends Controller{
 				//save the above excel data in variable an then finally store this data when user makes confirmation by calling method @Excel_data_upload
 				Session::put('excel_data',$data);
  	});
-		Session::flash('data_validated',1);
 	return back();
 	}		
 }

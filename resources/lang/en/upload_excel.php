@@ -13,11 +13,15 @@
 'Phone_Number_Missing'=> 'Phone Number Missing',
 'Phone_Number_Incorrect'=> 'Phone Number Incorrect',
 'Mother_Name_Missing'=> 'Mother Name Missing',
-'Date_Of_Delivery_Missing'=> 'Date Of Delivery Missing'
-
-
-
-
+'Date_Of_Delivery_Missing'=> 'Date Of Delivery Missing',
+'Incorrect_Excel_File_Format'=>'Incorrect Excel-File Format',
+'Warnings'=>'Warnings',
+'Error'=>'Error',
+'Sno_warning_table'=>'S No. as per excel',
+'Total_Warnings'=>'Total Warnings',
+'Error_heading'=>'Errors occurred while saving following data',
+'confirm_upload'=>'Save Data',
+'upload_success'=>'Mothers data with complete information uploaded'
  );
 
 ?>

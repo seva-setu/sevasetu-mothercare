@@ -10,8 +10,10 @@ use App\Models\Admin;
 
 //use App\Models\Callchampions;
 //use App\Models\Users;
-
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\DueList;
+
 use App\Models\CallChampion;
 use App\Services\Registrar;
 //use Request;
@@ -147,6 +149,10 @@ class AdminController extends Controller{
     return view('admin/admin_dashboard');
   }
 
+
+
+
+
   /*
   Callchampion tab in admin dashboard.
   @returns admin/callchampion view with some related data
@@ -206,6 +212,61 @@ class AdminController extends Controller{
 
     return view('admin/callchampions',$data);
   }
+
+  public function action_items(){
+    $data=DB::table('mct_callchampion_report')->get();//->where('status',0)->get();
+     $x=0;
+     $alread_resolved=0;
+     foreach($data as $i)
+     {
+
+        if($i->status==1)
+        {
+          $alread_resolved++;
+        }
+        $due_id=DB::table('mct_due_list')->where('due_id',$i->fk_due_id)->first();
+        //$newdata[$x]['b_id']=$due_id->fk_b_id;
+        $field_worker_id=DB::table('mct_beneficiary')->where('b_id',$due_id->fk_b_id)->first()->fk_f_id;
+        $field_worker_user_id=DB::table('mct_field_workers')->where('f_id',$field_worker_id)->first()->fk_user_id;
+        if($i->t_action_items!='')
+        {
+        $newdata[$x]['field_worker_name']=DB::table('mct_user')->where('user_id',$field_worker_user_id)->first()->v_name;
+        $newdata[$x]['action_items']=$i->t_action_items;       
+        $newdata[$x]['date_generated']=$due_id->dt_intervention_date;
+        $newdata[$x]['call_id']=$i->fk_due_id;
+        $newdata[$x]['status']=$i->status;
+          
+          $x++;          
+        }
+
+        Session::put('total_actions_left',$x-$alread_resolved);
+     }
+     //dd($newdata);
+      usort($newdata, function($a, $b)
+      {
+            $t1 = strtotime($a['date_generated']);
+            $t2 = strtotime($b['date_generated']);
+            return $t2 - $t1;
+      });     
+
+      for($var=0;$var<$x;$var++)
+      {
+        $newdata[$var]['date_generated']=Carbon::parse($newdata[$var]['date_generated'])->format('d/m/Y');
+      }
+
+    return view('admin/action_items',compact('newdata'));
+}
+
+public function update_status(Request $r,$id)
+{
+    DB::table('mct_callchampion_report')->where('fk_due_id',$id)->update(['status'=>1]);
+    return back();  
+}
+public function unresolve_status(Request $r,$id)
+{
+    DB::table('mct_callchampion_report')->where('fk_due_id',$id)->update(['status'=>0]);
+    return back();  
+}
 
   /*
   Assigns a mentor to unapproved callchampion and changes status from unapproved to shadowing

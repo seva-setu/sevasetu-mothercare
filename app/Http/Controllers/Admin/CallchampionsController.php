@@ -124,11 +124,11 @@ class CallchampionsController extends Controller{
 			{
 				$data['action'] = trans('routes.action');
 				$data['action_items'] = $action_items;
-				Mail::send('emails.admin_notification',$data, 
+				//return view('emails.admin_action_item_notification',compact('data'));
+				Mail::send('emails.admin_action_item_notification',compact('data'), 
 							function($message) use($email){
-								$message
-								->to($email)
-								->subject('Seva Setu: Admin Notifications');
+								$message->to->to($email);
+								$message->subject('Seva Setu: Admin Notifications');
 							}
 						  );
 			}		

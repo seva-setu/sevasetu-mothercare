@@ -40,6 +40,11 @@ Route::get('/FAQ/checklist', 'Admin\AdminController@faq_checklist');
 Route::get('/mothers', 'Admin\CallchampionsController@list_mothers');
 // Route::get('/admins', 'Admin\CallchampionsController@list_admins');
 
+Route::get('/actions', 'Admin\AdminController@action_items');
+Route::post('/actions/{id}', 'Admin\AdminController@update_status');
+Route::post('/actions/{id}/unresolve', 'Admin\AdminController@unresolve_status');
+
+
 
 Route::get('/data/upload', 'Admin\AdminController@upload_data');
 //Route::get('/data/upload', 'Admin\CallchampionsController@upload_data');
