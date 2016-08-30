@@ -29,6 +29,7 @@ smallfont{
 <th>Call ID</th>
 <th>Date generated</th>
 <th>Action item</th>
+<th>Call Champion Associated</th>
 <th>Field worker assigned to</th>
 <th></th>
 </tr>
@@ -37,6 +38,7 @@ smallfont{
 <td>{{$x['call_id']}}</td>
 <td>{{$x['date_generated']}}</td>
 <td>{{$x['action_items']}}</td>
+<td>{{$x['call_champion_name']}}</td>
 <td>{{$x['field_worker_name']}}</td>
 
 @if($x['status']==0)
