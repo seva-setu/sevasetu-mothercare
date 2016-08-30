@@ -28,6 +28,8 @@ smallfont{
 <table class="table">
 <tr>
 <th>Call ID</th>
+<th>Beneficiary Mother</th>
+
 <th>Date generated</th>
 <th>Action item</th>
 <th>Field worker assigned to</th>
@@ -37,6 +39,7 @@ smallfont{
 @foreach($action_data as $x)
 <tr>
 <td>{{$x['call_id']}}</td>
+<td>{{$x['beneficiary_name']}}</td>
 <td>{{$x['date_generated']}}</td>
 <td>{{$x['action_item']}}</td>
 <td>{{$x['field_worker_name']}}</td>
