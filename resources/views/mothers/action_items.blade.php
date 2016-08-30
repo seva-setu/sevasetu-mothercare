@@ -20,6 +20,8 @@ smallfont{
 <div id="page-wrapper" >
 
 	<div id="page-inner">
+	<br>
+	<br>
 <div class="row">
 <div class="col-md-1">
 </div>
@@ -28,7 +30,7 @@ smallfont{
 <table class="table">
 <tr>
 <th>Call ID</th>
-<th>Beneficiary Mother</th>
+<th>Beneficiary Name</th>
 
 <th>Date generated</th>
 <th>Action item</th>
