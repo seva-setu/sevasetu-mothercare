@@ -1,7 +1,7 @@
 <?php 
 	$active = Request::segment(1);
 	$string = "class=\"active-link\"";
-	if($active=='dashboard' or $active=='upload'){ $dashboard=$string; } else { $dashboard=""; }
+	if($active=='admins' or $active=='data'){ $dashboard=$string; } else { $dashboard=""; }
 	if($active=='callchampions'){ $callChampions=$string; } else { $callChampions=""; }
 	if($active=='actions'){ $actions=$string; } else { $actions=""; }
 	if($active=='analysis'){ $analysis=$string; } else { $analysis=""; }

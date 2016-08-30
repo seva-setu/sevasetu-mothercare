@@ -52,7 +52,7 @@
 		<CAMPAIGN>XML API</CAMPAIGN>
 		<COUNTRY>91</COUNTRY>
 		<SMS TEXT="Hi '.$cc_name.'! This is to remind you that you have  '.$count.'. phone calls scheduled. Login to sevasetu.org/mother_care with your details for more info." >
-		<ADDRESS TO="'.$cc_phone_number.'"></ADDRESS>
+		<ADDRESS TO="'.$cc_phonenumber.'"></ADDRESS>
 		</SMS>
 		</MESSAGE>';
 		return $ret;
@@ -66,7 +66,7 @@
 		<CAMPAIGN>XML API</CAMPAIGN>
 		<COUNTRY>91</COUNTRY>
 		<SMS TEXT="Hi '.$cc_name.'! This is a reminder for your call with '.$mother_name.'. Please call her on '.$mother_number.'. Login to sevasetu.org/mother_care with your details for more info." >
-		<ADDRESS TO="'.$cc_phone_number.'"></ADDRESS>
+		<ADDRESS TO="'.$cc_phonenumber.'"></ADDRESS>
 		</SMS>
 		</MESSAGE>';
 		return $ret;
