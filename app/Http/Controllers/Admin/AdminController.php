@@ -21,6 +21,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Http\Response;
+use App\Models\DueList;
 
 use Mail;
 use Hash;
@@ -217,6 +218,7 @@ class AdminController extends Controller{
     3. inserts mentee and mentor to mct_callchampion_shadow table
   */
   public function assign_mentor(){
+    include(storage_path().'/sms.php');
 
     // if user is a callchampion and trying to access this url redirect to /mothers
     if($this->user_role_type == 2)
@@ -236,6 +238,44 @@ class AdminController extends Controller{
       ->insert(['mentee' => $mentee,
                 'mentor' => $mentor]
               );
+
+    $mentee_details = DB::table('mct_user')
+                        ->join('mct_call_champions', 'fk_user_id', '=', 'user_id')
+                        ->where('mct_call_champions.cc_id','=',$mentee)
+                        ->get();
+
+    $mentor_details = DB::table('mct_user')
+                        ->join('mct_call_champions', 'fk_user_id', '=', 'user_id')
+                        ->where('mct_call_champions.cc_id','=',$mentor)
+                        ->get();
+
+    send_sms(7, array($mentee_details[0]->v_name, $mentee_details[0]->i_phone_number,$mentor_details[0]->v_name, $mentor_details[0]->i_phone_number));
+    send_sms(8, array($mentor_details[0]->v_name, $mentor_details[0]->i_phone_number,$mentee_details[0]->v_name, $mentee_details[0]->i_phone_number));
+
+    $sent_mentee=Mail::send('emails.mentor_assignment',
+                            array('mentee_name'=>$mentee_details[0]->v_name,
+                                'mentor_name'=>$mentor_details[0]->v_name,
+                                'mentor_number'=>$mentor_details[0]->i_phone_number
+                              ), 
+                            function($message) use($email){
+                              $message
+                              ->to($mentee_details[0]->v_email)
+                              ->subject('Seva Setu: Mentor Assignment notification');
+                            }
+                          );
+
+    $sent_mentor=Mail::send('emails.mentee_assignment',
+                            array('mentor_name'=>$mentor_details[0]->v_name,
+                                'mentee_name'=>$mentee_details[0]->v_name,
+                                'mentee_number'=>$mentee_details[0]->i_phone_number
+                              ), 
+                            function($message) use($email){
+                              $message
+                              ->to($mentor_details[0]->v_email)
+                              ->subject('Seva Setu: Mentee Assignment notification');
+                            }
+                          );
+
     return response()->json($result);
   }
 
