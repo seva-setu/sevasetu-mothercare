@@ -160,6 +160,7 @@ class CallchampionsController extends Controller{
 	public function list_all_actions($id){
 		$data=DB::table('mct_due_list')->where('fk_cc_id',$id)->get();
 		$x=0;
+		$already_resolved=0;
 		foreach($data as $i)
 		{
 			$cc_report=DB::table('mct_callchampion_report')->where('fk_due_id',$i->due_id)->first();
@@ -172,9 +173,14 @@ class CallchampionsController extends Controller{
 			$action_data[$x]['status']=$cc_report->status;
 			$action_data[$x]['call_id']=$i->due_id;	
 			$action_data[$x]['date_generated']=$i->dt_intervention_date;
-			$x++;				
+			if($action_data[$x]['status']==1)
+			{
+				$already_resolved++;
+			}
+			$x++;			
 			}
 		}
+		Session::put('mothers_actions_left',$x-$already_resolved);
 	 if($x!=0)
      {
       usort($action_data, function($a, $b)
