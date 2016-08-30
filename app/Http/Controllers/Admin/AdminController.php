@@ -873,8 +873,8 @@ public function unresolve_status(Request $r,$id)
 		$token_received = $request['passkey'];
 		$token_original = Session::get('phone_auth_token');
 		
-		if(true){
-//		if($token_original == $token_received){
+//		if(true){
+		if($token_original == $token_received){
 			Session::forget('phone_auth_token');
 			$name = Session::get('name');
 			$email = Session::get('email');
