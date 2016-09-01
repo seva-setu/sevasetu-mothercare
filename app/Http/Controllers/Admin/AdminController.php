@@ -219,18 +219,21 @@ class AdminController extends Controller{
      $alread_resolved=0;
      foreach($data as $i)
      {
-
         if($i->status==1)
         {
           $alread_resolved++;
         }
         $due_id=DB::table('mct_due_list')->where('due_id',$i->fk_due_id)->first();
+        $cc_id=DB::table('mct_due_list')->where('due_id',$i->fk_due_id)->first()->fk_cc_id;
         //$newdata[$x]['b_id']=$due_id->fk_b_id;
         $field_worker_id=DB::table('mct_beneficiary')->where('b_id',$due_id->fk_b_id)->first()->fk_f_id;
+        $cc_user_id=DB::table('mct_call_champions')->where('cc_id',$cc_id)->first()->fk_user_id;
+
         $field_worker_user_id=DB::table('mct_field_workers')->where('f_id',$field_worker_id)->first()->fk_user_id;
         if($i->t_action_items!='')
         {
         $newdata[$x]['field_worker_name']=DB::table('mct_user')->where('user_id',$field_worker_user_id)->first()->v_name;
+        $newdata[$x]['call_champion_name']=DB::table('mct_user')->where('user_id',$cc_user_id)->first()->v_name;
         $newdata[$x]['action_items']=$i->t_action_items;       
         $newdata[$x]['date_generated']=$due_id->dt_intervention_date;
         $newdata[$x]['call_id']=$i->fk_due_id;
@@ -241,13 +244,24 @@ class AdminController extends Controller{
 
         Session::put('total_actions_left',$x-$alread_resolved);
      }
-     //dd($newdata);
+     if($x!=0)
+     {
       usort($newdata, function($a, $b)
       {
             $t1 = strtotime($a['date_generated']);
             $t2 = strtotime($b['date_generated']);
             return $t2 - $t1;
-      });     
+      });           
+     }
+     else
+     {
+      $newdata[$x]['call_champion_name']='';
+      $newdata[$x]['action_items']="NO ACTION ITEMS IN DATABASE";
+        $newdata[$x]['field_worker_name']='';
+        $newdata[$x]['date_generated']='';
+        $newdata[$x]['call_id']='';
+        $newdata[$x]['status']=1;
+     }
 
       for($var=0;$var<$x;$var++)
       {

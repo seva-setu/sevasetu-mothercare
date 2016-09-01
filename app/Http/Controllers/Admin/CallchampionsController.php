@@ -22,6 +22,8 @@ use Hashids\Hashids;
 use Torann\Hashids\HashidsServiceProvider;
 use Image;
 use App\Http\Helpers;
+use Carbon\Carbon;
+
 
 class CallchampionsController extends Controller{
 	protected $model;
@@ -156,6 +158,58 @@ class CallchampionsController extends Controller{
 		
 		// ideally should be using session flashing to be doing this i think.
 		return Redirect::back()->with('message',$update_status);
+	}
+	public function list_all_actions($id){
+		$data=DB::table('mct_due_list')->where('fk_cc_id',$id)->get();
+		$x=0;
+		$already_resolved=0;
+		foreach($data as $i)
+		{
+			$cc_report=DB::table('mct_callchampion_report')->where('fk_due_id',$i->due_id)->first();
+			if($cc_report->t_action_items!='')
+			{
+				$b_name=DB::table('mct_beneficiary')->where('b_id',$i->fk_b_id)->first()->v_name;
+			$field_worker_id=DB::table('mct_beneficiary')->where('b_id',$i->fk_b_id)->first()->fk_f_id;
+	        $field_worker_user_id=DB::table('mct_field_workers')->where('f_id',$field_worker_id)->first()->fk_user_id;
+			$action_data[$x]['field_worker_name']=DB::table('mct_user')->where('user_id',$field_worker_user_id)->first()->v_name;
+			$action_data[$x]['action_item']=$cc_report->t_action_items;
+			$action_data[$x]['beneficiary_name']=$b_name;
+
+			$action_data[$x]['status']=$cc_report->status;
+			$action_data[$x]['call_id']=$i->due_id;	
+			$action_data[$x]['date_generated']=$i->dt_intervention_date;
+			if($action_data[$x]['status']==1)
+			{
+				$already_resolved++;
+			}
+			$x++;			
+			}
+		}
+		Session::put('mothers_actions_left',$x-$already_resolved);
+	 if($x!=0)
+     {
+      usort($action_data, function($a, $b)
+      {
+            $t1 = strtotime($a['date_generated']);
+            $t2 = strtotime($b['date_generated']);
+            return $t2 - $t1;
+      });           
+     }
+     else
+     {
+		$action_data[$x]['beneficiary_name']='';
+     	$action_data[$x]['action_item']="NO ACTION ITEMS IN DATABASE";
+        $action_data[$x]['field_worker_name']='';
+        $action_data[$x]['date_generated']='';
+        $action_data[$x]['call_id']='';
+        $action_data[$x]['status']=1;
+     }
+	     for($var=0;$var<$x;$var++)
+      {
+        $action_data[$var]['date_generated']=Carbon::parse($action_data[$var]['date_generated'])->format('d/m/Y');
+      }
+
+		return view('mothers.action_items',compact('action_data'));
 	}
 	
 ////////////////////////////////////////////////
