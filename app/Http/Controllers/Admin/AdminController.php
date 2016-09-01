@@ -21,7 +21,6 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Http\Response;
-use App\Models\DueList;
 
 use Mail;
 use Hash;

@@ -70,7 +70,6 @@ Route::get('/callchampion/promote/{id}', 'Admin\AdminController@promote_callcham
 ////////// For testing ///////////////////
 Route::get('/admins/test','Admin\AdminDashboardController@actionitems_lastweek');
 Route::get('/analysis','Admin\AdminDashboardController@get_data');
-Route::get('/admin/test','Admin\AdminController@send_reminders');
 
 
 ?>
