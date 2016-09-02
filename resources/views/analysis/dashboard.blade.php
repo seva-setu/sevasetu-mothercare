@@ -1,3 +1,6 @@
+<?php 
+	$userinfo = Session::get('user_logged');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,10 +15,8 @@ smallfont{
 </style>
 <body>
 @include('template/analysis_sidebar')
-
 @if(Session::has('user_logged'))
 	@include('template/admin_header')
-	@include('template/admin_sidebar')
 @endif
 
 <div id="page-wrapper" >

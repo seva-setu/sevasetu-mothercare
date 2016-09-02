@@ -174,10 +174,17 @@ smallfont{
 
 
 @if(Session::has('message'))
+<div class="row">
+<div class="col-md-3">
+ </div>
+<div class="col-md-6">
+
   	<div class="alert alert-success uploaded_mothers">
     	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
          	{{Session::get('message')}}
     </div>
+</div>
+</div>
 @endif
 <script>
 $('.close').on('click',function(){

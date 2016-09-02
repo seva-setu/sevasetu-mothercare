@@ -253,7 +253,55 @@ class AdminDashboardController extends Controller {
 		return view('analysis/dashboard',$data);
 	}
 	
-	
+	public function overall_stat()
+	{
+		return view('analysis/overall_stat');
+	} 
+	public function mother_info()
+	{
+		return view('analysis/mother_info');
+	} 
+	public function field_worker_info()
+	{
+		return view('analysis/field_worker');
+	} 
+	public function call_champion_info()
+	{
+		$champ_data=DB::table('mct_call_champions')->where('activation_status',2)->get();
+		$x=0;
+		foreach($champ_data as $i)
+		{	
+			$data[$x]['v_name']=User::where('user_id',$i->fk_user_id)->first()->v_name;
+			$cc_id=$i->cc_id;
+			$data[$x]['mother_count']=DB::table('mct_due_list')->where('fk_cc_id',$cc_id)->distinct()->count(['fk_b_id']);
+			$due_details=DB::table('mct_due_list')->where('fk_cc_id',$cc_id)->get();
+			
+			$action_items_generated=0;
+			$action_items_resolved=0;
+			$calls_recieved=0;
+			$notes_recorded=0;
+			foreach($due_details as $j)
+			{
+				$report_details=DB::table('mct_callchampion_report')->where('fk_due_id',$j->due_id)->first();
+				if($report_details->t_action_items!='')
+					$action_items_generated++;
+				if($report_details->status==1)
+					$action_items_resolved++;
+				if($report_details->e_call_status=='Received')
+					$calls_recieved++;
+				if($report_details->t_conversation!='')
+					$notes_recorded++;
+
+			}
+			$data[$x]['action_items_generated']=$action_items_generated;
+			$data[$x]['attempted_calls']=$calls_recieved;
+			$data[$x]['notes_recorded']=$notes_recorded;
+			$data[$x++]['action_items_resolved']=$action_items_resolved;
+		}
+	//	DB::table('mct_due_list')->where('fk_cc_id',)		
+	//	$call_champion_info['champ_data']['count_mothers']=;
+		return view('analysis/call_champion',compact('data'));
+	} 
 	
 	
 			

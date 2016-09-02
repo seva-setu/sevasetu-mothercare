@@ -246,9 +246,9 @@ class AdminController extends Controller{
         $newdata[$x]['action_items']=$i->t_action_items;       
         $newdata[$x]['date_generated']=$due_id->dt_intervention_date;
         $newdata[$x]['call_id']=$i->fk_due_id;
+        $newdata[$x]['report_id']=$i->report_id;
         $newdata[$x]['status']=$i->status;
-          
-          $x++;          
+        $x++;          
         }
         // $x represents total entries.
         //$already resolved represents resolved actions.
@@ -273,6 +273,7 @@ class AdminController extends Controller{
         $newdata[$x]['date_generated']='';
         $newdata[$x]['call_id']='';
         $newdata[$x]['status']=1;
+        $newdata[$x]['report_id']='';
      }
 
       for($var=0;$var<$x;$var++)
@@ -285,14 +286,14 @@ class AdminController extends Controller{
 //when any action is resolved in action_items view then we update its status to 1
 public function update_status(Request $r,$id)
 {
-    DB::table('mct_callchampion_report')->where('fk_due_id',$id)->update(['status'=>1]);
+    DB::table('mct_callchampion_report')->where('report_id',$id)->update(['status'=>1]);
     return back();  
 }
 //
 //when any action is unresolved in action_items view then we update its status to 0
 public function unresolve_status(Request $r,$id)
 {
-    DB::table('mct_callchampion_report')->where('fk_due_id',$id)->update(['status'=>0]);
+    DB::table('mct_callchampion_report')->where('report_id',$id)->update(['status'=>0]);
     return back();  
 }
 
