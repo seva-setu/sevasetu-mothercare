@@ -73,11 +73,34 @@ smallfont{
 </div>
 </div>
 
+
 </div>
 
 </fieldset>
 </form>
+<div class="row">
+<div class="col-md-2">
+</div>
+<div class="col-md-10">
+  <table class="table">
+    <tr>
+    <th>Field worker name</th>
+    <th>Field worker ID</th>
+    <th>Field worker number</th>
+    </tr>
+    @foreach($data as $i)
 
+    <tr>
+    <td>{{$i['others']->v_name}}</td>
+    <td>{{$i['f_id']}}</td>
+    <td>{{$i['others']->i_phone_number}}</td>
+    </tr>
+
+
+    @endforeach
+  </table>
+  </div>
+</div>
 </div>
 @if(Session::has('go_back'))
 @if(Session::get('go_back')==1)
@@ -144,10 +167,12 @@ smallfont{
 @if(Session::has('count_excelupload_errors.count'))
 @if(Session::get('count_excelupload_errors.count')!=0)
       @for ($i = 0; $i < Session::get('count_excelupload_errors.count'); $i++)
+      @if(Session::get('count_excelupload_errors'.$i)!='')
       <tr>
         <td>{{Session::get('count_excelupload_errors'.$i)}}</td>
         <td><b>{{Session::get('count_excelupload_errors.message'.$i)}}</b></td>
       </tr>  
+      @endif
       @endfor
 @endif
 @endif

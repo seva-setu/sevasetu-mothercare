@@ -90,7 +90,17 @@ class AdminController extends Controller{
     }
     $session_data=Session::get('user_logged');
     if($session_data['v_role']==1)
-      return view('admin/upload_data');
+    {
+      $f_workers=DB::table('mct_field_workers')->get();
+       $x=0;
+      foreach ($f_workers as $i)
+      {
+        $data[$x]['f_id']=$i->f_id;
+         $data[$x++]['others']=DB::table('mct_user')->where('user_id',$i->fk_user_id)->first();
+      }
+    
+      return view('admin/upload_data',compact('data'));
+    }
     else
       return 'User is not admin';
   }

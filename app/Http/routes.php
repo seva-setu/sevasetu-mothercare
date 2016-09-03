@@ -57,7 +57,10 @@ Route::get('/download', 'Admin\BeneficiaryController@downloadExcel');
 
 
 
-Route::get('/admins', 'Admin\AdminController@admin_dashboard');
+Route::get('/admins', function()
+	{
+		return redirect(url('data/upload'));
+	});//'Admin\AdminController@admin_dashboard');
 
 
 Route::get('/mycalls', 'Admin\WeeklyCalllistController@list_all_calls');
