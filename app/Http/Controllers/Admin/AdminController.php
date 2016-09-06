@@ -92,11 +92,16 @@ class AdminController extends Controller{
     if($session_data['v_role']==1)
     {
       $f_workers=DB::table('mct_field_workers')->get();
-       $x=0;
+      $mothers=DB::table('mct_beneficiary')->count();
+      $data['mothers_count']=$mothers;
+      $assigned_mother_count=DB::table('mct_due_list')->distinct()->count(['fk_b_id']);
+      $data['assigned_mother_count']=$assigned_mother_count;
+      $data['unassigned_mother_count']=$mothers-$assigned_mother_count;
+      $x=0;
       foreach ($f_workers as $i)
       {
-        $data[$x]['f_id']=$i->f_id;
-         $data[$x++]['others']=DB::table('mct_user')->where('user_id',$i->fk_user_id)->first();
+        $data['f'][$x]['f_id']=$i->f_id;
+         $data['f'][$x++]['others']=DB::table('mct_user')->where('user_id',$i->fk_user_id)->first();
       }
     
       return view('admin/upload_data',compact('data'));

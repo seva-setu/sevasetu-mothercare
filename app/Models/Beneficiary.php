@@ -8,10 +8,12 @@ use Eloquent;
 
 
 class Beneficiary extends Eloquent {
-	public $timestamps = false;
+	//public $timestamps = false;
 	protected $table = 'mct_beneficiary';
 	protected $primaryKey = 'b_id';
 	
+
+	protected $date=['dt_upload_date'];
 	/*
 	 * Insert Beneficiary Report in Database.
 	 */

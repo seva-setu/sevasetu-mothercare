@@ -78,17 +78,26 @@ smallfont{
 
 </fieldset>
 </form>
+
 <div class="row">
+
 <div class="col-md-2">
 </div>
 <div class="col-md-10">
-  <table class="table">
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#field_workers">Field Workers</a></li>
+            <li><a data-toggle="tab" href="#mothers">Mother</a></li>
+          </ul>
+<div class="tab-content">
+    <div id="field_workers" class="tab-pane fade in active">
+  <div class="table-responsive">
+  <table class="table table-bordered ">
     <tr>
     <th>Field worker name</th>
     <th>Field worker ID</th>
     <th>Field worker number</th>
     </tr>
-    @foreach($data as $i)
+    @foreach($data['f'] as $i)
 
     <tr>
     <td>{{$i['others']->v_name}}</td>
@@ -99,6 +108,25 @@ smallfont{
 
     @endforeach
   </table>
+</div>
+</div>
+    <div id="mothers" class="tab-pane fade ">
+<div class="table-responsive">
+  <table class="table table-bordered mothers">
+    <tr>
+    <th>Total number of mothers</th>
+    <th>Number of mothers assigned</th>
+    <th>Number of mothers unassigned</th>
+    </tr>
+    <tr>
+    <td>{{$data['mothers_count']}}</td>
+    <td>{{$data['assigned_mother_count']}}</td>
+    <td>{{$data['unassigned_mother_count']}}</td>
+    </tr>
+  </table>
+  </div>
+</div></div>
+
   </div>
 </div>
 </div>

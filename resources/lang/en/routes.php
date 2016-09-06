@@ -310,7 +310,7 @@ return array(
 		'approvedcc' => 'All Approved Callchampions',
 		'cc_id' => 'CC Id',
 		'assignmothers' => 'Assign mothers',
-		'selectmothers' => 'Select No of Mothers',
+		'selectmothers' => 'Select no of mothers',
 		'noofmothers' => 'No. of Mothers:',
 		'assignmentor' =>'Assign mentor',
 		'mentee' => 'Mentee',

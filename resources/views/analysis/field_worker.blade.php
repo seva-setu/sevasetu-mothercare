@@ -19,5 +19,12 @@ smallfont{
 @if(Session::has('user_logged'))
 	@include('template/admin_header')
 @endif
+
+<div id="page-wrapper" >
+<div id="page-inner">
+<table class="table">
+</table>
+</div>
+</div>
 </body>
 </html>
