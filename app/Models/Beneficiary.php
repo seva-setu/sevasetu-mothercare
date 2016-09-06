@@ -8,7 +8,7 @@ use Eloquent;
 
 
 class Beneficiary extends Eloquent {
-	//public $timestamps = false;
+	public $timestamps = false;
 	protected $table = 'mct_beneficiary';
 	protected $primaryKey = 'b_id';
 	
