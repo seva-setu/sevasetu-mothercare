@@ -6,6 +6,7 @@ use Illuminate\Foundation\Inspiring;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Mail;
+use DB;
 
 class Remind extends Command {
 
@@ -133,7 +134,35 @@ class Remind extends Command {
 									->bcc('shashank@sevasetu.org');
 									}
 								);
+
+				$mentees=DB::table('mct_call_champions')
+                        ->join('mct_callchampion_shadow', 'mentee', '=', 'cc_id')
+                        ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                        ->where('mct_call_champions.activation_status',1)
+                        ->where('mct_callchampion_shadow.mentor' ,'=', $callchamp[0]->cc_id)
+                        ->get();
+
+
+                foreach ($mentees as $value)
+    			{
+    				send_sms($sms_id, array($value->v_name, $value->i_phone_number, count($callchamp)));
+    				
+    				$email = $value->v_email;
+					$sent=Mail::send($mail,
+								array('cc_name'=>$value->v_name,
+									  'mother_name'=>$callchamp[0]->mother_name,
+									  'count'=>count($callchamp)
+									 ), 
+								function($message) use($email){
+									$message
+									->to($email)
+									->subject('Seva Setu: Call reminder')
+									->bcc('shashank@sevasetu.org');
+									}
+								);	
+    			}
 			}
+			
 			else{
 				send_sms($sms_id+1, array($callchamp[0]->cc_name,			 $callchamp[0]->cc_phonenumber, 
 							$callchamp[0]->mother_name, 
@@ -160,6 +189,36 @@ class Remind extends Command {
 									->bcc('shashank@sevasetu.org');
 									}
 								);
+
+
+				$mentees=DB::table('mct_call_champions')
+                        ->join('mct_callchampion_shadow', 'mentee', '=', 'cc_id')
+                        ->join('mct_user', 'user_id', '=', 'fk_user_id')
+                        ->where('mct_call_champions.activation_status',1)
+                        ->where('mct_callchampion_shadow.mentor' ,'=', $callchamp[0]->cc_id)
+                        ->get();
+
+
+                foreach ($mentees as $value)
+    			{
+    				send_sms($sms_id + 1, array($value->v_name, $value->i_phone_number, $callchamp[0]->mother_name, 
+							$callchamp[0]->mother_phonenumber));
+    				
+    				$email = $value->v_email;
+					$sent=Mail::send($mail,
+								array('cc_name'=>$value->v_name,
+									  'mother_name'=>$callchamp[0]->mother_name,
+									  'number'=>$callchamp[0]->mother_phonenumber,
+									  'village'=>$callchamp[0]->mother_village
+									 ), 
+								function($message) use($email){
+									$message
+									->to($email)
+									->subject('Seva Setu: Call reminder')
+									->bcc('shashank@sevasetu.org');
+									}
+								);	
+    			}
 			}
 			
 			//Send SMS to mother
