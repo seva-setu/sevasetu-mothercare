@@ -341,6 +341,12 @@ class BeneficiaryController extends Controller{
 				$data=$data[0];
 			}
 			  $data->each(function($r){
+			  		if($r->srno=='')
+			  		{
+			  		}
+			  		else
+			  		{
+
 					$beneficiary= new Beneficiary;
 					//validation rules
 		  			$rules = array(
@@ -397,6 +403,7 @@ class BeneficiaryController extends Controller{
  				$already_exist_name=Beneficiary::where(['v_name'=>$beneficiary_data['v_name'],'v_husband_name'=>$beneficiary_data['v_husband_name']])->first();
  				if($already_exist_name['v_name']!='')
  				{
+
     				$count_excelupload_warning=Session::get('count_excelupload_warning.count');
  					Session::flash('count_excelupload_warning'.$count_excelupload_warning,$r->srno);
  					Session::flash('count_excelupload_warning.message'.$count_excelupload_warning,trans('upload_excel.combination_warning'));					
@@ -408,6 +415,7 @@ class BeneficiaryController extends Controller{
     			$already_exist_number=Beneficiary::where('v_phone_number',$beneficiary_data['v_phone_number'])->first();
     			if($already_exist_number['v_phone_number']!='')
     			{
+
     				$count_excelupload_data_repeated=Session::get('count_excelupload_data_repeated.count');
  					Session::flash('count_excelupload_data_repeated'.$count_excelupload_data_repeated,$r->srno);
  					Session::flash('count_excelupload_data_repeated.message'.$count_excelupload_data_repeated,trans('upload_excel.already_in_database'));
@@ -457,6 +465,7 @@ class BeneficiaryController extends Controller{
      			}
     			Session::forget('should_data_be_inserted');
      			Session::flash('should_data_be_inserted',1);	
+ 		}
  		});
 				//save the above excel data in variable an then finally store this data when user makes confirmation by calling method @Excel_data_upload
 				Session::put('excel_data',$data);

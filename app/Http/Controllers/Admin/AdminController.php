@@ -90,7 +90,22 @@ class AdminController extends Controller{
     }
     $session_data=Session::get('user_logged');
     if($session_data['v_role']==1)
-      return view('admin/upload_data');
+    {
+      $f_workers=DB::table('mct_field_workers')->get();
+      $mothers=DB::table('mct_beneficiary')->count();
+      $data['mothers_count']=$mothers;
+      $assigned_mother_count=DB::table('mct_due_list')->distinct()->count(['fk_b_id']);
+      $data['assigned_mother_count']=$assigned_mother_count;
+      $data['unassigned_mother_count']=$mothers-$assigned_mother_count;
+      $x=0;
+      foreach ($f_workers as $i)
+      {
+        $data['f'][$x]['f_id']=$i->f_id;
+         $data['f'][$x++]['others']=DB::table('mct_user')->where('user_id',$i->fk_user_id)->first();
+      }
+    
+      return view('admin/upload_data',compact('data'));
+    }
     else
       return 'User is not admin';
   }
@@ -212,6 +227,14 @@ class AdminController extends Controller{
 
     return view('admin/callchampions',$data);
   }
+  /*
+  Action Items tab in admin dashboard, that notifies admin about all the action items requested by champions
+  @returns admin/action_items view with all the data like action item , field worker associated with that beneficiary, date, call_id,champion associated.
+  @calling_method invoked by admin_dashboard view
+  @algorithm
+  1.) fetch data like action items and other data related with that.
+  2.) sort entries w.r.t date.
+  */
 
   public function action_items(){
     $data=DB::table('mct_callchampion_report')->get();//->where('status',0)->get();
@@ -219,6 +242,7 @@ class AdminController extends Controller{
      $alread_resolved=0;
      foreach($data as $i)
      {
+      //status=1 implies that action items are already resolved.
         if($i->status==1)
         {
           $alread_resolved++;
@@ -237,15 +261,17 @@ class AdminController extends Controller{
         $newdata[$x]['action_items']=$i->t_action_items;       
         $newdata[$x]['date_generated']=$due_id->dt_intervention_date;
         $newdata[$x]['call_id']=$i->fk_due_id;
+        $newdata[$x]['report_id']=$i->report_id;
         $newdata[$x]['status']=$i->status;
-          
-          $x++;          
+        $x++;          
         }
-
+        // $x represents total entries.
+        //$already resolved represents resolved actions.
         Session::put('total_actions_left',$x-$alread_resolved);
      }
      if($x!=0)
      {
+      //sorting w.r.t. date
       usort($newdata, function($a, $b)
       {
             $t1 = strtotime($a['date_generated']);
@@ -253,6 +279,7 @@ class AdminController extends Controller{
             return $t2 - $t1;
       });           
      }
+     //if there are no unresolved action_items or database is empty
      else
      {
       $newdata[$x]['call_champion_name']='';
@@ -261,6 +288,7 @@ class AdminController extends Controller{
         $newdata[$x]['date_generated']='';
         $newdata[$x]['call_id']='';
         $newdata[$x]['status']=1;
+        $newdata[$x]['report_id']='';
      }
 
       for($var=0;$var<$x;$var++)
@@ -270,15 +298,17 @@ class AdminController extends Controller{
 
     return view('admin/action_items',compact('newdata'));
 }
-
+//when any action is resolved in action_items view then we update its status to 1
 public function update_status(Request $r,$id)
 {
-    DB::table('mct_callchampion_report')->where('fk_due_id',$id)->update(['status'=>1]);
+    DB::table('mct_callchampion_report')->where('report_id',$id)->update(['status'=>1]);
     return back();  
 }
+//
+//when any action is unresolved in action_items view then we update its status to 0
 public function unresolve_status(Request $r,$id)
 {
-    DB::table('mct_callchampion_report')->where('fk_due_id',$id)->update(['status'=>0]);
+    DB::table('mct_callchampion_report')->where('report_id',$id)->update(['status'=>0]);
     return back();  
 }
 

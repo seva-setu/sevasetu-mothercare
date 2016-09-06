@@ -57,7 +57,10 @@ Route::get('/download', 'Admin\BeneficiaryController@downloadExcel');
 
 
 
-Route::get('/admins', 'Admin\AdminController@admin_dashboard');
+Route::get('/admins', function()
+	{
+		return redirect(url('data/upload'));
+	});//'Admin\AdminController@admin_dashboard');
 
 
 Route::get('/mycalls', 'Admin\WeeklyCalllistController@list_all_calls');
@@ -77,6 +80,9 @@ Route::get('/callchampion/promote/{id}', 'Admin\AdminController@promote_callcham
 ////////// For testing ///////////////////
 Route::get('/admins/test','Admin\AdminDashboardController@actionitems_lastweek');
 Route::get('/analysis','Admin\AdminDashboardController@get_data');
-
+Route::get('/analysis/overall_stat','Admin\AdminDashboardController@overall_stat');
+Route::get('/analysis/mother','Admin\AdminDashboardController@mother_info');
+Route::get('/analysis/field_worker','Admin\AdminDashboardController@field_worker_info');
+Route::get('/analysis/call_champion','Admin\AdminDashboardController@call_champion_info');
 
 ?>

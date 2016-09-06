@@ -42,12 +42,12 @@ smallfont{
 <td>{{$x['field_worker_name']}}</td>
 
 @if($x['status']==0)
-<td><form method="POST" action="{{url()}}/actions/{{$x['call_id']}}">			
+<td><form method="POST" action="{{url()}}/actions/{{$x['report_id']}}">			
 <input type="hidden" name="_token" value="{{ csrf_token() }}">		
 <button class="btn btn-primary" type="submit">Resolve</button></form></td>
 @endif
 @if($x['status']==1)
-<td><form method="POST" action="{{url()}}/actions/{{$x['call_id']}}/unresolve">		
+<td><form method="POST" action="{{url()}}/actions/{{$x['report_id']}}/unresolve">		
 <input type="hidden" name="_token" value="{{ csrf_token() }}">		
 <button class="btn btn-success" type="submit">Resolved</button></form></td>
 @endif

@@ -19,6 +19,8 @@
 'Error'=>'Error',
 'Sno_warning_table'=>'S No. as per excel',
 'Total_Warnings'=>'Total Warnings',
+'Total_Error'=>'Total Errors',
+
 'Error_heading'=>'Errors occurred while saving following data',
 'confirm_upload'=>'Save Data',
 'upload_success'=>'Mothers data with complete information uploaded'

@@ -12,6 +12,8 @@ class Beneficiary extends Eloquent {
 	protected $table = 'mct_beneficiary';
 	protected $primaryKey = 'b_id';
 	
+
+	protected $date=['dt_upload_date'];
 	/*
 	 * Insert Beneficiary Report in Database.
 	 */

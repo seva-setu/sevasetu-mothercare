@@ -73,11 +73,62 @@ smallfont{
 </div>
 </div>
 
+
 </div>
 
 </fieldset>
 </form>
 
+<div class="row">
+
+<div class="col-md-2">
+</div>
+<div class="col-md-10">
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#field_workers">Field Workers</a></li>
+            <li><a data-toggle="tab" href="#mothers">Mother</a></li>
+          </ul>
+<div class="tab-content">
+    <div id="field_workers" class="tab-pane fade in active">
+  <div class="table-responsive">
+  <table class="table table-bordered ">
+    <tr>
+    <th>Field worker name</th>
+    <th>Field worker ID</th>
+    <th>Field worker number</th>
+    </tr>
+    @foreach($data['f'] as $i)
+
+    <tr>
+    <td>{{$i['others']->v_name}}</td>
+    <td>{{$i['f_id']}}</td>
+    <td>{{$i['others']->i_phone_number}}</td>
+    </tr>
+
+
+    @endforeach
+  </table>
+</div>
+</div>
+    <div id="mothers" class="tab-pane fade ">
+<div class="table-responsive">
+  <table class="table table-bordered mothers">
+    <tr>
+    <th>Total number of mothers</th>
+    <th>Number of mothers assigned</th>
+    <th>Number of mothers unassigned</th>
+    </tr>
+    <tr>
+    <td>{{$data['mothers_count']}}</td>
+    <td>{{$data['assigned_mother_count']}}</td>
+    <td>{{$data['unassigned_mother_count']}}</td>
+    </tr>
+  </table>
+  </div>
+</div></div>
+
+  </div>
+</div>
 </div>
 @if(Session::has('go_back'))
 @if(Session::get('go_back')==1)
@@ -144,10 +195,12 @@ smallfont{
 @if(Session::has('count_excelupload_errors.count'))
 @if(Session::get('count_excelupload_errors.count')!=0)
       @for ($i = 0; $i < Session::get('count_excelupload_errors.count'); $i++)
+      @if(Session::get('count_excelupload_errors'.$i)!='')
       <tr>
         <td>{{Session::get('count_excelupload_errors'.$i)}}</td>
         <td><b>{{Session::get('count_excelupload_errors.message'.$i)}}</b></td>
       </tr>  
+      @endif
       @endfor
 @endif
 @endif
@@ -174,10 +227,17 @@ smallfont{
 
 
 @if(Session::has('message'))
+<div class="row">
+<div class="col-md-3">
+ </div>
+<div class="col-md-6">
+
   	<div class="alert alert-success uploaded_mothers">
     	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
          	{{Session::get('message')}}
     </div>
+</div>
+</div>
 @endif
 <script>
 $('.close').on('click',function(){
