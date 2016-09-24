@@ -87,6 +87,34 @@
 		return $ret;
 	}
 	
+	function template7($cc_name, $cc_phonenumber, $mentor_name, $mentor_number){
+		$ret = '<MESSAGE>
+		<AUTHKEY>'.$_ENV['SMS_KEY'].'</AUTHKEY>
+		<SENDER>'.$_ENV['SMS_NAME'].'</SENDER>
+		<ROUTE>'.$_ENV['SMS_ROUTE'].'</ROUTE>
+		<CAMPAIGN>XML API</CAMPAIGN>
+		<COUNTRY>91</COUNTRY>
+		<SMS TEXT="Hi '.$cc_name.'! '.$mentor_name.' has been assigned to you as a mentor. You can contact her on '.$mentor_number.'. You can shadow her on live calls. Schedules of all such calls will be notified to you." >
+		<ADDRESS TO="'.$cc_phonenumber.'"></ADDRESS>
+		</SMS>
+		</MESSAGE>';
+		return $ret;
+	}
+
+	function template8($cc_name, $cc_phonenumber, $mentee_name, $mentee_number){
+		$ret = '<MESSAGE>
+		<AUTHKEY>'.$_ENV['SMS_KEY'].'</AUTHKEY>
+		<SENDER>'.$_ENV['SMS_NAME'].'</SENDER>
+		<ROUTE>'.$_ENV['SMS_ROUTE'].'</ROUTE>
+		<CAMPAIGN>XML API</CAMPAIGN>
+		<COUNTRY>91</COUNTRY>
+		<SMS TEXT="Hi '.$cc_name.'! '.$mentee_name.' has been assigned to you as a new mentee. You can contact her on '.$mentee_number.'. Login to sevasetu.org/mother_care with your details for more info." >
+		<ADDRESS TO="'.$cc_phonenumber.'"></ADDRESS>
+		</SMS>
+		</MESSAGE>';
+		return $ret;
+	}
+
 	function send_sms($template_id, $data_arr){
 		$url = $_ENV['SMS_URL'];
 		
