@@ -25,14 +25,15 @@ smallfont{
 		
 		<div class="row">
 			<div class="col-lg-10 col-md-10">
+			<br><br>
 			<table class="table table-striped table-bordered table-hover">
 			<tr>
-			<th>Call Champion</th>
-			<th>Number of Mothers assigned</th>
-			<th>Number of calls attempted</th>
-			<th>Number of notes generated</th>
-			<th>Number of action items generated</th>
-			<th>Number of action items resolved</th>
+			<th>{{ trans('analysis.call_champ') }}</th>
+			<th>{{ trans('analysis.number_of_mothers_assigned') }}</th>
+			<th>{{ trans('analysis.numbers_of_call_attempted') }}</th>
+			<th>{{trans('analysis.number_of_notes_generated')}}</th>
+			<th>{{trans('analysis.number_of_action_items_generated')}}</th>
+			<th>{{trans('analysis.number_of_action_items_resolved')}}</th>
 			</tr>
 			@foreach($data as $i)
 			<tr>

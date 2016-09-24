@@ -23,7 +23,14 @@
 
 'Error_heading'=>'Errors occurred while saving following data',
 'confirm_upload'=>'Save Data',
-'upload_success'=>'Mothers data with complete information uploaded'
+'upload_success'=>'Mothers data with complete information uploaded',
+'Field_worker_name'=>'Field worker name',
+'Field_worker_ID'=>'Field worker ID',
+'Field_worker_number'=>'Field worker number',
+'Total_number_of_mothers'=>'Total number of mothers',
+'Number_of_mothers_assigned'=>'Number of mothers assigned',
+'Number_of_mothers_unassigned'=>'Number of mothers unassigned'
+
  );
 
 ?>

@@ -93,9 +93,9 @@ smallfont{
   <div class="table-responsive">
   <table class="table table-bordered ">
     <tr>
-    <th>Field worker name</th>
-    <th>Field worker ID</th>
-    <th>Field worker number</th>
+    <th>{{ trans('upload_excel.Field_worker_name') }}</th>
+    <th>{{ trans('upload_excel.Field_worker_ID') }}</th>
+    <th>{{ trans('upload_excel.Field_worker_number') }}</th>
     </tr>
     @foreach($data['f'] as $i)
 
@@ -114,9 +114,9 @@ smallfont{
 <div class="table-responsive">
   <table class="table table-bordered mothers">
     <tr>
-    <th>Total number of mothers</th>
-    <th>Number of mothers assigned</th>
-    <th>Number of mothers unassigned</th>
+    <th>{{ trans('upload_excel.Total_number_of_mothers') }}</th>
+    <th>{{ trans('upload_excel.Number_of_mothers_assigned') }}</th>
+    <th>{{ trans('upload_excel.Number_of_mothers_unassigned') }}</th>
     </tr>
     <tr>
     <td>{{$data['mothers_count']}}</td>
@@ -173,6 +173,7 @@ smallfont{
 @endif
 @endif
 @if(Session::has('count_excelupload_data_repeated.count')||Session::has('count_excelupload_errors.count'))
+@if((Session::get('count_excelupload_data_repeated.count')+Session::get('count_excelupload_errors.count'))!=0)
 <div class="row">
 <div class="col-md-3">
  </div>
@@ -209,7 +210,7 @@ smallfont{
 </div>
 </div>
 @endif
-
+@endif
 @if(Session::has('data_validated'))
 @if(Session::get('data_validated')==1)
 <div class="row">
