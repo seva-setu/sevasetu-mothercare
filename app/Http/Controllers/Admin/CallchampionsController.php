@@ -129,7 +129,7 @@ class CallchampionsController extends Controller{
 				//return view('emails.admin_action_item_notification',compact('data'));
 				Mail::send('emails.admin_action_item_notification',compact('data'), 
 							function($message) use($email){
-								$message->to->to($email);
+								$message->to($email);
 								$message->subject('Seva Setu: Admin Notifications');
 							}
 						  );
