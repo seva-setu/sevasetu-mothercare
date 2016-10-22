@@ -164,10 +164,6 @@ class AdminController extends Controller{
     return view('admin/admin_dashboard');
   }
 
-
-
-
-
   /*
   Callchampion tab in admin dashboard.
   @returns admin/callchampion view with some related data
@@ -356,27 +352,33 @@ public function unresolve_status(Request $r,$id)
     send_sms(7, array($mentee_details[0]->v_name, $mentee_details[0]->i_phone_number,$mentor_details[0]->v_name, $mentor_details[0]->i_phone_number));
     send_sms(8, array($mentor_details[0]->v_name, $mentor_details[0]->i_phone_number,$mentee_details[0]->v_name, $mentee_details[0]->i_phone_number));
 
+    $email = $mentee_details[0]->v_email;
+    $bcc = explode(',',$_ENV['BCC_IDS']);
+
     $sent_mentee=Mail::send('emails.mentor_assignment',
                             array('mentee_name'=>$mentee_details[0]->v_name,
                                 'mentor_name'=>$mentor_details[0]->v_name,
                                 'mentor_number'=>$mentor_details[0]->i_phone_number
                               ), 
-                            function($message) use($email){
+                            function($message) use($email,$bcc){
                               $message
-                              ->to($mentee_details[0]->v_email)
-                              ->subject('Seva Setu: Mentor Assignment notification');
+                              ->to($email)
+                              ->subject('Seva Setu: Mentor Assignment notification')
+                              ->bcc($bcc);
                             }
                           );
 
+    $email = $mentor_details[0]->v_email;
     $sent_mentor=Mail::send('emails.mentee_assignment',
                             array('mentor_name'=>$mentor_details[0]->v_name,
                                 'mentee_name'=>$mentee_details[0]->v_name,
                                 'mentee_number'=>$mentee_details[0]->i_phone_number
                               ), 
-                            function($message) use($email){
+                            function($message) use($email,$bcc){
                               $message
-                              ->to($mentor_details[0]->v_email)
-                              ->subject('Seva Setu: Mentee Assignment notification');
+                              ->to($email)
+                              ->subject('Seva Setu: Mentee Assignment notification')
+                              ->bcc($bcc);
                             }
                           );
 
