@@ -109,14 +109,17 @@ class CallchampionsController extends Controller{
 			$data['beneficiary'] = $b_obj->get_beneficiary_details($b_id);
 
 			$email = $_ENV['MAIL_LOGIN'];
+			$bcc = explode(',',$_ENV['BCC_IDS']);
+
 			if($call_stats == trans('routes.in'))
 			{
 				$data['action'] = $call_stats;
 				Mail::send('emails.admin_notification',$data, 
-							function($message) use($email){
+							function($message) use($email,$bcc){
 								$message
 								->to($email)
-								->subject('Seva Setu: Admin Notifications');
+								->subject('Seva Setu: Admin Notifications')
+								->bcc($bcc);
 							}
 						  );
 
@@ -127,10 +130,12 @@ class CallchampionsController extends Controller{
 				$data['action'] = trans('routes.action');
 				$data['action_items'] = $action_items;
 				//return view('emails.admin_action_item_notification',compact('data'));
-				Mail::send('emails.admin_action_item_notification',compact('data'), 
-							function($message) use($email){
-								$message->to($email);
-								$message->subject('Seva Setu: Admin Notifications');
+				Mail::send('emails.admin_notification',$data, 
+							function($message) use($email,$bcc){
+								$message
+								->to($email)
+								->subject('Seva Setu: Admin Notifications')
+								->bcc($bcc);
 							}
 						  );
 			}		
@@ -144,10 +149,11 @@ class CallchampionsController extends Controller{
 	            	->update(['reported _delivery_date' => $data['expected_date'] ]);
 
 				Mail::send('emails.admin_notification',$data, 
-							function($message) use($email){
+							function($message) use($email,$bcc){
 								$message
 								->to($email)
-								->subject('Seva Setu: Admin Notifications');
+								->subject('Seva Setu: Admin Notifications')
+								->bcc($bcc);
 							}
 						  );
 

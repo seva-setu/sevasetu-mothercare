@@ -262,7 +262,7 @@ class DueList extends Eloquent {
 		
 		$select_endweek = $select_endweek->where($this->table.'.reminder_status','=',2)
 							->whereNotIn($join_table_name4.'.e_call_status',array('Received','Incorrect number'))
-							->whereRaw(DB::raw($this->table.'.dt_intervention_date'." BETWEEN SYSDATE() + INTERVAL 1 DAY AND SYSDATE() + INTERVAL 0 DAY"))
+							->whereRaw(DB::raw($this->table.'.dt_intervention_date'." BETWEEN SYSDATE() + INTERVAL 0 DAY AND SYSDATE() + INTERVAL 1 DAY"))
 							->get();
 		
 		$select_postweek = $select_postweek->where($this->table.'.reminder_status','=',3)
