@@ -101,10 +101,24 @@ class AdminController extends Controller{
       foreach ($f_workers as $i)
       {
         $data['f'][$x]['f_id']=$i->f_id;
-         $data['f'][$x++]['others']=DB::table('mct_user')->where('user_id',$i->fk_user_id)->first();
+        $data['f'][$x++]['others']=DB::table('mct_user')->where('user_id',$i->fk_user_id)->first(); 
       }
-    
-      return view('admin/upload_data',compact('data'));
+      
+      $c_c = DB::table('mct_user')
+      ->join('mct_call_champions', 'mct_call_champions.fk_user_id', '=', 'user_id')
+      ->join('mct_due_list','mct_due_list.fk_cc_id', '=', 'mct_call_champions.cc_id')
+      ->select(DB::raw('v_name, count(distinct(fk_b_id)) as mothers'))
+      ->groupBy('v_name')
+      ->get(); 
+      
+      $x=0;
+      foreach ($c_c as $i)
+      {
+        $data['c'][$x]['v_name']=$i->v_name;
+         $data['c'][$x++]['mothers']=$i->mothers;  
+      }
+
+      return view('admin/upload_data',compact('data')); 
     }
     else
       return 'User is not admin';
@@ -952,7 +966,7 @@ public function unresolve_status(Request $r,$id)
 			$pn = Session::get('phonenumber');
 			$pass = Session::get('password');
 			
-			return $this->create_new_user(2, $name, $email, $pn, $pass);
+			return $this->create_new_user(2, $name, $email, $pn, $pass); 
 			//by default, those registering via the form are call champions
 		}
 		else{
@@ -986,13 +1000,16 @@ public function unresolve_status(Request $r,$id)
 		$call_champ_obj = new CallChampion;
 		$cc_record = $call_champ_obj->add_champion($usr_record);
 		if(!$cc_record){
-			// something wrong here. needs to be checked.
+			// something wrong here. needs to be checked.rx
 			die("ohmycc");
 		}
 		// Send a confirmation mail
 		$sent=Mail::send('emails.activation',$data_to_push, function($message) use($email){
-		$message->to($email)->subject('Welcome to Seva Setu\'s Mother Care program');
-		});
+		$message->to($email)->subject('Welcome to Seva Setu\'s Mother Care program');         
+		
+    //$sent=Mail::send('emails.new_activation',$data_to_push, function($message) use($email){
+    //$message->to('kaushikyogesh95@gmail.com')->subject('New User Registration: Seva Setu\'s Mother Care program');  
+    });
 		
 		$userdet=array(
 			'role_id' => $cc_record,
@@ -1019,7 +1036,7 @@ public function unresolve_status(Request $r,$id)
      *
      * @return string|null
      */
-    protected function getGuard()
+   protected function getGuard()
     {
         return property_exists($this, 'guard') ? $this->guard : null;
     }
