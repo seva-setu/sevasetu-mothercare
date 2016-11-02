@@ -52,17 +52,14 @@ img.emoji {
 <link rel="stylesheet" id="tyler-layout-mobile-css" href="{{ url() }}/assets/landing/layout-mobile.css" type="text/css" media="all">
 <link rel="stylesheet" id="cmw-scheme-css" href="{{ url() }}/assets/landing/layout(1).css" type="text/css" media="all">
 <link rel="stylesheet" id="sccss_style-css" href="{{ url() }}/assets/landing/saved_resource" type="text/css" media="all">
-<script type="text/javascript">
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','__gaTracker');
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-	__gaTracker('create', 'UA-19180452-1', 'auto');
-	__gaTracker('set', 'forceSSL', true);
-	__gaTracker('require', 'displayfeatures');
-	__gaTracker('require', 'linkid', 'linkid.js');
-	__gaTracker('send','pageview');
+  ga('create', 'UA-85984737-2', 'auto');
+  ga('send', 'pageview');
 
 </script>
 <!-- / Google Analytics by Yoast -->
