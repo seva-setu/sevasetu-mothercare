@@ -1,5 +1,4 @@
 <?php 
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -69,6 +68,7 @@ class AdminController extends Controller{
 	}
 	
 	public function index(){
+		
 		if(Session::has('user_logged')){			       
     if($this->user_role_type == 1)
       return Redirect::to('/admins')->send();
@@ -162,10 +162,6 @@ class AdminController extends Controller{
 
     return view('admin/admin_dashboard');
   }
-
-
-
-
 
   /*
   Callchampion tab in admin dashboard.
@@ -355,27 +351,33 @@ public function unresolve_status(Request $r,$id)
     send_sms(7, array($mentee_details[0]->v_name, $mentee_details[0]->i_phone_number,$mentor_details[0]->v_name, $mentor_details[0]->i_phone_number));
     send_sms(8, array($mentor_details[0]->v_name, $mentor_details[0]->i_phone_number,$mentee_details[0]->v_name, $mentee_details[0]->i_phone_number));
 
+    $email = $mentee_details[0]->v_email;
+    $bcc = explode(',',$_ENV['BCC_IDS']);
+
     $sent_mentee=Mail::send('emails.mentor_assignment',
                             array('mentee_name'=>$mentee_details[0]->v_name,
                                 'mentor_name'=>$mentor_details[0]->v_name,
                                 'mentor_number'=>$mentor_details[0]->i_phone_number
                               ), 
-                            function($message) use($email){
+                            function($message) use($email,$bcc){
                               $message
-                              ->to($mentee_details[0]->v_email)
-                              ->subject('Seva Setu: Mentor Assignment notification');
+                              ->to($email)
+                              ->subject('Seva Setu: Mentor Assignment notification')
+                              ->bcc($bcc);
                             }
                           );
 
+    $email = $mentor_details[0]->v_email;
     $sent_mentor=Mail::send('emails.mentee_assignment',
                             array('mentor_name'=>$mentor_details[0]->v_name,
                                 'mentee_name'=>$mentee_details[0]->v_name,
                                 'mentee_number'=>$mentee_details[0]->i_phone_number
                               ), 
-                            function($message) use($email){
+                            function($message) use($email,$bcc){
                               $message
-                              ->to($mentor_details[0]->v_email)
-                              ->subject('Seva Setu: Mentee Assignment notification');
+                              ->to($email)
+                              ->subject('Seva Setu: Mentee Assignment notification')
+                              ->bcc($bcc);
                             }
                           );
 
@@ -560,7 +562,7 @@ public function unresolve_status(Request $r,$id)
   		Redirect::to('/')->send();
   	}
   	//array for validation
-  	$users=new Users;
+  	$users=new User;
   	$userdata = array(
   			'currpassword' => Input::get('txtCurrentPassword'),
   			'newpassword' => Input::get('txtNewPassword'),
@@ -606,18 +608,18 @@ public function unresolve_status(Request $r,$id)
   //check mail exist or not
   public function checkEmail()
   {
-  	$users=new Users;
+  	$users=new User;
   	$action=Input::get('action');
   	$userid=Input::get('hdUserId');
   	if($action=="update" && $userid!=""){
   		$userinfo=Session::get('user_logged');
-  		$result= $users::where('v_status', 'Active')->where('v_email',Input::get('txtEmail'))->where('bi_id','!=',$userid)->get();
+  		$result= $users::where('e_status', 'Active')->where('v_email',Input::get('txtEmail'))->where('bi_id','!=',$userid)->get();
   	}elseif($action=="add"){
-  		$result= $users::where('v_status', 'Active')->where('v_email', Input::get('txtEmail'))->get();
+  		$result= $users::where('e_status', 'Active')->where('v_email', Input::get('txtEmail'))->get();
   	}
   	if(count($result)>0)
   	{
-  		echo "false";
+  		echo "false";                                          
   	}
   	else
   	{
@@ -627,9 +629,9 @@ public function unresolve_status(Request $r,$id)
   //check mail for login time
   public function checkEmailLogin()
   {
-  	$users=new Users;
+  	$users=new User;
   	$action=Input::get('action');
-  	$result= $users::where('v_status', 'Active')->where('v_email', Input::get('txtForgotEmailId'))->get();
+  	$result= $users::where('e_status', 'Active')->where('v_email', Input::get('txtForgotEmailId'))->get();
   	if(count($result)>0)
   		echo "true";
   	else
@@ -737,10 +739,10 @@ public function unresolve_status(Request $r,$id)
   
   //forgot password methode
   public function forgotPassword(){
-		die('Contact help@sevasetu.org');
+		//die('Contact help@sevasetu.org'); 
   		$email=Input::get('txtForgotEmailId');
-  		$users=new Users;
-		$data['result']= $users::where('v_status', 'Active')->where('v_email', Input::get('txtForgotEmailId'))->get()->toArray();
+  		$users=new User;
+		$data['result']= $users::where('e_status', 'Active')->where('v_email', Input::get('txtForgotEmailId'))->get()->toArray();
   		if(count($data['result'])>0){
 			//email activation starts
 			$sent=Mail::send('emails.password',$data, function($message)
@@ -768,7 +770,7 @@ public function unresolve_status(Request $r,$id)
   //change forgot password 
   public function changeforgotpassword(){
   	$userid=$this->decode(Input::get('hdnUserId'));
-  	$users=new Users;
+  	$users=new User;
   	$userdata = array(
   			'newpassword' => Input::get('txtNewPassword'),
   			'confpassword' => Input::get('txtConfirmPassword'),
@@ -801,7 +803,7 @@ public function unresolve_status(Request $r,$id)
 	$helper_obj = new Helpers;
   	$userid=$helper_obj->decode($id);
   	if($userid>0){
-  	$users=new Users;
+  	$users=new User;
   	$userdata = $users->where('bi_id', '=', $userid)->first();
   	if($userdata->v_role==1)
   		$data['url']='adminusrs';
@@ -818,7 +820,7 @@ public function unresolve_status(Request $r,$id)
   public function dochangeuserpassword(){
   	$userid=$this->decode(Input::get('hdnUserId'));
   	if($userid>0){
-   	$users=new Users;
+   	$users=new User;
   	$userdata = array(
   			'newpassword' => Input::get('txtNewPassword'),
   			'confpassword' => Input::get('txtConfirmPassword'),
@@ -1023,7 +1025,7 @@ public function unresolve_status(Request $r,$id)
 
     public function faq()
     {
-        return view('admin/faq');
+	return view('admin/faq');
     }
 
     public function faq_checklist()
