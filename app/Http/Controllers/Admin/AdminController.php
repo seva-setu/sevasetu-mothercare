@@ -1004,12 +1004,12 @@ public function unresolve_status(Request $r,$id)
 			die("ohmycc");
 		}
 		// Send a confirmation mail
-		$sent=Mail::send('emails.activation',$data_to_push, function($message) use($email){
-		$message->to($email)->subject('Welcome to Seva Setu\'s Mother Care program');         
-		
-    //$sent=Mail::send('emails.new_activation',$data_to_push, function($message) use($email){
-    //$message->to('kaushikyogesh95@gmail.com')->subject('New User Registration: Seva Setu\'s Mother Care program');  
-    });
+
+    $bcc = explode(',',$_ENV['BCC_IDS']);
+		$sent=Mail::send('emails.activation',$data_to_push, function($message) use($email,$bcc){
+		$message->to($email)->subject('Welcome to Seva Setu\'s Mother Care program')
+    ->bcc($bcc);
+		});
 		
 		$userdet=array(
 			'role_id' => $cc_record,
