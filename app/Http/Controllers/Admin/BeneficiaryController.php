@@ -6,8 +6,6 @@ use App\Models\CallChampion;
 use App\Models\Users;
 use App\Models\DueList;
 use App\Models\Checklist;
-
-
 use Carbon\Carbon;
 use Request;
 use Mail;
@@ -311,35 +309,6 @@ class BeneficiaryController extends Controller{
  		});
  		Session::forget('excel_data');
 		Session::flash('message',trans('upload_excel.upload_success', ['number' => $num]));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		return back();
 	}
 
