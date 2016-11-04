@@ -230,7 +230,7 @@ class BeneficiaryController extends Controller{
 	// download link for sample excels
 	public function downloadExcel()
 	{
-		return response()->download(public_path('download\sample.xlsx'));
+		return response()->download(public_path('download/sample.xlsx'));
 	}
 
 /** 
@@ -311,6 +311,35 @@ class BeneficiaryController extends Controller{
  		});
  		Session::forget('excel_data');
 		Session::flash('message',trans('upload_excel.upload_success', ['number' => $num]));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		return back();
 	}
 
