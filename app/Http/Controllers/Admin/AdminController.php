@@ -46,7 +46,6 @@ class AdminController extends Controller{
     if(Session::has('user_logged')){
       $userinfo=Session::get('user_logged');
       $this->user_role_type=$userinfo['v_role'];}
-
 	}
 	
 	public function landing(){

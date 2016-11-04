@@ -29,6 +29,7 @@ use Session;
 use Hashids\Hashids;
 use Image;
 use App\Http\Helpers;
+use Carbon\Carbon;
 
 
 
@@ -149,9 +150,16 @@ class AdminDashboardController extends Controller {
 				                     where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY
 				                     AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) t1
 				                      on t1.id = mct_due_list.due_id) as Average');
-		$totalCalls = DB::select('select count(*) as count FROM mct_callchampion_report 
-				                  WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
-				                  AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY');
+		// $totalCalls = DB::select('select count(*) as count FROM mct_callchampion_report 
+		// 		                  WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
+		// 		                  AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY');
+
+	   $sdate=Carbon::now();
+	   $edate=Carbon::now();
+	   //dd($date->modify('this week +6days'));
+	   $totalCalls=DB::table('mct_callchampion_report')->where('dt_modify_date','>',$sdate->modify('this week'))->where('dt_modify_date','<',$edate->modify('this week +6 days'))->count();
+		
+
 		$callsAttemptEqual1 = DB::select('select count(distinct fk_b_id) as count from 
 				                          (select fk_b_id,count(fk_b_id) as c from mct_callchampion_report 
 				                           join mct_due_list on fk_due_id = due_id 
@@ -170,30 +178,46 @@ class AdminDashboardController extends Controller {
 				                           where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
 				                           AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY 
 				                           group by fk_b_id) t1 where t1.c > 2');
-		$incorrectphno = DB::select('select count(distinct fk_b_id) as count from mct_due_list 
-				                     join (SELECT distinct(fk_due_id) as id 
-				                     FROM mct_callchampion_report 
-				                     where e_call_status = "Incorrect number" 
-				                     and dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY
-				                     AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) t1 
-				                      on t1.id = mct_due_list.due_id');
-		$notReachable = DB::select('select count(distinct fk_b_id) as count from mct_due_list
-				                     join (SELECT distinct(fk_due_id) as id
-				                     FROM mct_callchampion_report
-				                     where e_call_status = "Not reachable"
-				                     and dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY
-				                     AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) t1
-				                      on t1.id = mct_due_list.due_id');
-		$mothersAssigned = DB::select('select count(distinct fk_b_id)as count from mct_due_list
-				                     join (SELECT distinct(fk_due_id) as id
-				                     FROM mct_callchampion_report
-				                     where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY
-				                     AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) t1
-				                      on t1.id = mct_due_list.due_id');
+		// $incorrectphno = DB::select('select count(distinct fk_b_id) as count from mct_due_list 
+		// 		                     join (SELECT distinct(fk_due_id) as id 
+		// 		                     FROM mct_callchampion_report 
+		// 		                     where e_call_status = "Incorrect number" 
+		// 		                     and dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY
+		// 		                     AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) t1 
+		// 		                      on t1.id = mct_due_list.due_id');
+	   $sdate=Carbon::now();
+	   $edate=Carbon::now();
+	   $incorrectphno=DB::table('mct_callchampion_report')->join('mct_due_list','mct_callchampion_report.fk_due_id','=','mct_due_list.due_id')->where('dt_modify_date','>',$sdate->modify('this week'))->where('dt_modify_date','<',$edate->modify('this week +6 days'))->where('e_call_status','Incorrect number')->distinct('fk_b_id')->count('fk_b_id');
+
+		// $notReachable = DB::select('select count(distinct fk_b_id) as count from mct_due_list
+		// 		                     join (SELECT distinct(fk_due_id) as id
+		// 		                     FROM mct_callchampion_report
+		// 		                     where e_call_status = "Not reachable"
+		// 		                     and dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY
+		// 		                     AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) t1
+		// 		                      on t1.id = mct_due_list.due_id');
+	   $sdate=Carbon::now();
+	   $edate=Carbon::now();
+	   $notReachable=DB::table('mct_callchampion_report')->join('mct_due_list','mct_callchampion_report.fk_due_id','=','mct_due_list.due_id')->where('dt_modify_date','>',$sdate->modify('this week'))->where('dt_modify_date','<',$edate->modify('this week +6 days'))->where('e_call_status','Not reachable')->distinct('fk_b_id')->count('fk_b_id');
+	
+
+		// $mothersAssigned = DB::select('select count(distinct fk_b_id)as count from mct_due_list
+		// 		                     join (SELECT distinct(fk_due_id) as id
+		// 		                     FROM mct_callchampion_report
+		// 		                     where dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY
+		// 		                     AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY) t1
+		// 		                      on t1.id = mct_due_list.due_id');
+	
+	   $sdate=Carbon::now();
+	   $edate=Carbon::now();
+		$mothersAssigned=DB::table('mct_due_list')->where('dt_intervention_date','>',$sdate->modify('this week'))->where('dt_intervention_date','<',$edate->modify('this week +6 days'))->distinct('fk_b_id')->count('fk_b_id');
+	
+
 		$actionItems = DB::select('SELECT count(distinct fk_action_id) as count 
 				                   FROM mct_callchampion_report join mct_due_list on due_id = fk_due_id 
 				                   WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
 				                   AND dt_modify_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-8 DAY');
+
 		$incorrectDeliveryDate = DB::select('SELECT count(*)as count FROM `mct_beneficiary` WHERE dt_due_date <> `reported _delivery_date`');
 		/*  var_dump($totalCalls);
 		var_dump($callsAttemptEqual1);
@@ -231,7 +255,7 @@ class AdminDashboardController extends Controller {
 		
 		$select1 = Array(); //will contain details of action items scheduled in the past week
 		
-		 foreach($select as $val)
+		foreach($select as $val)
 		{
 			$select1[] = DB::table('mct_due_list')
 						 ->select('*')
@@ -248,8 +272,8 @@ class AdminDashboardController extends Controller {
 		$data1 = $this->get_callchampions_not_called();
 		$data2 = $this->calls_lastweek();
 		$data3 = $this->actionitems_lastweek();
-		$data = array_merge($data1,$data2,$data3);
 		
+		$data = array_merge($data1,$data2,$data3);
 		return view('analysis/dashboard',$data);
 	}
 	
@@ -263,7 +287,38 @@ class AdminDashboardController extends Controller {
 	} 
 	public function field_worker_info()
 	{
-		return view('analysis/field_worker');
+		$field_worker_data=DB::table('mct_field_workers')->get();
+		$x=0;
+		foreach ($field_worker_data as $i ) {			
+			$f_worker_details=DB::table('mct_user')->where('user_id',$i->fk_user_id)->first();
+			$data['f'][$x]=$f_worker_details->v_name;	
+			$data['m_count'][$x]=	DB::table('mct_beneficiary')->where('fk_f_id',$i->f_id)->count();
+			$beneficiary_to_this_worker=DB::table('mct_beneficiary')->where('fk_f_id',$i->f_id)->get();
+			$total_inccorect=0;
+			$total_recieved=0;
+			$total_calls=0;
+			foreach($beneficiary_to_this_worker as $w)
+			{
+				$due_ids=DB::table('mct_due_list')->where('fk_b_id',$w->b_id)->get();								
+				foreach($due_ids as $q)
+				{
+					$total_inccorect=$total_inccorect+DB::table('mct_callchampion_report')->where('fk_due_id',$q->due_id)->where('e_call_status','Incorrect number')->count();
+				}
+				foreach($due_ids as $q)
+				{
+					$total_recieved=$total_recieved+DB::table('mct_callchampion_report')->where('fk_due_id',$q->due_id)->where('e_call_status','Received')->count();
+				}
+				foreach($due_ids as $q)
+				{
+					$total_calls=$total_calls+DB::table('mct_callchampion_report')->where('fk_due_id',$q->due_id)->count();
+				}								
+			}	
+						
+			$data['incorrect_no'][$x]=$total_inccorect;
+			$data['unconnected_calls'][$x]=$total_calls-($total_recieved+$total_inccorect);
+			$data['connected_calls'][$x++]=$total_recieved;			
+		}
+		return view('analysis/field_worker',compact('data'));
 	} 
 	public function call_champion_info()
 	{

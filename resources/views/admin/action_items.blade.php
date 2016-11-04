@@ -26,11 +26,11 @@ smallfont{
 
 <table class="table">
 <tr>
-<th>Call ID</th>
-<th>Date generated</th>
-<th>Action item</th>
-<th>Call Champion Associated</th>
-<th>Field worker assigned to</th>
+<th>{{ trans('action_items.call_id') }}</th>
+<th>{{ trans('action_items.date_generated') }}</th>
+<th>{{ trans('action_items.action_item') }}</th>
+<th>{{ trans('action_items.call_champ_associated') }}</th>
+<th>{{ trans('action_items.field_workers_assigned_to') }}</th>
 <th></th>
 </tr>
 @foreach($newdata as $x)
@@ -44,18 +44,17 @@ smallfont{
 @if($x['status']==0)
 <td><form method="POST" action="{{url()}}/actions/{{$x['report_id']}}">			
 <input type="hidden" name="_token" value="{{ csrf_token() }}">		
-<button class="btn btn-primary" type="submit">Resolve</button></form></td>
+<button class="btn btn-primary" type="submit">{{ trans('action_items.resolve') }}</button></form></td>
 @endif
 @if($x['status']==1)
 <td><form method="POST" action="{{url()}}/actions/{{$x['report_id']}}/unresolve">		
 <input type="hidden" name="_token" value="{{ csrf_token() }}">		
-<button class="btn btn-success" type="submit">Resolved</button></form></td>
+<button class="btn btn-success" type="submit">{{ trans('action_items.resolved') }}</button></form></td>
 @endif
 </tr>
 
 @endforeach
 </table>
-
 </div>
 </div>
 </body>
