@@ -23,7 +23,7 @@
 
 'Error_heading'=>'Errors occurred while saving following data',
 'confirm_upload'=>'Save Data',
-'upload_success'=>'Mothers data with complete information uploaded'
+'upload_success'=>'Number of new mothers whose data with complete information uploaded = :number '
  );
 
 ?>
