@@ -6,8 +6,6 @@ use App\Models\CallChampion;
 use App\Models\Users;
 use App\Models\DueList;
 use App\Models\Checklist;
-
-
 use Carbon\Carbon;
 use Request;
 use Mail;
