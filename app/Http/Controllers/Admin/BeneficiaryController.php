@@ -6,6 +6,8 @@ use App\Models\CallChampion;
 use App\Models\Users;
 use App\Models\DueList;
 use App\Models\Checklist;
+
+
 use Carbon\Carbon;
 use Request;
 use Mail;
@@ -174,7 +176,7 @@ class BeneficiaryController extends Controller{
 		$call_champ_obj = new CallChampion;
 		$list_champ = $call_champ_obj->get_active_call_champions();
 		$rand_ind = rand(0,count($list_champ)-1);
-		return $list_champ[$rand_ind];
+		return $list_champ[$rand_ind] ->cc_id;
 	}
 	
 	public function check_existing_assignments($prev_champ_ids){
@@ -309,7 +311,10 @@ class BeneficiaryController extends Controller{
  		});
  		Session::forget('excel_data');
 		Session::flash('message',trans('upload_excel.upload_success', ['number' => $num]));
+		$obj = new AdminController;
+		$obj -> centralized_assign_mothers($num);
 		return back();
+		
 	}
 
 
