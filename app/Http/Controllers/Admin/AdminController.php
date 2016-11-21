@@ -522,6 +522,15 @@ public function unresolve_status(Request $r,$id)
     return Redirect::to('/callchampions'); 
 
   }
+  //This is a utility function to centralized_assign_mothers defined below
+  public function assign_to_id($cc_id, $assignment_count) {
+      $bid_array = DB::table('mct_beneficiary')
+                  ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
+                  ->take($assignment_count)
+                  ->get();
+      $obj = new BeneficiaryController;
+      $obj->batch_assignment_callchampion($bid_array,$cc_id);
+  } 
 
   public function centralized_assign_mothers($count = 0)
   {
@@ -533,56 +542,65 @@ public function unresolve_status(Request $r,$id)
     if($this->user_role_type == 2)
           return Redirect::to('/mothers');
 
-    //select the cc_ids of active ccs
-    $cc_id_array = DB::select( DB::raw("SELECT cc_id FROM mct_call_champions WHERE activation_status = '2'") );
+    //select the cc_ids of those ccs who have already been assigned some mothers 
+    $cc_id_array = DB::select 
+    (DB::raw('SELECT fk_cc_id as cc_id, count(distinct(fk_b_id)) as assigned_moms FROM mct_due_list 
+              WHERE fk_cc_id IS NOT NULL GROUP BY fk_cc_id ORDER BY assigned_moms'));
+    //Also select the cc_ids of approved ccs in the system who have not been assigned any mothers yet - the new ccs
+    $new_ccs = DB::select
+    (DB::raw('SELECT  cc_id
+    FROM  mct_call_champions a
+    LEFT JOIN
+    mct_due_list b
+    ON      b.fk_cc_id = a.cc_id
+    WHERE   b.fk_cc_id IS NULL
+    AND a.activation_status = 2'));
 
-    if(empty($cc_id_array))
+    if(empty($cc_id_array) && empty($new_ccs))
       return Redirect::back();
 
-    $num_of_active_ccs = count($cc_id_array);
+    $total_ccs = count($cc_id_array) + count($new_ccs);
+    $total_beneficiaries = DB::table('mct_beneficiary')
+                             ->count();
+    //This represents the count of mothers each cc should have been assigned ideally - equal distribution
+    $ideal_count = ($total_beneficiaries / $total_ccs);
+   
+    //Assignment of mothers to the new ccs   
+    foreach($new_ccs as $i)
+    {
+        $to_be_assigned = $ideal_count;
+        if($count < $to_be_assigned) $to_be_assigned = $count;
+        $this->assign_to_id($i->cc_id, $to_be_assigned);
+        $count -= $to_be_assigned;
+    }
 
-    $avg_new_mothers = ($count / $num_of_active_ccs);
-
- /*  $b_id_array = DB::table('mct_beneficiary')
-                    ->orderBy('b_id', 'desc')
-                    ->take($count)
-                    ->get();  */
-    //assign avg_new_mothers number of mothers per active cc
+    //Assignment of mothers to the existing ccs
     foreach($cc_id_array as $i)
     {
-
-    $bid_array = DB::table('mct_beneficiary')
-                  ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
-                  ->take($avg_new_mothers)
-                  ->get();
-    $cc_id = $i->cc_id;
-
-    $obj = new BeneficiaryController;
-    $obj->batch_assignment_callchampion($bid_array,$cc_id);
-   }
+      if($i->assigned_moms < $ideal_count) {
+        $to_be_assigned = $ideal_count - $i->assigned_moms;
+        if($count < $to_be_assigned) $to_be_assigned = $count;
+        $this->assign_to_id($i->cc_id, $to_be_assigned);
+        $count -= $to_be_assigned;
+      }
+    }
 
    //if still some mothers are left unassigned, then randomly assign number of mothers left one by one to the active ccs
-    if($count % $num_of_active_ccs != 0)     
+    if($count != 0)     
     {
-      for ($i = 0; $i < ($count % $num_of_active_ccs); $i++){
-        $bid_array = DB::table('mct_beneficiary')
-                  ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
-                  ->take(1)
-                  ->get();
-      }
+      $num_of_active_ccs = count($cc_id_array);
+      for ($i = 0; $i < ($count); $i++){
       //randomly select a cc
       $rand_ind = rand(0,$num_of_active_ccs-1);
       $cc_id = $cc_id_array[$rand_ind]->cc_id;
-
-      $obj = new BeneficiaryController;
-      $obj->batch_assignment_callchampion($bid_array,$cc_id);
+      $this->assign_to_id($cc_id, 1);
+      }
     }
     //if there is no such beneficiary found returns back
     return Redirect::to('/callchampions'); 
-
   }
   
-
+  
   /*
   Directely promotes a callchampion from unapproved to approved(in case prior experience no need for shadowing)
   @input a) cc_id
