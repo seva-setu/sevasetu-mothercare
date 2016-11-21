@@ -50,6 +50,7 @@ class AdminController extends Controller{
 	}
 	
 	public function landing(){
+    
 		if(Session::has('user_logged')){
       if($this->user_role_type == 1)
         return Redirect::to('/admins')->send();
@@ -370,27 +371,32 @@ public function unresolve_status(Request $r,$id)
     send_sms(7, array($mentee_details[0]->v_name, $mentee_details[0]->i_phone_number,$mentor_details[0]->v_name, $mentor_details[0]->i_phone_number));
     send_sms(8, array($mentor_details[0]->v_name, $mentor_details[0]->i_phone_number,$mentee_details[0]->v_name, $mentee_details[0]->i_phone_number));
 
+    $email = $mentee_details[0]->v_email;
+    $bcc = explode(',',$_ENV['BCC_IDS']);
     $sent_mentee=Mail::send('emails.mentor_assignment',
                             array('mentee_name'=>$mentee_details[0]->v_name,
                                 'mentor_name'=>$mentor_details[0]->v_name,
                                 'mentor_number'=>$mentor_details[0]->i_phone_number
                               ), 
-                            function($message) use($email){
+                            function($message) use($email,$bcc){
                               $message
-                              ->to($mentee_details[0]->v_email)
-                              ->subject('Seva Setu: Mentor Assignment notification');
+                              ->to($email)
+                              ->subject('Seva Setu: Mentor Assignment notification')
+                              ->bcc($bcc);
                             }
                           );
 
+    $email = $mentor_details[0]->v_email;
     $sent_mentor=Mail::send('emails.mentee_assignment',
                             array('mentor_name'=>$mentor_details[0]->v_name,
                                 'mentee_name'=>$mentee_details[0]->v_name,
                                 'mentee_number'=>$mentee_details[0]->i_phone_number
                               ), 
-                            function($message) use($email){
+                            function($message) use($email,$bcc){
                               $message
-                              ->to($mentor_details[0]->v_email)
-                              ->subject('Seva Setu: Mentee Assignment notification');
+                              ->to($email)
+                              ->subject('Seva Setu: Mentee Assignment notification')
+                              ->bcc($bcc);
                             }
                           );
 
@@ -517,6 +523,65 @@ public function unresolve_status(Request $r,$id)
 
   }
 
+  public function centralized_assign_mothers($count = 0)
+  {
+    //if the number of new mothers added is 0, then redirect back
+    if($count == 0)
+      return Redirect::back();
+    
+    // if user is a callchampion and trying to access this url redirect to /mothers
+    if($this->user_role_type == 2)
+          return Redirect::to('/mothers');
+
+    //select the cc_ids of active ccs
+    $cc_id_array = DB::select( DB::raw("SELECT cc_id FROM mct_call_champions WHERE activation_status = '2'") );
+
+    if(empty($cc_id_array))
+      return Redirect::back();
+
+    $num_of_active_ccs = count($cc_id_array);
+
+    $avg_new_mothers = ($count / $num_of_active_ccs);
+
+ /*  $b_id_array = DB::table('mct_beneficiary')
+                    ->orderBy('b_id', 'desc')
+                    ->take($count)
+                    ->get();  */
+    //assign avg_new_mothers number of mothers per active cc
+    foreach($cc_id_array as $i)
+    {
+
+    $bid_array = DB::table('mct_beneficiary')
+                  ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
+                  ->take($avg_new_mothers)
+                  ->get();
+    $cc_id = $i->cc_id;
+
+    $obj = new BeneficiaryController;
+    $obj->batch_assignment_callchampion($bid_array,$cc_id);
+   }
+
+   //if still some mothers are left unassigned, then randomly assign number of mothers left one by one to the active ccs
+    if($count % $num_of_active_ccs != 0)     
+    {
+      for ($i = 0; $i < ($count % $num_of_active_ccs); $i++){
+        $bid_array = DB::table('mct_beneficiary')
+                  ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
+                  ->take(1)
+                  ->get();
+      }
+      //randomly select a cc
+      $rand_ind = rand(0,$num_of_active_ccs-1);
+      $cc_id = $cc_id_array[$rand_ind]->cc_id;
+
+      $obj = new BeneficiaryController;
+      $obj->batch_assignment_callchampion($bid_array,$cc_id);
+    }
+    //if there is no such beneficiary found returns back
+    return Redirect::to('/callchampions'); 
+
+  }
+  
 
   /*
   Directely promotes a callchampion from unapproved to approved(in case prior experience no need for shadowing)
@@ -998,12 +1063,14 @@ public function unresolve_status(Request $r,$id)
 		$call_champ_obj = new CallChampion;
 		$cc_record = $call_champ_obj->add_champion($usr_record);
 		if(!$cc_record){
-			// something wrong here. needs to be checked.rx
+			// something wrong here. needs to be checked.
 			die("ohmycc");
 		}
 		// Send a confirmation mail
-		$sent=Mail::send('emails.activation',$data_to_push, function($message) use($email){
-		$message->to($email)->subject('Welcome to Seva Setu\'s Mother Care program');         
+		$bcc = explode(',',$_ENV['BCC_IDS']);
+     $sent=Mail::send('emails.activation',$data_to_push, function($message) use($email,$bcc){
+     $message->to($email)->subject('Welcome to Seva Setu\'s Mother Care program')
+     ->bcc($bcc);
 		
     //$sent=Mail::send('emails.new_activation',$data_to_push, function($message) use($email){
     //$message->to('kaushikyogesh95@gmail.com')->subject('New User Registration: Seva Setu\'s Mother Care program');  
