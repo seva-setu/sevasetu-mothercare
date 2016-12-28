@@ -309,6 +309,16 @@ class BeneficiaryController extends Controller{
  		});
  		Session::forget('excel_data');
 		Session::flash('message',trans('upload_excel.upload_success', ['number' => $num]));
+		
+		$bid_array = DB::table('mct_beneficiary')
+					 ->orderBy('b_id', 'desc')
+					 ->take($num) 
+					 -> get();
+
+		foreach($bid_array as $bene){
+			$due_list = $this->add_due_list($bene->b_id, $bene->dt_due_date);
+			$this->update_call_champion_report($due_list);			
+		}
 		return back();
 	}
 
