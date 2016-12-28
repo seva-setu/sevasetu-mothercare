@@ -66,7 +66,7 @@ class BeneficiaryController extends Controller{
 			// This assigns a call champion to all the due-list IDs belonging to a beneficiary
 			// Another way is call champions are assigned to due-list IDs individually 
 			$result3 = $this->allocate_call_champion($due_list_ids, $beneficiary_id);
-			if(!$result1 or !$result2 or !result3)
+			if(!$result1 or !$result2 or !$result3)
 				die("exception");
 		}
 		return true;
@@ -393,9 +393,11 @@ class BeneficiaryController extends Controller{
     			// dd($dt_due_date);
     			if($r->date_of_delivery!='')
     			{
-    				$beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
-    				$var=Carbon::createFromFormat('d/m/y', $beneficiary_data['dt_due_date']);
-    				if($var!='')
+    				//$beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
+    				//$var=Carbon::createFromFormat('d/m/y', $beneficiary_data['dt_due_date']);
+    				$var=Carbon::parse($dt_due_date)->format('d/m/Y');
+				
+				if($var!='')
     				$beneficiary_data['dt_due_date']=$var;
     				else
 					$beneficiary_data['dt_due_date']=null;
