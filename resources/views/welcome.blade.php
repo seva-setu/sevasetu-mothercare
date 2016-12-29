@@ -9,6 +9,11 @@
         
 <!-- This site is optimized with the Yoast WordPress SEO plugin v1.7.4 - https://yoast.com/wordpress/plugins/seo/ -->
 <meta name="robots" content="noodp,noydir">
+
+
+<meta name="keywords" content="malnutrition, children, pregnant mothers, bihar,bridging gap">
+<meta name="description" content="Automated tool to connect urban mothers with mothers in rural India">
+
 <link rel="canonical" href="{{ url() }}">
 <link rel="next" href="{{ url() }}page/2/">
 <meta property="og:locale" content="en_US">
@@ -171,7 +176,7 @@ margin-top:25px !important;
 <header class="nav transition ">
 	<div class="col-xs-3">
 		<a href="{{ url() }}">
-			<img class="logo" src="{{ url() }}/assets/img/logo.jpg" alt="Serving to bridge" style="height: 70px ! important; width: 60px ! important">
+			<img class="logo" src="{{ url() }}/assets/img/logo.jpg" alt="Serving to bridge" style="height: 90px ! important; width: 60px ! important">
 		</a>
 	</div>
 	<div class="col-xs-6">
