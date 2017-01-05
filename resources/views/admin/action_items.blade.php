@@ -31,9 +31,9 @@ smallfont{
 <th>{{ trans('action_items.action_item') }}</th>
 <th>{{ trans('action_items.call_champ_associated') }}</th>
 <th>{{ trans('action_items.field_workers_assigned_to') }}</th>
-<th>Mother Name</th>
-<th>Village Name</th>
-<th>Phone Number</th>
+<th>{{ trans('action_items.mother_name') }}</th>
+<th>{{ trans('action_items.village_name') }}</th>
+<th>{{ trans('action_items.phone_number') }}</th>
 
 <th></th>
 </tr>

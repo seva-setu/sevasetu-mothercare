@@ -6,6 +6,9 @@
  	'call_champ_associated'=>'Call Champion Associated',
  	'field_workers_assigned_to'=>'Field worker assigned to',
  	'resolve'=>'Resolve',
- 	'resolved'=>'Resolved'
+ 	'resolved'=>'Resolved',
+ 	'mother_name'=>"Mother Name",
+ 	'village_name'=>"Village Name",
+ 	'phone_number'=>'Phone Number'
  );
 ?>
