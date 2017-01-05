@@ -263,6 +263,10 @@ class AdminController extends Controller{
         $b_id=DB::table('mct_beneficiary')->where('b_id',$due_id->fk_b_id)->first();
         // dd();
         $cc_user_id=DB::table('mct_call_champions')->where('cc_id',$cc_id)->first()->fk_user_id;
+        if($cc_id != NULL)
+        {
+          $cc_user_id=DB::table('mct_call_champions')->where('cc_id',$cc_id)->first()->fk_user_id;
+        }
 
         $field_worker_user_id=DB::table('mct_field_workers')->where('f_id',$field_worker_id)->first()->fk_user_id;
         if($i->t_action_items!='')

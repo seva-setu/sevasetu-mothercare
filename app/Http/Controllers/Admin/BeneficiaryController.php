@@ -66,7 +66,7 @@ class BeneficiaryController extends Controller{
 			// This assigns a call champion to all the due-list IDs belonging to a beneficiary
 			// Another way is call champions are assigned to due-list IDs individually 
 			$result3 = $this->allocate_call_champion($due_list_ids, $beneficiary_id);
-			if(!$result1 or !$result2 or !result3)
+			if(!$result1 or !$result2 or !$result3)
 				die("exception");
 		}
 		return true;
@@ -310,6 +310,16 @@ class BeneficiaryController extends Controller{
  		});
  		Session::forget('excel_data');
 		Session::flash('message',trans('upload_excel.upload_success', ['number' => $num]));
+		
+		$bid_array = DB::table('mct_beneficiary')
+					 ->orderBy('b_id', 'desc')
+					 ->take($num) 
+					 -> get();
+
+		foreach($bid_array as $bene){
+			$due_list = $this->add_due_list($bene->b_id, $bene->dt_due_date);
+			$this->update_call_champion_report($due_list);			
+		}
 		return back();
 	}
 
@@ -394,11 +404,19 @@ class BeneficiaryController extends Controller{
     			// dd($dt_due_date);
     			if($r->date_of_delivery!='')
     			{
+<<<<<<< HEAD
     				// $beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
     				$var=Carbon::parse($dt_due_date)->format('d/m/Y');    				
     				// $var=Carbon::createFromFormat('d/m/y', $beneficiary_data['dt_due_date']);
     				// dd($var);
     				if($var!='')
+=======
+    				//$beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
+    				//$var=Carbon::createFromFormat('d/m/y', $beneficiary_data['dt_due_date']);
+    				$var=Carbon::parse($dt_due_date)->format('d/m/Y');
+				
+				if($var!='')
+>>>>>>> f7edd399134961ede75141a09e5384519d853ef9
     				$beneficiary_data['dt_due_date']=$var;
     				else
 					$beneficiary_data['dt_due_date']=null;
