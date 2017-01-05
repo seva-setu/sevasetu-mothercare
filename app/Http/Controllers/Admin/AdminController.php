@@ -253,7 +253,7 @@ class AdminController extends Controller{
      foreach($data as $i)
      {
       //status=1 implies that action items are already resolved.
-        if($i->e_call_status==1)
+        if($i->status==1)
         {
           $alread_resolved++;
         }
@@ -261,7 +261,10 @@ class AdminController extends Controller{
         $cc_id=DB::table('mct_due_list')->where('due_id',$i->fk_due_id)->first()->fk_cc_id;
         //$newdata[$x]['b_id']=$due_id->fk_b_id;
         $field_worker_id=DB::table('mct_beneficiary')->where('b_id',$due_id->fk_b_id)->first()->fk_f_id;
-        $cc_user_id=DB::table('mct_call_champions')->where('cc_id',$cc_id)->first()->fk_user_id;
+        if($cc_id != NULL)
+        {
+          $cc_user_id=DB::table('mct_call_champions')->where('cc_id',$cc_id)->first()->fk_user_id;
+        }
 
         $field_worker_user_id=DB::table('mct_field_workers')->where('f_id',$field_worker_id)->first()->fk_user_id;
         if($i->t_action_items!='')
@@ -272,7 +275,7 @@ class AdminController extends Controller{
         $newdata[$x]['date_generated']=$due_id->dt_intervention_date;
         $newdata[$x]['call_id']=$i->fk_due_id;
         $newdata[$x]['report_id']=$i->report_id;
-        $newdata[$x]['status']=$i->e_call_status;
+        $newdata[$x]['status']=$i->status;
         $x++;          
         }
         // $x represents total entries.
