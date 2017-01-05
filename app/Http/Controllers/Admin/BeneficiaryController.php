@@ -6,8 +6,6 @@ use App\Models\CallChampion;
 use App\Models\Users;
 use App\Models\DueList;
 use App\Models\Checklist;
-
-
 use Carbon\Carbon;
 use Request;
 use Mail;
@@ -39,6 +37,8 @@ class BeneficiaryController extends Controller{
 	
 	protected $helper;
 	protected $role_permissions;
+
+	public $num = 0;
 	
 	public function __construct(){
 		if(!Session::has('user_logged')){
@@ -244,9 +244,14 @@ class BeneficiaryController extends Controller{
 
 	public function Excel_data_upload()
 	{
+
+		global $num;
+		$mothers = DB::table('mct_beneficiary')->count('b_id');
 		Session::flash('should_data_be_inserted',1);
-		$data=Session::get('excel_data');
-		$data->each(function($r){			
+		$data=Session::get('excel_data'); 
+		$num = 0;
+		$data->each(function($r){	
+					global $num;
 					$beneficiary= new Beneficiary;
 		  			$rules = array(
 		  			 'v_name' => 'required|min:3|max:20|Regex:/^[ A-Za-z]+[A-Za-z0-9.\' ]*$/',
@@ -298,12 +303,13 @@ class BeneficiaryController extends Controller{
     				$beneficiary->v_village_name=$beneficiary_data['v_village_name'];
     				$beneficiary->dt_due_date=$var;
     				$beneficiary->save();
+    				$num++;
     			}
     			Session::forget('should_data_be_inserted');
      			Session::flash('should_data_be_inserted',1);	
  		});
  		Session::forget('excel_data');
-		Session::flash('message',trans('upload_excel.upload_success'));
+		Session::flash('message',trans('upload_excel.upload_success', ['number' => $num]));
 		return back();
 	}
 
@@ -416,6 +422,7 @@ class BeneficiaryController extends Controller{
  				}
  				// check for the data if it already exists in database.
     			$already_exist_number=Beneficiary::where('v_phone_number',$beneficiary_data['v_phone_number'])->first();
+    			dd($already_exist_number);
     			if($already_exist_number['v_phone_number']!='')
     			{
 

@@ -31,6 +31,10 @@ smallfont{
 <th>{{ trans('action_items.action_item') }}</th>
 <th>{{ trans('action_items.call_champ_associated') }}</th>
 <th>{{ trans('action_items.field_workers_assigned_to') }}</th>
+<th>Mother Name</th>
+<th>Village Name</th>
+<th>Phone Number</th>
+
 <th></th>
 </tr>
 @foreach($newdata as $x)
@@ -40,7 +44,9 @@ smallfont{
 <td>{{$x['action_items']}}</td>
 <td>{{$x['call_champion_name']}}</td>
 <td>{{$x['field_worker_name']}}</td>
-
+<td>{{$x['beneficiary_name']}}</td>
+<td>{{$x['beneficiary_village']}}</td>
+<td>{{$x['beneficiary_contact']}}</td>
 @if($x['status']==0)
 <td><form method="POST" action="{{url()}}/actions/{{$x['report_id']}}">			
 <input type="hidden" name="_token" value="{{ csrf_token() }}">		

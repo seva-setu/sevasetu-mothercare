@@ -100,10 +100,24 @@ class AdminController extends Controller{
       foreach ($f_workers as $i)
       {
         $data['f'][$x]['f_id']=$i->f_id;
-         $data['f'][$x++]['others']=DB::table('mct_user')->where('user_id',$i->fk_user_id)->first();
+        $data['f'][$x++]['others']=DB::table('mct_user')->where('user_id',$i->fk_user_id)->first(); 
       }
-    
-      return view('admin/upload_data',compact('data'));
+      
+      $c_c = DB::table('mct_user')
+      ->join('mct_call_champions', 'mct_call_champions.fk_user_id', '=', 'user_id')
+      ->join('mct_due_list','mct_due_list.fk_cc_id', '=', 'mct_call_champions.cc_id')
+      ->select(DB::raw('v_name, count(distinct(fk_b_id)) as mothers'))
+      ->groupBy('v_name')
+      ->get(); 
+      
+      $x=0;
+      foreach ($c_c as $i)
+      {
+        $data['c'][$x]['v_name']=$i->v_name;
+         $data['c'][$x++]['mothers']=$i->mothers;  
+      }
+
+      return view('admin/upload_data',compact('data')); 
     }
     else
       return 'User is not admin';
@@ -246,6 +260,8 @@ class AdminController extends Controller{
         $cc_id=DB::table('mct_due_list')->where('due_id',$i->fk_due_id)->first()->fk_cc_id;
         //$newdata[$x]['b_id']=$due_id->fk_b_id;
         $field_worker_id=DB::table('mct_beneficiary')->where('b_id',$due_id->fk_b_id)->first()->fk_f_id;
+        $b_id=DB::table('mct_beneficiary')->where('b_id',$due_id->fk_b_id)->first();
+        // dd();
         $cc_user_id=DB::table('mct_call_champions')->where('cc_id',$cc_id)->first()->fk_user_id;
 
         $field_worker_user_id=DB::table('mct_field_workers')->where('f_id',$field_worker_id)->first()->fk_user_id;
@@ -253,7 +269,10 @@ class AdminController extends Controller{
         {
         $newdata[$x]['field_worker_name']=DB::table('mct_user')->where('user_id',$field_worker_user_id)->first()->v_name;
         $newdata[$x]['call_champion_name']=DB::table('mct_user')->where('user_id',$cc_user_id)->first()->v_name;
-        $newdata[$x]['action_items']=$i->t_action_items;       
+        $newdata[$x]['action_items']=$i->t_action_items;    
+        $newdata[$x]['beneficiary_name']=$b_id->v_name;
+        $newdata[$x]['beneficiary_village']=$b_id->v_village_name;
+        $newdata[$x]['beneficiary_contact']=$b_id->v_phone_number;      
         $newdata[$x]['date_generated']=$due_id->dt_intervention_date;
         $newdata[$x]['call_id']=$i->fk_due_id;
         $newdata[$x]['report_id']=$i->report_id;
@@ -951,7 +970,7 @@ public function unresolve_status(Request $r,$id)
 			$pn = Session::get('phonenumber');
 			$pass = Session::get('password');
 			
-			return $this->create_new_user(2, $name, $email, $pn, $pass);
+			return $this->create_new_user(2, $name, $email, $pn, $pass); 
 			//by default, those registering via the form are call champions
 		}
 		else{
@@ -985,12 +1004,15 @@ public function unresolve_status(Request $r,$id)
 		$call_champ_obj = new CallChampion;
 		$cc_record = $call_champ_obj->add_champion($usr_record);
 		if(!$cc_record){
-			// something wrong here. needs to be checked.
+			// something wrong here. needs to be checked.rx
 			die("ohmycc");
 		}
 		// Send a confirmation mail
-		$sent=Mail::send('emails.activation',$data_to_push, function($message) use($email){
-		$message->to($email)->subject('Welcome to Seva Setu\'s Mother Care program');
+
+    $bcc = explode(',',$_ENV['BCC_IDS']);
+		$sent=Mail::send('emails.activation',$data_to_push, function($message) use($email,$bcc){
+		$message->to($email)->subject('Welcome to Seva Setu\'s Mother Care program')
+    ->bcc($bcc);
 		});
 		
 		$userdet=array(
@@ -1018,7 +1040,7 @@ public function unresolve_status(Request $r,$id)
      *
      * @return string|null
      */
-    protected function getGuard()
+   protected function getGuard()
     {
         return property_exists($this, 'guard') ? $this->guard : null;
     }

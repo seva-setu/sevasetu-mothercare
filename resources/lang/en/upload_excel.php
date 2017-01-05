@@ -29,8 +29,9 @@
 'Field_worker_number'=>'Field worker number',
 'Total_number_of_mothers'=>'Total number of mothers',
 'Number_of_mothers_assigned'=>'Number of mothers assigned',
-'Number_of_mothers_unassigned'=>'Number of mothers unassigned'
+'Number_of_mothers_unassigned'=>'Number of mothers unassigned',
 
+'upload_success'=>'Number of new mothers whose data with complete information uploaded =:number '
  );
 
 ?>

@@ -86,7 +86,8 @@ smallfont{
 <div class="col-md-10">
           <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#field_workers">Field Workers</a></li>
-            <li><a data-toggle="tab" href="#mothers">Mother</a></li>
+            <li><a data-toggle="tab" href="#mothers">Mothers</a></li>
+	    <li><a data-toggle="tab" href="#assignment">Assignment</a></li>
           </ul>
 <div class="tab-content">
     <div id="field_workers" class="tab-pane fade in active">
@@ -125,7 +126,31 @@ smallfont{
     </tr>
   </table>
   </div>
-</div></div>
+</div>
+
+<div id="assignment" class="tab-pane fade ">
+<div class="table-responsive">
+  <table class="table table-bordered mothers">
+    <tr>
+    <th>Call Champion's Name</th>
+    <th>Number of mothers assigned</th>
+    
+    </tr> 
+       @foreach($data['c'] as $i)
+
+    <tr>
+    <td>{{$i['v_name']}}</td>
+    <td>{{$i['mothers']}}</td>
+      
+    </tr>
+
+
+    @endforeach
+  </table>
+  </div>
+</div>
+
+</div>
 
   </div>
 </div>
