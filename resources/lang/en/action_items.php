@@ -9,6 +9,12 @@
  	'resolved'=>'Resolved',
  	'mother_name'=>"Mother Name",
  	'village_name'=>"Village Name",
- 	'phone_number'=>'Phone Number'
+ 	'phone_number'=>'Phone Number',
+ 	'call_status'=>'Call Status',
+ 	'notes'=>'Notes',
+ 	'b_id'=>'Beneficiary Id',
+ 	'cc_id'=>"Call Champion Id",
+ 	'user_id'=>'User Id'
+
  );
 ?>
