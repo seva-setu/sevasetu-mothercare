@@ -404,19 +404,17 @@ class BeneficiaryController extends Controller{
     			// dd($dt_due_date);
     			if($r->date_of_delivery!='')
     			{
-<<<<<<< HEAD
+
     				// $beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
     				$var=Carbon::parse($dt_due_date)->format('d/m/Y');    				
     				// $var=Carbon::createFromFormat('d/m/y', $beneficiary_data['dt_due_date']);
     				// dd($var);
     				if($var!='')
-=======
     				//$beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
     				//$var=Carbon::createFromFormat('d/m/y', $beneficiary_data['dt_due_date']);
     				$var=Carbon::parse($dt_due_date)->format('d/m/Y');
 				
 				if($var!='')
->>>>>>> f7edd399134961ede75141a09e5384519d853ef9
     				$beneficiary_data['dt_due_date']=$var;
     				else
 					$beneficiary_data['dt_due_date']=null;
