@@ -263,10 +263,18 @@ class AdminController extends Controller{
         $field_worker_id=DB::table('mct_beneficiary')->where('b_id',$due_id->fk_b_id)->first()->fk_f_id;
         $b_id=DB::table('mct_beneficiary')->where('b_id',$due_id->fk_b_id)->first();
         // dd();
-        $cc_user_id=DB::table('mct_call_champions')->where('cc_id',$cc_id)->first()->fk_user_id;
+       $newdata[$x]['cc_id']='';
+        $newdata[$x]['cc_user_id']='';
+        $newdata[$x]['call_champion_name']='';
+
         if($cc_id != NULL)
         {
           $cc_user_id=DB::table('mct_call_champions')->where('cc_id',$cc_id)->first()->fk_user_id;
+          $cc_user_id=DB::table('mct_call_champions')->where('cc_id',$cc_id)->first()->fk_user_id;
+        $newdata[$x]['cc_id']=$cc_id;
+        $newdata[$x]['cc_user_id']=$cc_user_id;
+        $newdata[$x]['call_champion_name']=DB::table('mct_user')->where('user_id',$cc_user_id)->first()->v_name;
+ 
         }
 
         $field_worker_user_id=DB::table('mct_field_workers')->where('f_id',$field_worker_id)->first()->fk_user_id;
@@ -277,15 +285,12 @@ class AdminController extends Controller{
             $y++;
           }
         $newdata[$x]['field_worker_name']=DB::table('mct_user')->where('user_id',$field_worker_user_id)->first()->v_name;
-        $newdata[$x]['call_champion_name']=DB::table('mct_user')->where('user_id',$cc_user_id)->first()->v_name;
         $newdata[$x]['action_items']=$i->t_action_items;    
         $newdata[$x]['beneficiary_id']=$b_id->b_id;
         $newdata[$x]['beneficiary_name']=$b_id->v_name;
         $newdata[$x]['beneficiary_village']=$b_id->v_village_name;
         $newdata[$x]['beneficiary_contact']=$b_id->v_phone_number;      
         $newdata[$x]['date_generated']=$due_id->dt_intervention_date;
-        $newdata[$x]['cc_id']=$cc_id;
-        $newdata[$x]['cc_user_id']=$cc_user_id;
         $newdata[$x]['call_id']=$i->fk_due_id;
         $newdata[$x]['report_id']=$i->report_id;
         $newdata[$x]['notes']=$i->t_conversation;
