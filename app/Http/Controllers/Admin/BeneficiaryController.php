@@ -259,6 +259,7 @@ class BeneficiaryController extends Controller{
   					'dt_due_date'=>'required'
 		  			);
  				$dt_due_date=str_replace("-", "/", $r->date_of_delivery);
+    			// dd($dt_due_date);
     			$beneficiary_data = array(
     					'fk_f_id'=>$r->field_worker_id,
     					'v_name' => $r->womans_name,
@@ -403,6 +404,12 @@ class BeneficiaryController extends Controller{
     			// dd($dt_due_date);
     			if($r->date_of_delivery!='')
     			{
+
+    				// $beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
+    				$var=Carbon::parse($dt_due_date)->format('d/m/Y');    				
+    				// $var=Carbon::createFromFormat('d/m/y', $beneficiary_data['dt_due_date']);
+    				// dd($var);
+    				if($var!='')
     				//$beneficiary_data['dt_due_date']=date('d/m/y',strtotime($dt_due_date));
     				//$var=Carbon::createFromFormat('d/m/y', $beneficiary_data['dt_due_date']);
     				$var=Carbon::parse($dt_due_date)->format('d/m/Y');
@@ -431,6 +438,7 @@ class BeneficiaryController extends Controller{
  				}
  				// check for the data if it already exists in database.
     			$already_exist_number=Beneficiary::where('v_phone_number',$beneficiary_data['v_phone_number'])->first();
+    			dd($already_exist_number);
     			if($already_exist_number['v_phone_number']!='')
     			{
 
