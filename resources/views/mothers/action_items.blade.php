@@ -31,7 +31,6 @@ smallfont{
 <tr>
 <th>Call ID</th>
 <th>Beneficiary Name</th>
-
 <th>Date generated</th>
 <th>Action item</th>
 <th>Field worker assigned to</th>
