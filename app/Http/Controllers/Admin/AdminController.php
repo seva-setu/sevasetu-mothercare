@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Http\Response;
 
+
 use Mail;
 use Hash;
 use Auth;
@@ -47,7 +48,37 @@ class AdminController extends Controller{
       $userinfo=Session::get('user_logged');
       $this->user_role_type=$userinfo['v_role'];}
 	}
-	
+  public function download_action_items()
+  {
+
+
+\Excel::create('ActionItems', function($excel){
+            $excel->sheet('sheet1', function($sheet) {
+    $newdata=Session::get('action_items_data');
+              for ($x=0;$x<count($newdata);$x++)
+                {
+                    $data[]=array(
+                          $newdata[$x]["call_id"],
+                          $newdata[$x]['e_call_status'],
+                          $newdata[$x]['date_generated'],
+                          $newdata[$x]['notes'],
+                          $newdata[$x]['action_items'],
+                          $newdata[$x]['field_worker_name'],
+                          $newdata[$x]['beneficiary_id'],
+                          $newdata[$x]['beneficiary_name'],
+                          $newdata[$x]['beneficiary_village'],
+                          $newdata[$x]['beneficiary_contact'],
+                          $newdata[$x]['cc_id'],
+                          $newdata[$x]['cc_user_id'],
+                          $newdata[$x]['call_champion_name']
+                      );
+                }                
+              $sheet->fromArray($data, null, 'A1', false, false);
+              $headings = array('Call ID', 'Call Status', 'Date generated', 'Notes', 'Action items','Field worker assigned to','Beneficiary Id','Mother Name','Village Name','Phone Number','Call Champion Id','User Id','Call Champion Associated');
+              $sheet->prependRow(1, $headings);
+            });
+        })->download('xls');
+  }	
 	public function landing(){
 		if(Session::has('user_logged')){
       if($this->user_role_type == 1)
@@ -328,7 +359,7 @@ class AdminController extends Controller{
       {
         $newdata[$var]['date_generated']=Carbon::parse($newdata[$var]['date_generated'])->format('d/m/Y');
       }
-
+    Session::put('action_items_data',$newdata);
     return view('admin/action_items',compact('newdata'));
 }
 //when any action is resolved in action_items view then we update its status to 1

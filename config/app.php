@@ -145,6 +145,7 @@ return [
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
 		'Torann\Hashids\HashidsServiceProvider',
+
 		'Maatwebsite\Excel\ExcelServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
 		'Barryvdh\DomPDF\ServiceProvider',
@@ -199,6 +200,7 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 		'Hashids' => 'Torann\Hashids\Hashids',
+		
 		'Excel' => 'Maatwebsite\Excel\Facades\Excel',
 		'Image' => 'Intervention\Image\Facades\Image',
 		'PDF' => 'Barryvdh\DomPDF\Facade',
