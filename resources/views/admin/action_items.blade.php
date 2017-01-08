@@ -34,6 +34,8 @@ smallfont{
 <th>{{ trans('action_items.field_workers_assigned_to') }}</th>
 <th>{{ trans('action_items.b_id') }}</th>
 <th>{{ trans('action_items.mother_name') }}</th>
+<th>{{ trans('action_items.dt_intervention_date') }}</th>
+
 <th>{{ trans('action_items.village_name') }}</th>
 <th>{{ trans('action_items.phone_number') }}</th>
 <th>{{ trans('action_items.cc_id') }}</th>
@@ -52,6 +54,8 @@ smallfont{
 <td>{{$x['field_worker_name']}}</td>
 <td>{{$x['beneficiary_id']}}</td>
 <td>{{$x['beneficiary_name']}}</td>
+<td>{{$x['dt_intervention_date']}}</td>
+
 <td>{{$x['beneficiary_village']}}</td>
 <td>{{$x['beneficiary_contact']}}</td>
 <td>{{$x['cc_id']}}</td>
