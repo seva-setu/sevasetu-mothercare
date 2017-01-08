@@ -66,6 +66,7 @@ class AdminController extends Controller{
                           $newdata[$x]['field_worker_name'],
                           $newdata[$x]['beneficiary_id'],
                           $newdata[$x]['beneficiary_name'],
+                          $newdata[$x]['dt_intervention_date'],
                           $newdata[$x]['beneficiary_village'],
                           $newdata[$x]['beneficiary_contact'],
                           $newdata[$x]['cc_id'],
@@ -74,7 +75,7 @@ class AdminController extends Controller{
                       );
                 }                
               $sheet->fromArray($data, null, 'A1', false, false);
-              $headings = array('Call ID', 'Call Status', 'Date generated', 'Notes', 'Action items','Field worker assigned to','Beneficiary Id','Mother Name','Village Name','Phone Number','Call Champion Id','User Id','Call Champion Associated');
+              $headings = array('Call ID', 'Call Status', 'Date generated', 'Notes', 'Action items','Field worker assigned to','Beneficiary Id','Mother Name','Intervention Date','Village Name','Phone Number','Call Champion Id','User Id','Call Champion Associated');
               $sheet->prependRow(1, $headings);
             });
         })->download('xls');
@@ -317,7 +318,8 @@ class AdminController extends Controller{
           $newdata[$x]['beneficiary_name']=$b_id->v_name;
           $newdata[$x]['beneficiary_village']=$b_id->v_village_name;
           $newdata[$x]['beneficiary_contact']=$b_id->v_phone_number;      
-          $newdata[$x]['date_generated']=$i->dt_modify_date;//$due_id->dt_intervention_date;
+          $newdata[$x]['date_generated']=$i->dt_modify_date;//
+          $newdata[$x]['dt_intervention_date']=$due_id->dt_intervention_date;
           $newdata[$x]['call_id']=$i->fk_due_id;
           $newdata[$x]['report_id']=$i->report_id;
           $newdata[$x]['notes']=$i->t_conversation;
@@ -353,6 +355,8 @@ class AdminController extends Controller{
 
       for($var=0;$var<$x;$var++)
       {
+        $newdata[$var]['dt_intervention_date']=Carbon::parse($newdata[$var]['dt_intervention_date'])->format('d/m/Y');
+
         $newdata[$var]['date_generated']=Carbon::parse($newdata[$var]['date_generated'])->format('d/m/Y');
       }
     Session::put('action_items_data',$newdata);

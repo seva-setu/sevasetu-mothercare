@@ -8,6 +8,7 @@
  	'resolve'=>'Resolve',
  	'resolved'=>'Resolved',
  	'mother_name'=>"Mother Name",
+ 	'dt_intervention_date'=>"Intervention Date",
  	'village_name'=>"Village Name",
  	'phone_number'=>'Phone Number',
  	'call_status'=>'Call Status',
