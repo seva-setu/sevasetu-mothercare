@@ -47,7 +47,7 @@ Route::post('/actions/{id}', 'Admin\AdminController@update_status');
 Route::post('/actions/{id}/unresolve', 'Admin\AdminController@unresolve_status');
 
 
-
+Route::get('/download_action_items', 'Admin\AdminController@download_action_items');
 Route::get('/data/upload', 'Admin\AdminController@upload_data');
 //Route::get('/data/upload', 'Admin\CallchampionsController@upload_data');
 Route::post('/data/upload','Admin\BeneficiaryController@importExcel');
