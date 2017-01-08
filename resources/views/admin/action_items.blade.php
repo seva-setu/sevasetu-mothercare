@@ -23,7 +23,7 @@ smallfont{
 <div class="col-md-3">
 </div>
 <div class="col-md-8 ">
-
+<a href="{{url()}}/download_action_items" class="btn btn-primary">Download Info</a>
 <table class="table">
 <tr>
 <th>{{ trans('action_items.call_id') }}</th>

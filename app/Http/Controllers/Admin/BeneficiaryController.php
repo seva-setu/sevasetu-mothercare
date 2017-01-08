@@ -229,6 +229,7 @@ class BeneficiaryController extends Controller{
 	public function downloadExcel()
 	{
 		return response()->download(public_path('download/sample.xlsx'));
+
 	}
 
 /** 
