@@ -19,7 +19,6 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Http\Response;
-use Carbon\Carbon;
 
 use Mail;
 use Hash;
@@ -313,7 +312,7 @@ class AdminDashboardController extends Controller {
 		$data2 = $this->calls_lastweek();
 		$data3 = $this->actionitems_lastweek();
 		$data = array_merge($data1,$data2,$data3);
-		
+
 		return view('analysis/dashboard',$data);
 	}
 	
