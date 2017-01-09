@@ -55,12 +55,16 @@ smallfont{
 					<td> {{$val1->v_phone_number}} </td>
 					<td> {{$val1->reminder_status}} </td>
 					</tr>
-					 </tbody>
-					 
-					 <?php 
+						 <?php 
 						
 					}
 			?>
+					<tr>
+					<td colspan="6"><center>{!! $call_details->render() !!}</center></td>
+				</tr>
+					 </tbody>
+					 
+				
 			
 			</table>
 			<?php 

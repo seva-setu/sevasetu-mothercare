@@ -19,6 +19,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Http\Response;
+use Carbon\Carbon;
 
 use Mail;
 use Hash;
@@ -77,6 +78,24 @@ class AdminDashboardController extends Controller {
 		
 		
 	}
+
+	public function setCurrentPage()
+	{
+		$page = Input::get('page');
+		if($page)
+	    	$currentPage = $page; // You can set this to any page you want to paginate to
+		else
+			$currentPage = ceil(DB::table('mct_due_list')
+							->join('mct_beneficiary', 'mct_beneficiary.b_id','=','mct_due_list.fk_b_id')
+							->join('mct_call_champions', 'mct_call_champions.cc_id','=','mct_due_list.fk_cc_id')
+							->join('mct_user', 'mct_user.user_id', '=','mct_call_champions.fk_user_id')
+							->whereDate('dt_intervention_date', '<', Carbon::now()->format('Y-m-d'))->count()/10)+1; 
+
+		Paginator::currentPageResolver(function () use ($currentPage) {
+	        return $currentPage;
+	    });
+
+	}
 	
 	public function calls_lastweek(){
 		
@@ -124,15 +143,36 @@ class AdminDashboardController extends Controller {
 			->get();
 		} */
 		
-	   $select2 = DB::select('SELECT *,mct_beneficiary.v_name as b_name,mct_user.v_name as c_name from (Select * from mct_due_list 
-	   		WHERE dt_intervention_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+3 DAY 
-				AND dt_intervention_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-11 DAY)t1
-	   		join mct_beneficiary on mct_beneficiary.b_id=t1.fk_b_id
-	   		join mct_call_champions on mct_call_champions.cc_id=t1.fk_cc_id
-	   		join mct_user on mct_call_champions.fk_user_id=mct_user.user_id
-	   		ORDER BY dt_intervention_date');
+	   // $select2 = DB::select('SELECT *,mct_beneficiary.v_name as b_name,mct_user.v_name as c_name from (Select * from mct_due_list 
+	   // 		WHERE dt_intervention_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)+3 DAY 
+				// AND dt_intervention_date <= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-11 DAY)t1
+	   // 		join mct_beneficiary on mct_beneficiary.b_id=t1.fk_b_id
+	   // 		join mct_call_champions on mct_call_champions.cc_id=t1.fk_cc_id
+	   // 		join mct_user on mct_call_champions.fk_user_id=mct_user.user_id
+	   // 		ORDER BY dt_intervention_date');
 		
-		//var_dump($select2);
+		// var_dump($select2);
+
+		$this->setCurrentPage();
+		$select2 = DB::table('mct_due_list')
+						->join('mct_beneficiary', 'mct_beneficiary.b_id','=','mct_due_list.fk_b_id')
+						->join('mct_call_champions', 'mct_call_champions.cc_id','=','mct_due_list.fk_cc_id')
+						->join('mct_user', 'mct_user.user_id', '=','mct_call_champions.fk_user_id')
+						->select(
+									'mct_due_list.due_id',
+									'mct_due_list.fk_b_id',
+									'mct_due_list.fk_cc_id',
+									'mct_due_list.fk_action_id',
+									'mct_due_list.dt_intervention_date',
+									'mct_due_list.reminder_status',
+									'mct_beneficiary.v_name as b_name',
+									'mct_user.v_name as c_name',
+	   								'mct_beneficiary.v_phone_number'
+									)
+						->orderBy('dt_intervention_date')->paginate(10);
+
+		// var_dump($select2)
+
 		
 	   /* $averagePerMother = DB::select('SELECT (select count(*) FROM mct_callchampion_report 
 	   		                           WHERE dt_modify_date >= CURRENT_DATE - INTERVAL DAYOFWEEK(CURRENT_DATE)-2 DAY 
@@ -249,7 +289,7 @@ class AdminDashboardController extends Controller {
 		$data2 = $this->calls_lastweek();
 		$data3 = $this->actionitems_lastweek();
 		$data = array_merge($data1,$data2,$data3);
-		
+
 		return view('analysis/dashboard',$data);
 	}
 	
