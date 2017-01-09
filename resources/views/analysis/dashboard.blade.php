@@ -14,6 +14,7 @@ smallfont{
 }
 </style>
 <body>
+
 @include('template/analysis_sidebar')
 @if(Session::has('user_logged'))
 	@include('template/admin_header')
@@ -89,7 +90,7 @@ smallfont{
 			<tr>
 			<td> {{ trans('adminDashboard.numberofcalls') }} </td>
 			<?php if(isset($totalcalls)) { ?>
-			<td> {{$totalcalls[0]->count}} </td>
+			<td> {{$totalcalls}} </td>
 			<?php 
 					 }
 					 else {
@@ -102,7 +103,7 @@ smallfont{
 			<tr>
 			<td> {{ trans('adminDashboard.numberofmothers') }} </td>
 			<?php if(isset($mothersassigned)) { ?>
-			<td> {{$mothersassigned[0]->count}} </td>
+			<td> {{$mothersassigned}} </td>
 			<?php 
 					 }
 					 else {
@@ -167,7 +168,7 @@ smallfont{
 			<tr>
 			<td> {{ trans('adminDashboard.mothersincorrectphno') }} </td>
 			<?php if(isset($incorrectphno)) { ?>
-			<td> {{$incorrectphno[0]->count}} </td>
+			<td> {{$incorrectphno}} </td>
 			<?php 
 					 }
 					 else {
@@ -180,7 +181,7 @@ smallfont{
 			<tr>
 			<td> {{ trans('adminDashboard.mothersnotreachable') }} </td>
 			<?php if(isset($notreachable)) { ?>
-			<td> {{$notreachable[0]->count}} </td>
+			<td> {{$notreachable}} </td>
 			<?php 
 					 }
 					 else {
