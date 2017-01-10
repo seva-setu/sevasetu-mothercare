@@ -291,6 +291,9 @@ class AdminController extends Controller{
         {
           $alread_resolved++;
         }
+        if(($i->t_action_items!=''||$i->t_conversation!=''))
+        {
+ 
         $due_id=DB::table('mct_due_list')->where('due_id',$i->fk_due_id)->first();
         $cc_id=DB::table('mct_due_list')->where('due_id',$i->fk_due_id)->first()->fk_cc_id;
         $field_worker_id=DB::table('mct_beneficiary')->where('b_id',$due_id->fk_b_id)->first()->fk_f_id;
@@ -307,8 +310,6 @@ class AdminController extends Controller{
           $newdata[$x]['call_champion_name']=DB::table('mct_user')->where('user_id',$cc_user_id)->first()->v_name; 
         }
         $field_worker_user_id=DB::table('mct_field_workers')->where('f_id',$field_worker_id)->first()->fk_user_id;
-        if(($i->t_action_items!=''||$i->t_conversation!=''))
-        {
             if($i->t_action_items!='')
             {
               $y++;
@@ -337,6 +338,7 @@ class AdminController extends Controller{
       //sorting w.r.t. date
       usort($newdata, function($a, $b)
       {
+ 
             $t1 = strtotime($a['date_generated']);
             $t2 = strtotime($b['date_generated']);
             return $t2 - $t1;
@@ -547,14 +549,16 @@ public function unresolve_status(Request $r,$id)
     //if count is not given calculates avg number of mothers assigned per callchampion
     if($count == -1)
     {
-      $total_beneficiary = DB::table('mct_beneficiary')
-                             ->count();
+      // $total_beneficiary = DB::table('mct_beneficiary')
+      //                        ->count();
 
-      $total_call_champions = DB::table('mct_call_champions')
-                                ->where('activation_status','=',2)
-                                ->count();
+      // $total_call_champions = DB::table('mct_call_champions')
+      //                           ->where('activation_status','=',2)
+      //                           ->count();
 
-       $count = ceil($total_beneficiary / $total_call_champions);
+      //  $count = ceil($total_beneficiary / $total_call_champions);
+
+      $count =2;
     }
 
     //select count no of beneficiaries which are not assigned to any other callchampion to assign to callchampion having given cc_id 
