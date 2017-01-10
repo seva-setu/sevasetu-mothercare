@@ -251,9 +251,8 @@ class AdminController extends Controller{
     $data['unassigned']=DB::table('mct_call_champions')
                         ->join('mct_user', 'user_id', '=', 'fk_user_id')
                         ->where('mct_call_champions.activation_status',2) 
-                        ->whereRaw('cc_id not in (select fk_cc_id from mct_due_list)')
+                        ->whereRaw('cc_id not in (select fk_cc_id from mct_due_list where fk_cc_id <> "NULL")')
                         ->get();
-
     //list of mentors corressponding to every mentee who are shadowing them 
     $data['mentor']=array();
     foreach ($data['mentees'] as $value)
