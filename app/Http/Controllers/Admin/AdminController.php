@@ -547,14 +547,16 @@ public function unresolve_status(Request $r,$id)
     //if count is not given calculates avg number of mothers assigned per callchampion
     if($count == -1)
     {
-      $total_beneficiary = DB::table('mct_beneficiary')
-                             ->count();
+      // $total_beneficiary = DB::table('mct_beneficiary')
+      //                        ->count();
 
-      $total_call_champions = DB::table('mct_call_champions')
-                                ->where('activation_status','=',2)
-                                ->count();
+      // $total_call_champions = DB::table('mct_call_champions')
+      //                           ->where('activation_status','=',2)
+      //                           ->count();
 
-       $count = ceil($total_beneficiary / $total_call_champions);
+      //  $count = ceil($total_beneficiary / $total_call_champions);
+
+      $count =2;
     }
 
     //select count no of beneficiaries which are not assigned to any other callchampion to assign to callchampion having given cc_id 
