@@ -577,6 +577,7 @@ public function unresolve_status(Request $r,$id)
       if(!empty($bid_array)){
       $obj = new BeneficiaryController;
       $obj->assign_to_callchampion($bid_array,$cc_id);
+      }
 
     //if there is no such beneficiary found returns back
     return Redirect::to('/callchampions'); 
