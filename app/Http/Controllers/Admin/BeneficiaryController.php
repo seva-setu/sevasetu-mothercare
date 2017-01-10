@@ -110,6 +110,14 @@ class BeneficiaryController extends Controller{
 		return Redirect::back();
 	}
 
+	public function assign_to_callchampion($beneficiary_ids, $cc_id) {
+		foreach($beneficiary_ids as $bene){
+			$select_bid_ccid = DB::table('mct_due_list')
+			->where('fk_b_id','=',$bene->b_id)
+			->update(['fk_cc_id'=>$cc_id]);
+		}
+		return Redirect::back();
+	}
 	public function upload_mother(){
 		$bene_obj = Beneficiary::all();
 
