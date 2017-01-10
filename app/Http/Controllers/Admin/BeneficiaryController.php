@@ -439,7 +439,7 @@ class BeneficiaryController extends Controller{
  				}
  				// check for the data if it already exists in database.
     			$already_exist_number=Beneficiary::where('v_phone_number',$beneficiary_data['v_phone_number'])->first();
-    			// dd($already_exist_number);
+    		//	dd($already_exist_number);
     			if($already_exist_number['v_phone_number']!='')
     			{
 
