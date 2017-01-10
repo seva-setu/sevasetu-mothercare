@@ -125,7 +125,9 @@ class AdminController extends Controller{
       $f_workers=DB::table('mct_field_workers')->get();
       $mothers=DB::table('mct_beneficiary')->count();
       $data['mothers_count']=$mothers;
-      $assigned_mother_count=DB::table('mct_due_list')->distinct()->count(['fk_b_id']);
+      $assigned_mother_count=DB::table('mct_due_list')->distinct()
+      ->whereRaw('fk_cc_id IS NOT NULL')
+      ->count(['fk_b_id']);
       $data['assigned_mother_count']=$assigned_mother_count;
       $data['unassigned_mother_count']=$mothers-$assigned_mother_count;
       $x=0;
@@ -556,7 +558,7 @@ public function unresolve_status(Request $r,$id)
     }
 
     //select count no of beneficiaries which are not assigned to any other callchampion to assign to callchampion having given cc_id 
-    $bid_array = DB::table('mct_beneficiary')
+    /*$bid_array = DB::table('mct_beneficiary')
                   ->whereRaw('b_id not in (select fk_b_id from mct_due_list)')
                   ->take($count)
                   ->get();
@@ -565,7 +567,16 @@ public function unresolve_status(Request $r,$id)
       $obj = new BeneficiaryController;
       //calls batch_assignment_callchampion method in BeneficiaryController
       $obj->batch_assignment_callchampion($bid_array,$cc_id);
-     }
+     }*/
+     $bid_array = DB::table('mct_beneficiary')
+                  ->whereRaw('b_id in (SELECT fk_b_id FROM mct_due_list where fk_cc_id IS NULL)')
+                  ->take($count)
+                  ->get();
+
+      if(!empty($bid_array)){
+      $obj = new BeneficiaryController;
+      $obj->assign_to_callchampion($bid_array,$cc_id);
+      }
 
     //if there is no such beneficiary found returns back
     return Redirect::to('/callchampions'); 
