@@ -5,7 +5,6 @@ use App\Models\CallChampion;
 use App\Models\User;
 use App\Models\DueList;
 use App\Models\Beneficiary;
-
 use Request;
 use Mail;
 use Auth;
@@ -23,8 +22,6 @@ use Torann\Hashids\HashidsServiceProvider;
 use Image;
 use App\Http\Helpers;
 use Carbon\Carbon;
-
-
 class CallchampionsController extends Controller{
 	protected $model;
 	public $title="Call Champions";
@@ -64,7 +61,6 @@ class CallchampionsController extends Controller{
 			}
 		}
 	}
-
 	public function list_mothers($cc_id = -1){
 		if($cc_id = -1){
 			$cc_id = $this->role_id;
@@ -86,10 +82,7 @@ class CallchampionsController extends Controller{
       return view('admin/upload_data');
     else
       return 'User is not admin';
-
   }
-
-
 	
 	public function update_call($due_id_encrypted){
 		$helper_obj = new Helpers;
@@ -100,17 +93,14 @@ class CallchampionsController extends Controller{
 		$general_note = Input::get('general_note');
 		$duedate_stats = Input::get('duedatestat');
 		$cc = new CallChampion;
-
 		if(is_array($duelist) && !empty($duelist))
 		{
 			$b_id = $duelist[0]['fk_b_id'];
 			$data['callchampion'] = User::where('user_id',$this->user_id)->get();
 			$b_obj = new Beneficiary();
 			$data['beneficiary'] = $b_obj->get_beneficiary_details($b_id);
-
 			$email = $_ENV['MAIL_LOGIN'];
 			$bcc = explode(',',$_ENV['BCC_IDS']);
-
 			if($call_stats == trans('routes.in'))
 			{
 				$data['action'] = $call_stats;
@@ -122,9 +112,7 @@ class CallchampionsController extends Controller{
 								->bcc($bcc);
 							}
 						  );
-
 			}
-
 			if($action_items != trans('routes.textareadefaulttext') && strlen($action_items)>0)
 			{
 				$data['action'] = trans('routes.action');
@@ -139,15 +127,14 @@ class CallchampionsController extends Controller{
 							}
 						  );
 			}		
-
 			if($duedate_stats == trans('routes.incorrect'))
 			{
 				$data['action'] = $duedate_stats;
 				$data['expected_date'] = Input::get('duedate');
-
 				Beneficiary::where('b_id', $b_id)
-	            	->update(['reported _delivery_date' => $data['expected_date'] ]);
-
+	            	->update(['reported_delivery_date' => $data['expected_date'] ]);
+	            Beneficiary::where('b_id', $b_id)
+	            	->update(['date_status' => 1]);
 				Mail::send('emails.admin_notification',$data, 
 							function($message) use($email,$bcc){
 								$message
@@ -156,10 +143,8 @@ class CallchampionsController extends Controller{
 								->bcc($bcc);
 							}
 						  );
-
 			}
 		}
-
 		$update_status = $cc->update_cc_report($dueid, $call_stats, $general_note, $action_items);		
 		
 		// ideally should be using session flashing to be doing this i think.
@@ -180,7 +165,6 @@ class CallchampionsController extends Controller{
 			$action_data[$x]['field_worker_name']=DB::table('mct_user')->where('user_id',$field_worker_user_id)->first()->v_name;
 			$action_data[$x]['action_item']=$cc_report->t_action_items;
 			$action_data[$x]['beneficiary_name']=$b_name;
-
 			$action_data[$x]['status']=$cc_report->status;
 			$action_data[$x]['call_id']=$i->due_id;	
 			$action_data[$x]['date_generated']=$i->dt_intervention_date;
@@ -214,11 +198,9 @@ class CallchampionsController extends Controller{
       {
         $action_data[$var]['date_generated']=Carbon::parse($action_data[$var]['date_generated'])->format('d/m/Y');
       }
-
 		return view('mothers.action_items',compact('action_data'));
 	}
 	
 ////////////////////////////////////////////////
-
 }
 ?>
