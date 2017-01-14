@@ -62,7 +62,9 @@ Route::get('/admins', function()
 		return redirect(url('data/upload'));
 	});//'Admin\AdminController@admin_dashboard');
 
-
+Route::get('/duedateresolve','Admin\AdminController@due_date_resolve');
+Route::post('/duedateresolve/{id}/{ddate}/accept', 'Admin\AdminController@due_date_accept');
+Route::post('/duedateresolve/{id}/reject', 'Admin\AdminController@due_date_reject');
 Route::get('/mycalls', 'Admin\WeeklyCalllistController@list_all_calls');
 Route::get('/mycalls/view/{id}', 'Admin\WeeklyCalllistController@list_specific_call_details');
 Route::get('/checklist', 'Admin\WeeklyCalllistController@get_master_checklist');
