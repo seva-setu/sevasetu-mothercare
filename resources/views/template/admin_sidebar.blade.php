@@ -6,6 +6,7 @@
 	if($active=='actions'){ $actions=$string; } else { $actions=""; }
 	if($active=='analysis'){ $analysis=$string; } else { $analysis=""; }
 	if($active=='duedateresolve'){ $duedateresolve=$string; } else { $duedateresolve=""; }
+	
 	$user_stats = Session::get('user_stats');
 ?>
 <nav class="navbar-default navbar-side" role="navigation">
@@ -22,9 +23,9 @@
 			</li>
 			<li <?php echo $analysis; ?> >
 			<a href="{{url()}}/analysis"><i class="fa fa-cogs "></i>Analysis</a>
+			</li>
 			<li <?php echo $duedateresolve; ?> >
 			<a href="{{url()}}/duedateresolve"><i class="fa fa-cogs "></i>Resolve Due Date</a>
-			</li>
 			</li>
 		</ul>
 	</div>
