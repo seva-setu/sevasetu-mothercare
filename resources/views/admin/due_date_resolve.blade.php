@@ -35,6 +35,7 @@
 <th>Reported Delivery Date</th>
 <th>Field Worker Name</th>
 </tr>
+@if (isset($newdata) ) 
 @foreach($newdata as $x)
 <tr>
 <td>{{$x['call_champion_name']}}</td>
@@ -53,8 +54,8 @@
 <button class="btn btn-primary" type="submit">Reject</button></form></td>
 
 </tr>
-
 @endforeach
+@endif
 </table>
 
 </div>
