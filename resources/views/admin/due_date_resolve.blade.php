@@ -25,7 +25,7 @@
 <div class="col-md-3">
 </div>
 <div class="col-md-8 ">
-
+@if (isset($newdata) ) 
 <table class="table">
 <tr>
 <th>Call Champion Name</th>
@@ -35,6 +35,7 @@
 <th>Reported Delivery Date</th>
 <th>Field Worker Name</th>
 </tr>
+
 @foreach($newdata as $x)
 <tr>
 <td>{{$x['call_champion_name']}}</td>
@@ -53,10 +54,10 @@
 <button class="btn btn-primary" type="submit">Reject</button></form></td>
 
 </tr>
-
 @endforeach
-</table>
 
+</table>
+@endif
 </div>
 </div>
 </body>
