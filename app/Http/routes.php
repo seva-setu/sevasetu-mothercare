@@ -86,5 +86,7 @@ Route::get('/analysis/overall_stat','Admin\AdminDashboardController@overall_stat
 Route::get('/analysis/mother','Admin\AdminDashboardController@mother_info');
 Route::get('/analysis/field_worker','Admin\AdminDashboardController@field_worker_info');
 Route::get('/analysis/call_champion','Admin\AdminDashboardController@call_champion_info');
+Route::get('/analysis/call_champion/{id}','Admin\AdminDashboardController@call_champion_analysis');
+
 
 ?>
