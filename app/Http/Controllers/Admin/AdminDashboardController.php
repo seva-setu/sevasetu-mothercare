@@ -25,6 +25,9 @@ use Hashids\Hashids;
 use Image;
 use App\Http\Helpers;
 use Carbon\Carbon;
+use App\Models\DueList;
+use App\Models\Beneficiary;
+
 class AdminDashboardController extends Controller {
 	
 	
@@ -345,6 +348,7 @@ class AdminDashboardController extends Controller {
 		{	
 			$data[$x]['v_name']=User::where('user_id',$i->fk_user_id)->first()->v_name;
 			$cc_id=$i->cc_id;
+			$data[$x]['cc_id'] = $cc_id;
 			$data[$x]['mother_count']=DB::table('mct_due_list')->where('fk_cc_id',$cc_id)->distinct()->count(['fk_b_id']);
 			$due_details=DB::table('mct_due_list')->where('fk_cc_id',$cc_id)->get();
 			
@@ -375,7 +379,37 @@ class AdminDashboardController extends Controller {
 	} 
 	
 	
-			
+	public function call_champion_analysis($cc_id_encoded){
+			$helper_obj = new Helpers;
+			$cc_id = $helper_obj->decode($cc_id_encoded);
+			$due_list_obj = new DueList();
+			$beneficiary_ids_list = $due_list_obj->get_beneficiary_ids_list($cc_id);						
+			$b_obj = new Beneficiary();
+			$data['data'] = $b_obj->get_beneficiary_details($beneficiary_ids_list);	
+			foreach ($beneficiary_ids_list as $b_id) {
+				$data['x'][$b_id]['last_call']= DB:: table('mct_callchampion_report')
+											->select('dt_modify_date')
+											->whereRaw('fk_due_id in (select due_id from mct_due_list where fk_b_id = '.$b_id.')')
+											->orderBy('dt_modify_date','DESC')
+											->first()
+											->dt_modify_date;
+
+				$dates = DB:: select('select dt_modify_date from (select * from mct_callchampion_report where fk_due_id in (select due_id from mct_due_list where fk_b_id = '.$b_id.')  order by dt_modify_date desc) as y group by fk_due_id');
+				$count=0;
+				foreach ($dates as $date) {
+					if($date->dt_modify_date =="0000-00-00 00:00:00")
+						$count++;
+				}
+
+				$data['x'][$b_id]['pending_calls'] = $count;
+				$data['x'][$b_id]['completed_calls'] = 10 - $count;
+
+
+				}
+				
+		 return view('analysis/callchampion_analysis',$data);
+		}
+		
 	
 	
 }
