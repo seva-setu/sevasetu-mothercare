@@ -33,7 +33,7 @@ class Beneficiary extends Eloquent {
 							$this->table.'.v_phone_number as phone_number',
 							$this->table.'.dt_due_date as due_date',
 							$this->table.'.t_notes as mother_notes',
-							
+							$this->table.'.b_id',
 							$join_table1.'.f_id as fieldworker_id',
 							$join_table2.'.v_name as field_worker_name',
 							$join_table2.'.i_phone_number as field_worker_number'

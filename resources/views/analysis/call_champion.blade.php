@@ -37,7 +37,7 @@ smallfont{
 			</tr>
 			@foreach($data as $i)
 			<tr>
-				<td>{{$i['v_name']}}</td>
+				<td><a href="<?php echo url().'/analysis/call_champion/'.Hashids::encode($i['cc_id']); ?>" >{{$i['v_name']}}</a></td>
 				<td>{{$i['mother_count']}}</td>
 				<td>{{$i['attempted_calls']}}</td>
 				<td>{{$i['notes_recorded']}}</td>
